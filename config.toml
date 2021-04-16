@@ -1,0 +1,34 @@
+baseUrl = "https://eduardoweiland.info/"
+title = "Eduardo Weiland"
+theme = "hugo-coder"
+
+paginate = 10
+
+languageCode = "pt-br"
+defaultContentLanguage = "pt-br"
+
+pygmentsStyle = "dracula"
+pygmentsCodeFences = true
+pygmentsCodeFencesGuessSyntax = true
+
+[params]
+    author = "Eduardo Weiland"
+    info = "Fullstack Web Developer & Maker"
+    description = "Blog de Eduardo Weiland"
+    keywords = "blog,home,portfolio,personal,developer,maker"
+    since = 2011
+
+    avatarUrl = "images/avatar.png"
+    favicon_32 = "images/favicon32.png"
+    favicon_16 = "images/favicon16.png"
+
+    colorScheme = "auto"
+
+[taxonomies]
+    category = "categories"
+    series = "series"
+    tag = "tags"
+    author = "authors"
+
+[permalinks]
+    posts = "/blog/:year/:month/:title/"

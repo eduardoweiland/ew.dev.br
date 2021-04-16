@@ -1,0 +1,14 @@
+<footer class="footer">
+    <section class="container">
+        &copy;
+        {{ if (and (.Site.Params.since) (lt .Site.Params.since now.Year)) }}
+            {{ .Site.Params.since }} -
+        {{ end }}
+        {{ now.Year }}
+        {{ with .Site.Params.author }} {{ . }} {{ end }}
+        &middot;
+        <a rel="license noopener" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+        &middot;
+        <a rel="noopener" href="https://gitlab.com/eduardoweiland/homepage">Free Software</a>
+    </section>
+</footer>
