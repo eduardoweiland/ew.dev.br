@@ -410,7 +410,7 @@ void LcdBigNumbers::printNumber(
 }
 ```
 
-**Nota: revisando o código acima durante a atualização do blog para o empress,
+**Nota: revisando o código acima durante a atualização do blog para o Hugo,
 encontrei uma pequena grande falha de _[buffer overflow][]_ na condição do
 `while`: `count <= 10` deveria ser `count < 10`. O código acima já está corrigido.**
 
@@ -525,8 +525,8 @@ Como sempre, o código está no GitHub:
 - Versão mais atual: https://github.com/eduardoweiland/placarduino
 
 
-[último post sobre o projeto do Placarduino]: /2017-11-02-placarduino-adicionando-um-display-maior-para-exibir-mais-informacoes
-[estrutura do PlatformIO]: /2017-10-31-substituindo-a-ide-do-arduino-pelo-platformio
+[último post sobre o projeto do Placarduino]: /posts/2017/11/placarduino-adicionando-um-display-maior-para-exibir-mais-informacoes/
+[estrutura do PlatformIO]: /posts/2017/10/substituindo-a-ide-do-arduino-pelo-platformio/
 [Números grandes no Placarduino]: /images/placarduino-big-numbers-lcd.jpg
 [Representação da letra E no display LCD]: /images/display-lcd-letra-E.png
 [Representação em bits da letra E no display LCD]: /images/display-lcd-letra-E-bits.png

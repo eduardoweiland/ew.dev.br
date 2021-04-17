@@ -89,7 +89,7 @@ um arquivo de configuração.
 progresso no GitHub~~ branch já foi integrado - ver o [pull request][].
 
 
-[último post sobre o Placarduino]: /2018-01-13-atualizacao-do-placarduino-reducao-de-pontos
+[último post sobre o Placarduino]: /posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/
 [Código para o Tema do Super Mário antes e depois da refatoração]: /images/refatoracao-musicplayer-super-mario.png
 [Função checkButtons antes e depois da refatoração]: /images/refatoracao-check-buttons.png
 [andamento]: https://pt.wikipedia.org/wiki/Andamento

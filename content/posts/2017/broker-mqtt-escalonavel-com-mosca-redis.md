@@ -170,7 +170,7 @@ cluster do Kubernetes não é muito diferente do que [publicar o Mosquitto][post
 E, para escalonar o cluster, um _[Horizontal Pod Autoscaler][]_ deve resolver.
 
 
-[post-mosquitto-k8s]: /2017-09-22-deploy-do-mosquitto-com-autenticacao-no-kubernetes
+[post-mosquitto-k8s]: /posts/2017/09/deploy-do-mosquitto-com-autenticacao-no-kubernetes/
 [criação de clusters usando bridges]: https://stackoverflow.com/questions/36283197/mqtt-mosquitto-bridge-horizontal-scaling/36283565#36283565
 [Mosca]: http://www.mosca.io
 [medium-link]: https://medium.com/@lelylan/how-to-build-an-high-availability-mqtt-cluster-for-the-internet-of-things-8011a06bd000

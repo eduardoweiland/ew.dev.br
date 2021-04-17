@@ -59,7 +59,7 @@ pygmentsCodeFencesGuessSyntax = true
     author = "authors"
 
 [permalinks]
-    posts = "/posts/:year/:month/:title/"
+    posts = "/posts/:year/:month/:filename/"
 
 [[menu.main]]
     name = "Blog"

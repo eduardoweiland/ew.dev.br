@@ -189,7 +189,7 @@ arquivo do Fritzing no repositório do GitHub:
 Bons jogos e até a próxima! \\o/
 
 
-[post-refatoracao]: /2018-01-14-refatoracao-do-placarduino
+[post-refatoracao]: /posts/2018/01/refatoracao-do-placarduino/
 [Ligação do LED de comemoração no Placarduino]: /images/placarduino-led-comemoracao.png
 [Ligação do botão de fim de jogo no Placarduino]: /images/placarduino-botao-fim-de-jogo.png
 [Comemoração ao final do jogo]: /images/placarduino-jogador-ganhou.jpg

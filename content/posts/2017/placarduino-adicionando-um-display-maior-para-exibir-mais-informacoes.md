@@ -174,5 +174,5 @@ Como sempre, o código-fonte e o projeto do Fritzing estão no GitHub:
 
 [Display LCD utilizado]: /images/display-lcd-utilizado.jpg
 [Esquema de ligação do display com I²C]: /images/placarduino-display-20x4.png
-[agora eu estou utilizando o PlatformIO]: /2017-10-31-substituindo-a-ide-do-arduino-pelo-platformio
+[agora eu estou utilizando o PlatformIO]: /posts/2017/10/substituindo-a-ide-do-arduino-pelo-platformio/
 [I2cScanner]: http://playground.arduino.cc/Main/I2cScanner

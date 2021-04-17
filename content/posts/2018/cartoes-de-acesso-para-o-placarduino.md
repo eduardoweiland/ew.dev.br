@@ -357,9 +357,9 @@ Com essa alteração, o Placarduino chega na versão 2.0!
 - Versão mais recente: https://github.com/eduardoweiland/placarduino
 
 
-[post-i2c]: /2017-11-02-placarduino-adicionando-um-display-maior-para-exibir-mais-informacoes
-[post-platformio]: /2017-10-31-substituindo-a-ide-do-arduino-pelo-platformio
-[post-refatoracao]: /2018-01-14-refatoracao-do-placarduino
+[post-i2c]: /posts/2017/11/placarduino-adicionando-um-display-maior-para-exibir-mais-informacoes/
+[post-platformio]: /posts/2017/10/substituindo-a-ide-do-arduino-pelo-platformio/
+[post-refatoracao]: /posts/2018/01/refatoracao-do-placarduino/
 [Leitor RFID conectado na protoboard]: /images/leitor-rfid-conectado-protoboard.png
 [Jumpers ligando leitor RFID ao Arduino]: /images/jumpers-leitor-rfid-arduino.png
 [Jumpers ligando leitor RFID ao Arduino com alimentação 3.3V]: /images/jumpers-alimentacao-leitor-rfid-arduino.png

@@ -86,6 +86,6 @@ Watchdog e um novo jogo será iniciado. Como sempre, o código está no GitHub:
 - Versão mais recente: https://github.com/eduardoweiland/placarduino/
 
 
-[post-fim-de-jogo]: /2018-02-04-fim-de-jogo-para-o-placarduino
+[post-fim-de-jogo]: /posts/2018/02/fim-de-jogo-para-o-placarduino/
 [a solução recomendada pela Atmel]: https://arduino.stackexchange.com/a/13424
 [watchdog-timer-reset]: https://tushev.org/articles/arduino/5/arduino-and-watchdog-timer

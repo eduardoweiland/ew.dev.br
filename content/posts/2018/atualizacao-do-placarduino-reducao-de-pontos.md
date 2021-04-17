@@ -191,6 +191,6 @@ Enquanto isso, não deixe de conferir o projeto no GitHub:
 - Versão mais recente: https://github.com/eduardoweiland/placarduino
 
 
-[Placarduino]: /2017-10-22-placarduino-placar-eletronico-com-arduino
-[buzzer adicionado para emitir sons]: /2017-10-27-adicionando-sons-no-placarduino
+[Placarduino]: /posts/2017/10/placarduino-placar-eletronico-com-arduino/
+[buzzer adicionado para emitir sons]: /posts/2017/10/adicionando-sons-no-placarduino/
 [Esquema de ligação dos novos push buttons]: /images/placarduino-push-buttons-diminuir-pontos.png

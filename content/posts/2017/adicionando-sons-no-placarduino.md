@@ -291,7 +291,7 @@ Os próximos itens do _roadmap_ são:
 - Campeonatos de pontos corridos
 
 
-[criação da primeira versão]: /2017-10-22-placarduino-placar-eletronico-com-arduino
+[criação da primeira versão]: /posts/2017/10/placarduino-placar-eletronico-com-arduino/
 [Montando o buzzer no Placarduino]: /images/placarduino-buzzer.png
 [ToneLibrary]: https://github.com/daniel-centore/arduino-tone-library
 [OGG]: https://www.gnu.org/philosophy/why-audio-format-matters.en.html

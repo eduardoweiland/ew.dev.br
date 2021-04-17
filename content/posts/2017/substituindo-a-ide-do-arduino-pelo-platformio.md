@@ -101,7 +101,7 @@ Agora programar para Arduino já está mais parecido com programação de softwa
 no século 21 😉
 
 
-[Placarduino]: /2017-10-22-placarduino-placar-eletronico-com-arduino
+[Placarduino]: /posts/2017/10/placarduino-placar-eletronico-com-arduino/
 [PlatformIO]: http://platformio.org/
 [platformio-core]: http://docs.platformio.org/en/latest/core.html
 [platformio-ide]: http://docs.platformio.org/en/latest/ide.html
