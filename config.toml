@@ -24,6 +24,32 @@ pygmentsCodeFencesGuessSyntax = true
 
     colorScheme = "auto"
 
+[[params.social]]
+    name = "GitHub"
+    icon = "fa fa-github"
+    weight = 1
+    url = "https://github.com/eduardoweiland/"
+
+[[params.social]]
+    name = "GitLab"
+    icon = "fa fa-gitlab"
+    weight = 2
+    url = "https://gitlab.com/eduardoweiland/"
+
+[[params.social]]
+    name = "LinkedIn"
+    icon = "fa fa-linkedin"
+    weight = 3
+    url = "https://www.linkedin.com/in/eduardoweiland/"
+
+[[params.social]]
+    name = "RSS"
+    icon = "fa fa-rss"
+    weight = 4
+    url = "/index.xml"
+    rel = "alternate"
+    type = "application/rss+xml"
+
 [taxonomies]
     category = "categories"
     series = "series"
