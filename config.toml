@@ -58,3 +58,16 @@ pygmentsCodeFencesGuessSyntax = true
 
 [permalinks]
     posts = "/blog/:year/:month/:title/"
+
+# Content-Security-Policy
+[params.csp]
+    childsrc = ["'self'"]
+    fontsrc = ["'self'"]
+    formaction = ["'self'"]
+    framesrc = ["'self'"]
+    imgsrc = ["'self'"]
+    objectsrc = ["'none'"]
+    stylesrc = [ "'self'", "'unsafe-inline'"]
+    scriptsrc = ["'self'", "'unsafe-inline'"]
+    prefetchsrc = ["'self'"]
+    connectsrc = ["'self'"]
