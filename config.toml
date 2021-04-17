@@ -2,7 +2,7 @@ baseUrl = "https://eduardoweiland.info/"
 title = "Eduardo Weiland"
 theme = "hugo-coder"
 
-paginate = 10
+paginate = 20
 
 languageCode = "pt-br"
 defaultContentLanguage = "pt-br"
@@ -23,6 +23,7 @@ pygmentsCodeFencesGuessSyntax = true
     favicon_16 = "images/favicon16.png"
 
     colorScheme = "auto"
+    dateFormat = "Jan 2, 2006"
 
 [[params.social]]
     name = "GitHub"
@@ -58,6 +59,11 @@ pygmentsCodeFencesGuessSyntax = true
 
 [permalinks]
     posts = "/blog/:year/:month/:title/"
+
+[[menu.main]]
+    name = "Blog"
+    weight = 1
+    url = "posts/"
 
 # Content-Security-Policy
 [params.csp]
