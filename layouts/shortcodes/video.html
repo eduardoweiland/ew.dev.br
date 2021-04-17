@@ -1,0 +1,12 @@
+<div class="video-wrapper">
+    <video
+        {{ with .Get "src" }} src="{{ . }}" {{ end }}
+        {{ with .Get "width"  | default 1280 }} width="{{ . }}"  {{ end }}
+        {{ with .Get "height" | default 720  }} height="{{ . }}" {{ end }}
+        controls
+    >
+        {{ with .Get "src" }}
+            <a href="{{ . }}">Download do vídeo</a>
+        {{ end }}
+    </video>
+</div>

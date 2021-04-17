@@ -1,0 +1,9 @@
+.video-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.video-wrapper video {
+    max-width: 90vw;
+    height: auto;
+}

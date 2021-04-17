@@ -24,6 +24,7 @@ pygmentsCodeFencesGuessSyntax = true
 
     colorScheme = "auto"
     dateFormat = "Jan 2, 2006"
+    customCSS = ["css/custom.css"]
 
 [[params.social]]
     name = "GitHub"
