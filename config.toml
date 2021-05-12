@@ -45,9 +45,15 @@ pygmentsCodeFencesGuessSyntax = true
     url = "https://www.linkedin.com/in/eduardoweiland/"
 
 [[params.social]]
+    name = "DEV Community"
+    icon = "fa fa-dev-to"
+    weight = 4
+    url = "https://dev.to/eduardoweiland"
+
+[[params.social]]
     name = "RSS"
     icon = "fa fa-rss"
-    weight = 4
+    weight = 5
     url = "/index.xml"
     rel = "alternate"
     type = "application/rss+xml"
