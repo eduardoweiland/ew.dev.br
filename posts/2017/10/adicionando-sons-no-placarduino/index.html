@@ -1,0 +1,413 @@
+<!doctype html><html lang=pt-br>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=content-language content="pt-br">
+<meta name=color-scheme content="light dark">
+<meta http-equiv=content-security-policy content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self'; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; prefetch-src 'self'; connect-src 'self';">
+<meta name=author content="Eduardo Weiland">
+<meta name=description content="Este post é a continuação do projeto Placarduino. A última postagem foi a criação da primeira versão. Até o momento, o placar já exibe dois jogadores e conta os pontos de cada um. Mas seria interessante se também houvesse algum tipo de som de abertura e a cada ponto marcado. É isso que vamos fazer!
+ Para fazer isso será necessário:
+ 1 Placarduino v1.0 1 buzzer passivo de 5V 1 resistor de 220Ω Alguns cabos jumper Uma música simples para tocar (ou mais de uma)  Precisa de pouco material mesmo.">
+<meta name=keywords content="blog,home,portfolio,personal,developer,maker">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Adicionando sons no Placarduino">
+<meta name=twitter:description content="Este post é a continuação do projeto Placarduino. A última postagem foi a criação da primeira versão. Até o momento, o placar já exibe dois jogadores e conta os pontos de cada um. Mas seria interessante se também houvesse algum tipo de som de abertura e a cada ponto marcado. É isso que vamos fazer!
+ Para fazer isso será necessário:
+ 1 Placarduino v1.0 1 buzzer passivo de 5V 1 resistor de 220Ω Alguns cabos jumper Uma música simples para tocar (ou mais de uma)  Precisa de pouco material mesmo.">
+<meta property="og:title" content="Adicionando sons no Placarduino">
+<meta property="og:description" content="Este post é a continuação do projeto Placarduino. A última postagem foi a criação da primeira versão. Até o momento, o placar já exibe dois jogadores e conta os pontos de cada um. Mas seria interessante se também houvesse algum tipo de som de abertura e a cada ponto marcado. É isso que vamos fazer!
+ Para fazer isso será necessário:
+ 1 Placarduino v1.0 1 buzzer passivo de 5V 1 resistor de 220Ω Alguns cabos jumper Uma música simples para tocar (ou mais de uma)  Precisa de pouco material mesmo.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://eduardoweiland.info/posts/2017/10/adicionando-sons-no-placarduino/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-10-27T21:51:27-02:00">
+<meta property="article:modified_time" content="2017-10-27T21:51:27-02:00">
+<meta property="og:see_also" content="https://eduardoweiland.info/posts/2018/02/reset-automatico-do-placarduino-apos-o-fim-do-jogo/"><meta property="og:see_also" content="https://eduardoweiland.info/posts/2018/02/fim-de-jogo-para-o-placarduino/"><meta property="og:see_also" content="https://eduardoweiland.info/posts/2018/01/cartoes-de-acesso-para-o-placarduino/"><meta property="og:see_also" content="https://eduardoweiland.info/posts/2018/01/refatoracao-do-placarduino/"><meta property="og:see_also" content="https://eduardoweiland.info/posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/"><meta property="og:see_also" content="https://eduardoweiland.info/posts/2017/11/display-maior-numeros-maiores/">
+<title>
+Adicionando sons no Placarduino · Eduardo Weiland
+</title>
+<link rel=canonical href=https://eduardoweiland.info/posts/2017/10/adicionando-sons-no-placarduino/>
+<link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.1.7" as=font type=font/woff2 crossorigin>
+<link rel=stylesheet href=/css/coder.min.cbf6f68b2a836dd1d34f005153262dd21d148461cf33684940f1bb4c048821b1.css integrity="sha256-y/b2iyqDbdHTTwBRUyYt0h0UhGHPM2hJQPG7TASIIbE=" crossorigin=anonymous media=screen>
+<link rel=stylesheet href=/css/coder-dark.min.dde8a61eb31a32353b4baf3d9113f03c4ea2a8ca9bb736f59ca2d2b2cb664f0b.css integrity="sha256-3eimHrMaMjU7S689kRPwPE6iqMqbtzb1nKLSsstmTws=" crossorigin=anonymous media=screen>
+<link rel=stylesheet href=/css/custom.css>
+<link rel=icon type=image/png href=/images/favicon32.png sizes=32x32>
+<link rel=icon type=image/png href=/images/favicon16.png sizes=16x16>
+<link rel=apple-touch-icon href=/images/apple-touch-icon.png>
+<link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png>
+<meta name=generator content="Hugo 0.88.1">
+</head>
+<body class="preload-transitions colorscheme-auto">
+<div class=float-container>
+<a id=dark-mode-toggle class=colorscheme-toggle>
+<i class="fa fa-adjust fa-fw" aria-hidden=true></i>
+</a>
+</div>
+<main class=wrapper>
+<nav class=navigation>
+<section class=container>
+<a class=navigation-title href=/>
+Eduardo Weiland
+</a>
+<input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle>
+<i class="fa fa-bars fa-fw" aria-hidden=true></i>
+</label>
+<ul class=navigation-list>
+<li class=navigation-item>
+<a class=navigation-link href=/posts/>Blog</a>
+</li>
+</ul>
+</section>
+</nav>
+<div class=content>
+<section class="container post">
+<article>
+<header>
+<div class=post-title>
+<h1 class=title>
+<a class=title-link href=https://eduardoweiland.info/posts/2017/10/adicionando-sons-no-placarduino/>
+Adicionando sons no Placarduino
+</a>
+</h1>
+</div>
+<div class=post-meta>
+<div class=date>
+<span class=posted-on>
+<i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2017-10-27T21:51:27-02:00>
+Oct 27, 2017
+</time>
+</span>
+<span class=reading-time>
+<i class="fa fa-clock-o" aria-hidden=true></i>
+5 minutos de leitura
+</span>
+</div>
+<div class=tags>
+<i class="fa fa-tag" aria-hidden=true></i>
+<a href=/tags/arduino/>arduino</a>
+<span class=separator>•</span>
+<a href=/tags/eletronica/>eletronica</a>
+<span class=separator>•</span>
+<a href=/tags/placarduino/>placarduino</a></div>
+</div>
+</header>
+<div>
+<img src=/images/musical-notes.jpg alt="Featured image">
+<p>Este post é a continuação do projeto Placarduino. A última postagem foi a
+<a href=/posts/2017/10/placarduino-placar-eletronico-com-arduino/>criação da primeira versão</a>. Até o momento, o placar já exibe dois jogadores
+e conta os pontos de cada um. Mas seria interessante se também houvesse algum
+tipo de som de abertura e a cada ponto marcado. É isso que vamos fazer!</p>
+<hr>
+<p>Para fazer isso será necessário:</p>
+<ul>
+<li>1 Placarduino v1.0</li>
+<li>1 buzzer passivo de 5V</li>
+<li>1 resistor de 220Ω</li>
+<li>Alguns cabos jumper</li>
+<li>Uma música simples para tocar (ou mais de uma)</li>
+</ul>
+<p>Precisa de pouco material mesmo. Mas o resultado será muito melhor do que a soma
+das partes 🙂</p>
+<h2 id=montagem>
+Montagem
+<a class=heading-link href=#montagem>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p>A partir da montagem já feita no primeiro post do Placarduino, para adicionar a
+música só precisamos conectar um buzzer de 5V ao circuito. O buzzer possui dois
+pinos: o positivo (que deve estar marcado com um símbolo de +) deve ser ligado a
+um pino analógico do Arduino (eu usei o pino 5) com um resistor de 220Ω, e o
+pino negativo deve ser ligado ao GND. No final, o circuito deve ficar assim:</p>
+<p><img src=/images/placarduino-buzzer.png alt="Montando o buzzer no Placarduino"></p>
+<h2 id=o-código>
+O código
+<a class=heading-link href=#o-c%c3%b3digo>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p>Para produzir os sons eu utilizei a biblioteca <a href=https://github.com/daniel-centore/arduino-tone-library>ToneLibrary</a>. Ela pode ser
+instalada pelo Gerenciador de bibliotecas do Arduino (<em>Sketch > Incluir Biblioteca >
+Gerenciar Bibliotecas&mldr;</em>). Depois de instalada, ela deve ser incluída no código
+do projeto:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#ff79c6>#include</span> <span style=color:#ff79c6>&lt;Tone.h&gt;</span><span style=color:#ff79c6>
+</span></code></pre></div><p>Precisamos, também, configurar o pino utilizado para o buzzer. Para isso, eu
+coloquei mais uma constante no início do arquivo, que será utilizada na
+inicialização da biblioteca:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#ff79c6>#define PIN_BUZZER        5
+</span></code></pre></div><p>Em seguida, o objeto Tone é criado no escopo global. Diferente da biblioteca do
+LCD, o pino não é configurado no construtor do objeto, e sim no método <code>begin()</code>
+dele.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#6272a4>// Objeto para controle de um buzzer
+</span><span style=color:#6272a4></span>Tone buzzer;
+</code></pre></div><p>A função de setup do buzzer:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>setupBuzzer</span>()
+{
+    buzzer.begin(PIN_BUZZER);
+}
+</code></pre></div><p>Essa função deve ser chamada no <code>setup()</code> principal:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>setup</span>()
+{
+    setupInputs();
+    setupLCD();
+    setupBuzzer();
+
+    printWelcome();
+
+    delay(<span style=color:#bd93f9>3000</span>);
+}
+</code></pre></div><p>Agora já está tudo configurado para começar a emitir sons pelo Arduino.</p>
+<h3 id=_feedback_-sonoro-ao-somar-um-ponto>
+<em>Feedback</em> sonoro ao somar um ponto
+<a class=heading-link href=#_feedback_-sonoro-ao-somar-um-ponto>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>O primeiro som que eu adicionei foi um simples aviso sonoro após a marcação de
+um ponto. Para fazer isso, eu criei uma função que eu nomeei de <code>playFeedback()</code>
+e chamei nos dois lugares que somam um ponto ao placar:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>playFeedback</span>()
+{
+    buzzer.play(NOTE_C6, <span style=color:#bd93f9>120</span>);
+    delay(<span style=color:#bd93f9>140</span>);
+
+    buzzer.play(NOTE_C7, <span style=color:#bd93f9>420</span>);
+    delay(<span style=color:#bd93f9>500</span>);
+}
+</code></pre></div><p>O primeiro parâmetro do método <code>play()</code> é a frequência que deve ser tocada (aqui
+eu utilizei algumas constantes incluídas na biblioteca), e o segundo é a duração
+em milissegundos. Um detalhe importante a ser observado é que esse método é
+assíncrono, por isso eu adicionei o <code>delay()</code> entre as notas com um tempo um
+pouco maior do que o que a nota vai ficar tocando.</p>
+<p>Depois, essa função é chamada no <code>checkButtons()</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>checkButtons</span>()
+{
+    <span style=color:#8be9fd>int</span> newButtonState;
+
+    newButtonState <span style=color:#ff79c6>=</span> digitalRead(PIN_BTN_1);
+    <span style=color:#ff79c6>if</span> (newButtonState <span style=color:#ff79c6>!=</span> firstButtonState <span style=color:#ff79c6>&amp;&amp;</span> newButtonState <span style=color:#ff79c6>==</span> HIGH) {
+        <span style=color:#6272a4>// Se o botão mudou de estado e o novo estado é pressionado, soma um ponto
+</span><span style=color:#6272a4></span>        firstPlayerScore<span style=color:#ff79c6>++</span>;
+        playFeedback();                 <span style=color:#6272a4>// &lt;&lt;&lt;&lt;&lt;--------------- ADICIONADO
+</span><span style=color:#6272a4></span>    }
+    firstButtonState <span style=color:#ff79c6>=</span> newButtonState;
+
+    newButtonState <span style=color:#ff79c6>=</span> digitalRead(PIN_BTN_2);
+    <span style=color:#ff79c6>if</span> (newButtonState <span style=color:#ff79c6>!=</span> secondButtonState <span style=color:#ff79c6>&amp;&amp;</span> newButtonState <span style=color:#ff79c6>==</span> HIGH) {
+        <span style=color:#6272a4>// Se o botão mudou de estado e o novo estado é pressionado, soma um ponto
+</span><span style=color:#6272a4></span>        secondPlayerScore<span style=color:#ff79c6>++</span>;
+        playFeedback();                 <span style=color:#6272a4>// &lt;&lt;&lt;&lt;&lt;--------------- ADICIONADO
+</span><span style=color:#6272a4></span>    }
+    secondButtonState <span style=color:#ff79c6>=</span> newButtonState;
+}
+</code></pre></div><p>É um som bem simples, mas o resultado fica bem legal 🙂</p>
+<div class=video-wrapper>
+<video src=/videos/play-feedback.webm width=1280 height=720 controls>
+<a href=/videos/play-feedback.webm>Download do vídeo</a>
+</video>
+</div>
+<h3 id=música-de-abertura>
+Música de abertura
+<a class=heading-link href=#m%c3%basica-de-abertura>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>Nos requisitos do começo desse post eu listei uma música. Será a música de
+abertura! Infelizmente, não tem como tocar um música em <a href=https://www.gnu.org/philosophy/why-audio-format-matters.en.html>OGG</a> apenas com um
+buzzer, então terá que ser um som mais simples. Eu elaborei três opções, mas,
+pesquisando na internet (de preferência no <a href=https://duckduckgo.com>DuckDuckGo</a>), é fácil encontrar
+outros exemplos de músicas com um buzzer.</p>
+<p>Para tocar essas músicas na abertura eu criei uma função <code>playWelcome()</code> e
+adicionei a chamada dela no <code>setup()</code>, após o <code>printWelcome()</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>setup</span>()
+{
+    setupInputs();
+    setupLCD();
+    setupBuzzer();
+
+    printWelcome();
+    playWelcome();
+
+    delay(<span style=color:#bd93f9>3000</span>);
+}
+</code></pre></div><p>A primeira opção é uma simples escala de Dó maior (dó, ré, mi, fá, sol, lá, si,
+dó), variando o tempo de duração das notas:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>playWelcome</span>()
+{
+    <span style=color:#8be9fd>int</span> i;
+    <span style=color:#8be9fd>int</span> notes[] <span style=color:#ff79c6>=</span> {
+        NOTE_C6,
+        NOTE_D6,
+        NOTE_E6,
+        NOTE_F6,
+        NOTE_G6,
+        NOTE_A6,
+        NOTE_B6,
+        NOTE_C7
+    };
+
+    <span style=color:#ff79c6>for</span> (i <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; i <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>8</span>; <span style=color:#ff79c6>++</span>i) {
+        buzzer.play(notes[i], <span style=color:#bd93f9>30</span> <span style=color:#ff79c6>+</span> (i <span style=color:#ff79c6>*</span> <span style=color:#bd93f9>5</span>));
+        delay(<span style=color:#bd93f9>35</span> <span style=color:#ff79c6>+</span> (i <span style=color:#ff79c6>*</span> <span style=color:#bd93f9>5</span>));
+    }
+}
+</code></pre></div><div class=video-wrapper>
+<video src=/videos/placarduino-musica-1.webm width=1280 height=720 controls>
+<a href=/videos/placarduino-musica-1.webm>Download do vídeo</a>
+</video>
+</div>
+<p>A segunda opção já é um pouco mais elaborada. E conhecida também 😉</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>playWelcome</span>()
+{
+    buzzer.play(NOTE_E6, <span style=color:#bd93f9>120</span>);
+    delay(<span style=color:#bd93f9>140</span>);
+    buzzer.play(NOTE_E6, <span style=color:#bd93f9>120</span>);
+    delay(<span style=color:#bd93f9>140</span>);
+    delay(<span style=color:#bd93f9>140</span>);
+    buzzer.play(NOTE_E6, <span style=color:#bd93f9>120</span>);
+    delay(<span style=color:#bd93f9>140</span>);
+    delay(<span style=color:#bd93f9>140</span>);
+    buzzer.play(NOTE_C6, <span style=color:#bd93f9>120</span>);
+    delay(<span style=color:#bd93f9>140</span>);
+    buzzer.play(NOTE_E6, <span style=color:#bd93f9>240</span>);
+    delay(<span style=color:#bd93f9>260</span>);
+    buzzer.play(NOTE_G6, <span style=color:#bd93f9>240</span>);
+    delay(<span style=color:#bd93f9>260</span>);
+    delay(<span style=color:#bd93f9>260</span>);
+    buzzer.play(NOTE_G5, <span style=color:#bd93f9>240</span>);
+    delay(<span style=color:#bd93f9>260</span>);
+}
+</code></pre></div><p>Em algumas partes desse código aparecem duas chamadas do <code>delay()</code> seguidas.
+<strong>Isso é assim mesmo</strong>. Eu deixei separado porque o primeiro <code>delay()</code> é para
+aguardar a nota anterior, e o segundo é uma pausa entre as notas. E o resultado
+é esse:</p>
+<div class=video-wrapper>
+<video src=/videos/placarduino-musica-2.webm width=1280 height=720 controls>
+<a href=/videos/placarduino-musica-2.webm>Download do vídeo</a>
+</video>
+</div>
+<p>E a última música também é famosa. Na verdade, é só a abertura da música (com
+algumas adaptações), mas já dá para reconhecer:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>playWelcome</span>()
+{
+    <span style=color:#8be9fd>int</span> i, j;
+    <span style=color:#8be9fd>int</span> firstNote[] <span style=color:#ff79c6>=</span> { NOTE_CS5, NOTE_DS5, NOTE_FS5 };
+
+    <span style=color:#ff79c6>for</span> (i <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; i <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>3</span>; <span style=color:#ff79c6>++</span>i) {
+        <span style=color:#ff79c6>for</span> (j <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; j <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>2</span>; <span style=color:#ff79c6>++</span>j) {
+            buzzer.play(firstNote[i], <span style=color:#bd93f9>240</span>);
+            delay(<span style=color:#bd93f9>260</span>);
+            buzzer.play(NOTE_CS6, <span style=color:#bd93f9>240</span>);
+            delay(<span style=color:#bd93f9>260</span>);
+            buzzer.play(NOTE_GS5, <span style=color:#bd93f9>240</span>);
+            delay(<span style=color:#bd93f9>260</span>);
+            buzzer.play(NOTE_FS5, <span style=color:#bd93f9>240</span>);
+            delay(<span style=color:#bd93f9>260</span>);
+            buzzer.play(NOTE_FS6, <span style=color:#bd93f9>240</span>);
+            delay(<span style=color:#bd93f9>260</span>);
+            buzzer.play(NOTE_GS5, <span style=color:#bd93f9>240</span>);
+            delay(<span style=color:#bd93f9>260</span>);
+            buzzer.play(NOTE_F6, <span style=color:#bd93f9>240</span>);
+            delay(<span style=color:#bd93f9>260</span>);
+            buzzer.play(NOTE_GS5, <span style=color:#bd93f9>240</span>);
+            delay(<span style=color:#bd93f9>260</span>);
+        }
+    }
+
+    buzzer.play(NOTE_CS5, <span style=color:#bd93f9>240</span>);
+    delay(<span style=color:#bd93f9>260</span>);
+}
+</code></pre></div><div class=video-wrapper>
+<video src=/videos/placarduino-musica-3.webm width=1280 height=720 controls>
+<a href=/videos/placarduino-musica-3.webm>Download do vídeo</a>
+</video>
+</div>
+<h2 id=outras-melhorias>
+Outras melhorias
+<a class=heading-link href=#outras-melhorias>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p>No espírito da refatoração e melhoria contínuas, outros pontos foram melhorados
+no código do projeto. Um deles foi fazer a atualização do LCD apenas quando algum
+ponto é marcado. A melhoria mais visível dessa alteração é a redução do <em>flicker</em>
+no LCD, que era causada pela atualização muito frequente.</p>
+<p>Para fazer essa alteração, é só adicionar o <code>printScore()</code> no final do método
+<code>setup()</code> e antes das duas chamadas do <code>playFeedback()</code> na função <code>checkButtons()</code>.
+Além disso, o <code>printScore()</code> e o <code>delay(100)</code> devem ser removido do <code>loop()</code>,
+deixando apenas a chamada do <code>checkButtons()</code>.</p>
+<h2 id=finalizando>
+Finalizando
+<a class=heading-link href=#finalizando>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p>Se você quiser acessar o código-fonte completo do que foi feito nesse post, está
+tudo no GitHub:</p>
+<ul>
+<li>Versão dessa postagem: <a href=https://github.com/eduardoweiland/placarduino/tree/v1.1>https://github.com/eduardoweiland/placarduino/tree/v1.1</a></li>
+<li>Versão mais recente: <a href=https://github.com/eduardoweiland/placarduino>https://github.com/eduardoweiland/placarduino</a></li>
+</ul>
+<p>Os próximos itens do <em>roadmap</em> são:</p>
+<ul>
+<li>Substituir o display 16x2 por um de 20x4 com uma interface I2C</li>
+<li>Identificação de jogadores por cartões RFID</li>
+<li>Configuração de modalidades de jogo (com condição para definir o vencedor)</li>
+<li>Suporte a jogos com <em>sets</em> (contar pontuação do set e também os sets)</li>
+<li>Campeonatos de pontos corridos</li>
+</ul>
+</div>
+<footer>
+<section class=see-also>
+<h3 id=see-also-in-placarduino>
+See also in placarduino
+<a class=heading-link href=#see-also-in-placarduino>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<nav>
+<ul>
+<li>
+<a href=/posts/2018/02/reset-automatico-do-placarduino-apos-o-fim-do-jogo/>Reset automático do Placarduino após o fim do jogo</a>
+</li>
+<li>
+<a href=/posts/2018/02/fim-de-jogo-para-o-placarduino/>Fim de jogo para o Placarduino</a>
+</li>
+<li>
+<a href=/posts/2018/01/cartoes-de-acesso-para-o-placarduino/>Cartões de acesso para o Placarduino</a>
+</li>
+<li>
+<a href=/posts/2018/01/refatoracao-do-placarduino/>Refatoração do Placarduino</a>
+</li>
+<li>
+<a href=/posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/>Atualização do Placarduino: redução de pontos</a>
+</li>
+<li>
+<a href=/posts/2017/11/display-maior-numeros-maiores/>Display maior, números maiores</a>
+</li>
+</ul>
+</nav>
+</section>
+</footer>
+</article>
+</section>
+</div>
+<footer class=footer>
+<section class=container>
+&copy;
+2011 -
+2021
+Eduardo Weiland
+&#183;
+<a rel="license noopener" href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>
+&#183;
+<a rel=noopener href=https://gitlab.com/eduardoweiland/homepage>Free Software</a>
+</section>
+</footer>
+</main>
+<script src=/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+</body>
+</html>

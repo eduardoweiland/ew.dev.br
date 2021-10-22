@@ -1,0 +1,177 @@
+<!doctype html><html lang=pt-br>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=content-language content="pt-br">
+<meta name=color-scheme content="light dark">
+<meta http-equiv=content-security-policy content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self'; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; prefetch-src 'self'; connect-src 'self';">
+<meta name=author content="Eduardo Weiland">
+<meta name=description content="Recentemente eu precisei atualizar um projeto em Ember que estava na versão 3.6 (bem desatualizado) para a versão 3.24 (atual LTS). Para quem conhece o Ember, sabe que muita coisa mudou entre essas versões (Glimmer, classes nativas etc.). E, com as alterações, o Ember também atualizou o plugin para o ESLint, incluindo novas regras para identificar código antigo e reforçar as novas boas práticas.
+Mas, mesmo com tantas alterações, quase todo o código antigo ainda segue funcionando (exceto onde APIs privadas eram utilizadas 🤷), graças ao Semantic Versioning.">
+<meta name=keywords content="blog,home,portfolio,personal,developer,maker">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Adicionando eslint-disable nos arquivos com erros">
+<meta name=twitter:description content="Recentemente eu precisei atualizar um projeto em Ember que estava na versão 3.6 (bem desatualizado) para a versão 3.24 (atual LTS). Para quem conhece o Ember, sabe que muita coisa mudou entre essas versões (Glimmer, classes nativas etc.). E, com as alterações, o Ember também atualizou o plugin para o ESLint, incluindo novas regras para identificar código antigo e reforçar as novas boas práticas.
+Mas, mesmo com tantas alterações, quase todo o código antigo ainda segue funcionando (exceto onde APIs privadas eram utilizadas 🤷), graças ao Semantic Versioning.">
+<meta property="og:title" content="Adicionando eslint-disable nos arquivos com erros">
+<meta property="og:description" content="Recentemente eu precisei atualizar um projeto em Ember que estava na versão 3.6 (bem desatualizado) para a versão 3.24 (atual LTS). Para quem conhece o Ember, sabe que muita coisa mudou entre essas versões (Glimmer, classes nativas etc.). E, com as alterações, o Ember também atualizou o plugin para o ESLint, incluindo novas regras para identificar código antigo e reforçar as novas boas práticas.
+Mas, mesmo com tantas alterações, quase todo o código antigo ainda segue funcionando (exceto onde APIs privadas eram utilizadas 🤷), graças ao Semantic Versioning.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://eduardoweiland.info/posts/2021/05/adicionando-eslint-disable-nos-arquivos-com-erros/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-05-12T14:09:49-03:00">
+<meta property="article:modified_time" content="2021-05-12T14:09:49-03:00">
+<title>
+Adicionando eslint-disable nos arquivos com erros · Eduardo Weiland
+</title>
+<link rel=canonical href=https://eduardoweiland.info/posts/2021/05/adicionando-eslint-disable-nos-arquivos-com-erros/>
+<link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.1.7" as=font type=font/woff2 crossorigin>
+<link rel=stylesheet href=/css/coder.min.cbf6f68b2a836dd1d34f005153262dd21d148461cf33684940f1bb4c048821b1.css integrity="sha256-y/b2iyqDbdHTTwBRUyYt0h0UhGHPM2hJQPG7TASIIbE=" crossorigin=anonymous media=screen>
+<link rel=stylesheet href=/css/coder-dark.min.dde8a61eb31a32353b4baf3d9113f03c4ea2a8ca9bb736f59ca2d2b2cb664f0b.css integrity="sha256-3eimHrMaMjU7S689kRPwPE6iqMqbtzb1nKLSsstmTws=" crossorigin=anonymous media=screen>
+<link rel=stylesheet href=/css/custom.css>
+<link rel=icon type=image/png href=/images/favicon32.png sizes=32x32>
+<link rel=icon type=image/png href=/images/favicon16.png sizes=16x16>
+<link rel=apple-touch-icon href=/images/apple-touch-icon.png>
+<link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png>
+<meta name=generator content="Hugo 0.88.1">
+</head>
+<body class="preload-transitions colorscheme-auto">
+<div class=float-container>
+<a id=dark-mode-toggle class=colorscheme-toggle>
+<i class="fa fa-adjust fa-fw" aria-hidden=true></i>
+</a>
+</div>
+<main class=wrapper>
+<nav class=navigation>
+<section class=container>
+<a class=navigation-title href=/>
+Eduardo Weiland
+</a>
+<input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle>
+<i class="fa fa-bars fa-fw" aria-hidden=true></i>
+</label>
+<ul class=navigation-list>
+<li class=navigation-item>
+<a class=navigation-link href=/posts/>Blog</a>
+</li>
+</ul>
+</section>
+</nav>
+<div class=content>
+<section class="container post">
+<article>
+<header>
+<div class=post-title>
+<h1 class=title>
+<a class=title-link href=https://eduardoweiland.info/posts/2021/05/adicionando-eslint-disable-nos-arquivos-com-erros/>
+Adicionando eslint-disable nos arquivos com erros
+</a>
+</h1>
+</div>
+<div class=post-meta>
+<div class=date>
+<span class=posted-on>
+<i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2021-05-12T14:09:49-03:00>
+May 12, 2021
+</time>
+</span>
+<span class=reading-time>
+<i class="fa fa-clock-o" aria-hidden=true></i>
+4 minutos de leitura
+</span>
+</div>
+<div class=tags>
+<i class="fa fa-tag" aria-hidden=true></i>
+<a href=/tags/eslint/>eslint</a>
+<span class=separator>•</span>
+<a href=/tags/javascript/>javascript</a>
+<span class=separator>•</span>
+<a href=/tags/ember/>ember</a></div>
+</div>
+</header>
+<div>
+<p>Recentemente eu precisei atualizar um projeto em Ember que estava na versão 3.6
+(bem desatualizado) para a versão 3.24 (atual LTS). Para quem conhece o Ember,
+sabe que muita coisa mudou entre essas versões (Glimmer, classes nativas etc.).
+E, com as alterações, o Ember também atualizou o plugin para o ESLint,
+incluindo novas regras para identificar código antigo e reforçar as novas boas
+práticas.</p>
+<p>Mas, mesmo com tantas alterações, quase todo o código antigo ainda segue
+funcionando (exceto onde APIs privadas eram utilizadas 🤷), graças ao <a href=https://semver.org/>Semantic
+Versioning</a>. Ele não <em>precisa</em> ser atualizado para a nova sintaxe por
+enquanto, isso só será necessário ao atualizar para o Ember 4.0, quando ele
+for lançado.</p>
+<p>Só que agora o ESLint está acusando erros em quase todos os arquivos 😟!</p>
+<p>O Ember fornece alguns <a href=https://github.com/ember-codemods>codemods</a> para ajudar a atualizar o
+código para a nova sintaxe. Mas o problema é que <strong>nem tudo é atualizado</strong>.
+Algumas alterações precisam ser feitas manualmente, o que não é uma solução
+muito viável quando existem 259 erros para serem corrigidos manualmente, mesmo
+depois de rodar o <code>eslint --fix</code> e os codemods 😱.</p>
+<p>A solução: adicionar comentários <code>/* eslint-disable rule-name */</code> em todos
+os arquivos que estão com erros, especificando apenas as regras que estão
+sendo violadas naquele arquivo. Dessa forma, os arquivos antigos não irão
+acusar nenhum erro, mas todo código novo deverá passar no lint com as regras
+novas 👌.</p>
+<p>Mas fazer isso manualmente ainda seria muito trabalhoso. Deve existir uma
+forma de automatizar isso 🤔&mldr;</p>
+<p>Em primeiro lugar, eu precisava de um output do ESLint que fosse fácil de
+parsear em outras ferramentas. O formato padrão é bom para ser lido por
+humanos, mas não por máquias. Felizmente, o ESLint suporta <a href=https://eslint.org/docs/user-guide/formatters/>vários formatos
+diferentes</a>. Eu optei por utilizar o formato <code>compact</code>,
+porque reporta cada erro em uma única linha, em um formato bem definido, de
+onde é fácil extrair as informações necessárias (caminho do arquivo e nome da
+regra).</p>
+<p>Um exemplo de erro reportado no formato <code>compact</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>/home/eduardo/my-project/app/instance-initializers/global-loading-route.js: line 8, col 24, Error - Don&#39;t access `router:main` as it is a private API. Instead use the public &#39;router&#39; service. (ember/no-private-routing-service)
+</code></pre></div><p>É fácil de identificar que a linha começa com o caminho do arquivo, seguido por
+dois-pontos, números da linha e da coluna, nível e mensagem de erro, terminando
+com o nome da regra entre parênteses. Traduzindo isso para um <code>sed</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ eslint -f compact . | sed -nr <span style=color:#f1fa8c>&#39;s/^([^:]+).*\((.+)\)$/\1\t\2/p&#39;</span>
+</code></pre></div><p>O resultado disso é uma lista mais &ldquo;limpa&rdquo;, apenas com o caminho do arquivo e o
+nome da regra que falhou, separados por um tab. Como o mesmo erro pode ser
+reportado mais de uma vez no mesmo arquivo, é importante adicionar a dupla
+<code>sort | uniq</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ eslint -f compact . | sed -nr <span style=color:#f1fa8c>&#39;s/^([^:]+).*\((.+)\)$/\1\t\2/p&#39;</span> | sort | uniq
+</code></pre></div><p>Só o que falta fazer agora é adicionar os comentários <code>/* eslint-disable */</code> em
+todos os arquivos. Eu poderia tentar agrupar todas as regras e colocar um único
+comentário no começo do arquivo, porém 1) o comentário poderia ultrapassar o
+limite de caracteres da linha e causar novos erros; 2) o ESLint permite vários
+comentários separados, não é necessário agrupar; e 3) é mais fácil adicionar
+um comentário por regra, a partir do formato de saída <code>compact</code>.</p>
+<p>Para fazer isso, eu direcionei a saída do comando acima para um loop com
+<code>while read</code> e um sed para adicionar o comentário no começo do arquivo. O
+comando ficou assim:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ eslint -f compact . | sed -nr <span style=color:#f1fa8c>&#39;s/^([^:]+).*\((.+)\)$/\1\t\2/p&#39;</span> <span style=color:#f1fa8c>\
+</span><span style=color:#f1fa8c></span>  | sort | uniq | <span style=color:#ff79c6>while</span> <span style=color:#8be9fd;font-style:italic>IFS</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>$&#39;\t&#39;</span> <span style=color:#8be9fd;font-style:italic>read</span> file rule ; <span style=color:#ff79c6>do</span> <span style=color:#f1fa8c>\
+</span><span style=color:#f1fa8c></span>  sed -i <span style=color:#f1fa8c>&#34;1s;^;/* eslint-disable </span><span style=color:#8be9fd;font-style:italic>$rule</span><span style=color:#f1fa8c> */\n;&#34;</span> <span style=color:#f1fa8c>&#34;</span><span style=color:#8be9fd;font-style:italic>$file</span><span style=color:#f1fa8c>&#34;</span> ; <span style=color:#ff79c6>done</span>
+</code></pre></div><p>Nesse comando, o <code>IFS=$'\t'</code> serve para separar os campos no <code>read</code> apenas
+com o <code>tab</code> e não com espaços, então, mesmo se existir algum espaço no caminho
+do arquivo, ele será lido corretamente. O <code>read file rule</code> vai ler uma linha
+da entrada padrão (que é a saída do <code>uniq</code>), e colocar o nome do arquivo na
+variável <code>$file</code> e o nome da regra na variável <code>$rule</code>. Essas variáveis são,
+então, utilizadas no <code>sed</code>, que edita o arquivo inserindo uma nova linha com o
+comentário <code>/* eslint-disable $rule */</code>.</p>
+<p>O resultado depois disso: zero falhas! 😎</p>
+</div>
+<footer>
+</footer>
+</article>
+</section>
+</div>
+<footer class=footer>
+<section class=container>
+&copy;
+2011 -
+2021
+Eduardo Weiland
+&#183;
+<a rel="license noopener" href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>
+&#183;
+<a rel=noopener href=https://gitlab.com/eduardoweiland/homepage>Free Software</a>
+</section>
+</footer>
+</main>
+<script src=/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+</body>
+</html>

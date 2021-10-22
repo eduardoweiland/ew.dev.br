@@ -1,0 +1,471 @@
+<!doctype html><html lang=pt-br>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=content-language content="pt-br">
+<meta name=color-scheme content="light dark">
+<meta http-equiv=content-security-policy content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self'; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; prefetch-src 'self'; connect-src 'self';">
+<meta name=author content="Eduardo Weiland">
+<meta name=description content="O Placarduino já está funcionando bem. Porém, os únicos jogadores ainda são o &ldquo;Jogador 1&rdquo; e o &ldquo;Jogador 2&rdquo;. Se o &ldquo;Fulano&rdquo; quiser jogar contra o &ldquo;Beltrano&rdquo;, eles terão que escolher entre 1) usarem os nomes &ldquo;Jogador 1&rdquo; e &ldquo;Jogador 2&rdquo; ou 2) trocar os nomes e recompilar o código ou 3) cada um deles pode ter um &ldquo;cartão de acesso&rdquo; para identificação. Vamos de alternativa 3!
+Teoria    Para quem nunca trabalhou com RFID antes, não adianta começar montando o circuito e nem escrevendo o código.">
+<meta name=keywords content="blog,home,portfolio,personal,developer,maker">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Cartões de acesso para o Placarduino">
+<meta name=twitter:description content="O Placarduino já está funcionando bem. Porém, os únicos jogadores ainda são o &ldquo;Jogador 1&rdquo; e o &ldquo;Jogador 2&rdquo;. Se o &ldquo;Fulano&rdquo; quiser jogar contra o &ldquo;Beltrano&rdquo;, eles terão que escolher entre 1) usarem os nomes &ldquo;Jogador 1&rdquo; e &ldquo;Jogador 2&rdquo; ou 2) trocar os nomes e recompilar o código ou 3) cada um deles pode ter um &ldquo;cartão de acesso&rdquo; para identificação. Vamos de alternativa 3!
+Teoria    Para quem nunca trabalhou com RFID antes, não adianta começar montando o circuito e nem escrevendo o código.">
+<meta property="og:title" content="Cartões de acesso para o Placarduino">
+<meta property="og:description" content="O Placarduino já está funcionando bem. Porém, os únicos jogadores ainda são o &ldquo;Jogador 1&rdquo; e o &ldquo;Jogador 2&rdquo;. Se o &ldquo;Fulano&rdquo; quiser jogar contra o &ldquo;Beltrano&rdquo;, eles terão que escolher entre 1) usarem os nomes &ldquo;Jogador 1&rdquo; e &ldquo;Jogador 2&rdquo; ou 2) trocar os nomes e recompilar o código ou 3) cada um deles pode ter um &ldquo;cartão de acesso&rdquo; para identificação. Vamos de alternativa 3!
+Teoria    Para quem nunca trabalhou com RFID antes, não adianta começar montando o circuito e nem escrevendo o código.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://eduardoweiland.info/posts/2018/01/cartoes-de-acesso-para-o-placarduino/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2018-01-25T15:36:05-02:00">
+<meta property="article:modified_time" content="2018-01-25T15:36:05-02:00">
+<meta property="og:see_also" content="https://eduardoweiland.info/posts/2018/02/reset-automatico-do-placarduino-apos-o-fim-do-jogo/"><meta property="og:see_also" content="https://eduardoweiland.info/posts/2018/02/fim-de-jogo-para-o-placarduino/"><meta property="og:see_also" content="https://eduardoweiland.info/posts/2018/01/refatoracao-do-placarduino/"><meta property="og:see_also" content="https://eduardoweiland.info/posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/"><meta property="og:see_also" content="https://eduardoweiland.info/posts/2017/11/display-maior-numeros-maiores/">
+<title>
+Cartões de acesso para o Placarduino · Eduardo Weiland
+</title>
+<link rel=canonical href=https://eduardoweiland.info/posts/2018/01/cartoes-de-acesso-para-o-placarduino/>
+<link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.1.7" as=font type=font/woff2 crossorigin>
+<link rel=stylesheet href=/css/coder.min.cbf6f68b2a836dd1d34f005153262dd21d148461cf33684940f1bb4c048821b1.css integrity="sha256-y/b2iyqDbdHTTwBRUyYt0h0UhGHPM2hJQPG7TASIIbE=" crossorigin=anonymous media=screen>
+<link rel=stylesheet href=/css/coder-dark.min.dde8a61eb31a32353b4baf3d9113f03c4ea2a8ca9bb736f59ca2d2b2cb664f0b.css integrity="sha256-3eimHrMaMjU7S689kRPwPE6iqMqbtzb1nKLSsstmTws=" crossorigin=anonymous media=screen>
+<link rel=stylesheet href=/css/custom.css>
+<link rel=icon type=image/png href=/images/favicon32.png sizes=32x32>
+<link rel=icon type=image/png href=/images/favicon16.png sizes=16x16>
+<link rel=apple-touch-icon href=/images/apple-touch-icon.png>
+<link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png>
+<meta name=generator content="Hugo 0.88.1">
+</head>
+<body class="preload-transitions colorscheme-auto">
+<div class=float-container>
+<a id=dark-mode-toggle class=colorscheme-toggle>
+<i class="fa fa-adjust fa-fw" aria-hidden=true></i>
+</a>
+</div>
+<main class=wrapper>
+<nav class=navigation>
+<section class=container>
+<a class=navigation-title href=/>
+Eduardo Weiland
+</a>
+<input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle>
+<i class="fa fa-bars fa-fw" aria-hidden=true></i>
+</label>
+<ul class=navigation-list>
+<li class=navigation-item>
+<a class=navigation-link href=/posts/>Blog</a>
+</li>
+</ul>
+</section>
+</nav>
+<div class=content>
+<section class="container post">
+<article>
+<header>
+<div class=post-title>
+<h1 class=title>
+<a class=title-link href=https://eduardoweiland.info/posts/2018/01/cartoes-de-acesso-para-o-placarduino/>
+Cartões de acesso para o Placarduino
+</a>
+</h1>
+</div>
+<div class=post-meta>
+<div class=date>
+<span class=posted-on>
+<i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2018-01-25T15:36:05-02:00>
+Jan 25, 2018
+</time>
+</span>
+<span class=reading-time>
+<i class="fa fa-clock-o" aria-hidden=true></i>
+8 minutos de leitura
+</span>
+</div>
+<div class=tags>
+<i class="fa fa-tag" aria-hidden=true></i>
+<a href=/tags/arduino/>arduino</a>
+<span class=separator>•</span>
+<a href=/tags/eletronica/>eletronica</a>
+<span class=separator>•</span>
+<a href=/tags/placarduino/>placarduino</a></div>
+</div>
+</header>
+<div>
+<img src=/images/placarduino-com-rfid.jpg alt="Featured image">
+<p>O Placarduino já está funcionando bem. Porém, os únicos jogadores ainda são o
+&ldquo;Jogador 1&rdquo; e o &ldquo;Jogador 2&rdquo;. Se o &ldquo;Fulano&rdquo; quiser jogar contra o &ldquo;Beltrano&rdquo;,
+eles terão que escolher entre 1) usarem os nomes &ldquo;Jogador 1&rdquo; e &ldquo;Jogador 2&rdquo; ou
+2) trocar os nomes e recompilar o código ou 3) cada um deles pode ter um &ldquo;cartão
+de acesso&rdquo; para identificação. Vamos de alternativa 3!</p>
+<h2 id=teoria>
+Teoria
+<a class=heading-link href=#teoria>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p>Para quem nunca trabalhou com RFID antes, não adianta começar montando o circuito
+e nem escrevendo o código. A teoria é uma parte obrigatória para poder usar o
+RFID sem surpresas. Eu poderia escrever um monte sobre o que eu aprendi aqui,
+mas eu prefiro deixar o link para um dos melhores artigos que eu encontrei e que
+me ajudou a entender o funcionamento das tags RFID: <a href=https://learn.adafruit.com/adafruit-pn532-rfid-nfc/mifare>MiFare Cards & Tags</a>
+(artigo do Adafruit, em inglês).</p>
+<p>Uma coisa que eu acho importante deixar claro é a nomenclatura. RFID é um nome
+popular, mas é genérico. Significa apenas &ldquo;identificação por radiofrequência&rdquo; e
+pode se referir a muitas coisas (NFC é um tipo de RFID, por exemplo). Mas,
+geralmente, no âmbito do Arduino, RFID se refere à tecnologia de <em>smart cards</em>
+que operam a 13.56 MHz, também conhecidos apenas como <a href=https://en.wikipedia.org/wiki/MIFARE>MIFARE</a>. Ainda assim,
+muitas lojas anunciam apenas &ldquo;Leitor e Tags RFID&rdquo;.</p>
+<h2 id=componentes-e-montagem-do-circuito>
+Componentes e montagem do circuito
+<a class=heading-link href=#componentes-e-montagem-do-circuito>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p>Os componentes necessários são:</p>
+<ul>
+<li>Um módulo leitor/gravador de tags MIFARE modelo RC522. Eu estou utilizando
+<a href=https://www.usinainfo.com.br/rfid-arduino-e-ibutton/kit-rc522-leitor-rfid-tags-chaveiro-cartao-2582.html>este</a> - <em>disclaimer: não tenho nenhum vínculo com a loja</em></li>
+<li>Algumas tags MIFARE, uma para cada jogador (geralmente são vendidas no formato
+de cartão ou chaveiro, você pode usar o que preferir)</li>
+<li>Cabos jumper</li>
+</ul>
+<p>A primeira coisa a ser feita é conectar o leitor na protoboard:</p>
+<p><img src=/images/leitor-rfid-conectado-protoboard.png alt="Leitor RFID conectado na protoboard"></p>
+<p>Depois disso, precisamos ligar os jumpers da protoboard para o Arduino. O leitor
+RFID se comunica com o microcontrolador utilizando o protocolo <a href=https://www.arduino.cc/en/Reference/SPI>SPI</a> <em>(Serial
+Peripheral Interface)</em>. O SPI utiliza 4 linhas de comunicação: MOSI, MISO, SCK
+e SS/SDA. Para as três primeiras, o Arduino possui pinos específicos que devem
+ser utilizados (<a href=/posts/2017/11/placarduino-adicionando-um-display-maior-para-exibir-mais-informacoes/>assim como acontece com o I²C</a>).</p>
+<ul>
+<li>MOSI: pino 11 no Arduino Uno</li>
+<li>MISO: pino 12 no Arduino Uno</li>
+<li>SCK: pino 13 no Arduino Uno</li>
+</ul>
+<p>A linha SS (marcada como SDA no leitor RFID que eu estou utilizando) pode ser
+conectada em qualquer pino do Arduino. O leitor ainda possui um pino de reset,
+que também pode ser conectado em qualquer pino do Arduino. Para deixar as
+conexões próximas das outras, eu irei utilizar os pinos 10 para SS/SDA e 9 para
+o reset.</p>
+<p>Até o momento, as ligações devem estar assim:</p>
+<p><img src=/images/jumpers-leitor-rfid-arduino.png alt="Jumpers ligando leitor RFID ao Arduino"></p>
+<p>Agora, ainda falta ligar a alimentação do módulo RFID. O que eu estou utilizando
+(e parece que a maioria dos módulos que existem) é alimentado com 3.3V, mas
+verifique o seu módulo para ter certeza. Após ligar a alimentação, o resultado
+final deve ser este:</p>
+<p><img src=/images/jumpers-alimentacao-leitor-rfid-arduino.png alt="Jumpers ligando leitor RFID ao Arduino com alimentação 3.3V"></p>
+<p>E na vida real fica mais ou menos assim:</p>
+<p><img src=/images/placarduino-com-rfid.jpg alt="Foto do Placarduino com módulo RFID"></p>
+<h2 id=configuração-dos-jogadores>
+Configuração dos jogadores
+<a class=heading-link href=#configura%c3%a7%c3%a3o-dos-jogadores>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p>Para configurar os jogadores, é necessário escrever os dados (nesse caso, apenas
+o nome do jogador) nos cartões MIFARE. Inicialmente, eu pensei (e até tentei)
+encaixar isso dentro do projeto principal do Placarduino, mas um problema com a
+leitura do nome dos jogadores da Serial me fez trocar de ideia e utilizar um
+Sketch separado, pelo menos por enquanto. (Para os curiosos: o problema foi
+conseguir ler os dados da serial sem bloquear o funcionamento normal do jogo e
+ainda manter o código organizado).</p>
+<p>Como a configuração de novos jogadores não será muito utilizada (pelo menos no
+meu caso), eu simplifiquei tudo e utilizei um simples sketch do Arduino (sem o
+<a href=/posts/2017/10/substituindo-a-ide-do-arduino-pelo-platformio/>PlatformIO</a>). A ideia ainda é tentar integrar isso no projeto
+principal, mas isso pode ser feito em outro momento. Um simples sketch é o
+suficiente por enquanto.</p>
+<p>O sketch desenvolvido está no <a href=https://github.com/eduardoweiland/placarduino/>repositório</a>, no diretório <em>tools</em>. Eu não vou
+explicar todo o código dele aqui porque é bem semelhante ao utilizado para
+leitura, e este eu vou explicar detalhadamente a seguir.</p>
+<p><em><a href=https://github.com/eduardoweiland/placarduino/commit/73e326ff9e76d27a81b5f4f75825490a281a7335>Link direto para commit</a> que adicionou o sketch de configuração
+de jogadores (pode estar desatualizado).</em></p>
+<h2 id=leitura-dos-nomes-dos-jogadores>
+Leitura dos nomes dos jogadores
+<a class=heading-link href=#leitura-dos-nomes-dos-jogadores>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p>A lógica que foi utilizada para realizar a leitura dos cartões é bem simples, em
+teoria: no <code>loop()</code>, é verificado se existe um cartão na frente do leitor e, se
+existir, é feita a leitura do bloco onde deve estar salvo o nome.</p>
+<p>Como você deve saber se leu o artigo sobre a teoria dos cartões MIFARE, os dados
+são armazenados e acessados em blocos de 16 bytes. Como o nome dos jogadores é
+menor do que isso, só é utilizado um bloco para salvar o nome no cartão. O bloco
+que foi utilizado é o bloco 1.</p>
+<p>Além disso, o acesso aos dados do cartão exige um processo de autenticação com
+uma chave de 6 bytes. Como esse não é um projeto ultrassecreto, foi mantida a
+chave padrão dos cartões (0xFF 0xFF 0xFF 0xFF 0xFF 0xFF).</p>
+<p>A alteração no código envolve, basicamente, três aspectos, descritos a seguir.</p>
+<h3 id=a-biblioteca-smartcard>
+A biblioteca SmartCard
+<a class=heading-link href=#a-biblioteca-smartcard>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>Foi criada uma nova biblioteca do projeto, SmartCard, para simplificar o acesso
+aos <em>smart cards</em>. Por baixo dos panos, é utilizada a biblioteca <a href=https://github.com/miguelbalboa/rfid>MFRC522</a>,
+mas oferecendo uma interface mais simples para a aplicação.</p>
+<p>A classe SmartCard disponibiliza um método <code>read()</code> que realiza todas as
+operações necessárias para a leitura dos dados do cartão: verifica se existe um
+cartão disponível, autentica o acesso ao bloco, lê os dados, &ldquo;limpa&rdquo; os dados
+recebidos, e finaliza o acesso. O método é autoexplicativo:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#8be9fd>bool</span> SmartCard<span style=color:#ff79c6>::</span>read(
+    <span style=color:#ff79c6>const</span> <span style=color:#8be9fd>uint8_t</span> blockAddr,
+    <span style=color:#8be9fd>uint8_t</span> <span style=color:#ff79c6>*</span>buffer,
+    <span style=color:#8be9fd>uint8_t</span> <span style=color:#ff79c6>*</span>bufferSize
+)
+{
+    <span style=color:#ff79c6>if</span> (<span style=color:#ff79c6>!</span><span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>isCardAvailable()) {
+        <span style=color:#ff79c6>return</span> <span style=color:#8be9fd;font-style:italic>false</span>;
+    }
+
+    <span style=color:#ff79c6>if</span> (<span style=color:#ff79c6>!</span><span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>authenticate(blockAddr)) {
+        <span style=color:#ff79c6>return</span> <span style=color:#8be9fd;font-style:italic>false</span>;
+    }
+
+    <span style=color:#8be9fd>bool</span> success <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>readBlock(blockAddr, buffer, bufferSize);
+
+    <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>deauthenticate();
+
+    <span style=color:#ff79c6>return</span> success;
+}
+</code></pre></div><p>Os outros métodos chamados pelo <code>read()</code> também são, em sua maioria,
+autoexplicativos:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#8be9fd>bool</span> SmartCard<span style=color:#ff79c6>::</span>isCardAvailable()
+{
+    <span style=color:#6272a4>// Verifica se existe um cartão na frente do leitor
+</span><span style=color:#6272a4></span>    <span style=color:#ff79c6>if</span> (<span style=color:#ff79c6>!</span><span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>mfrc522.PICC_IsNewCardPresent()) {
+        <span style=color:#ff79c6>return</span> <span style=color:#8be9fd;font-style:italic>false</span>;
+    }
+
+    <span style=color:#6272a4>// Verifica se é possível ler o UID do cartão
+</span><span style=color:#6272a4></span>    <span style=color:#ff79c6>return</span> <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>mfrc522.PICC_ReadCardSerial();
+}
+
+<span style=color:#8be9fd>bool</span> SmartCard<span style=color:#ff79c6>::</span>authenticate(<span style=color:#ff79c6>const</span> <span style=color:#8be9fd>uint8_t</span> blockAddr)
+{
+    MFRC522<span style=color:#ff79c6>::</span>StatusCode status;
+
+    status <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>mfrc522.PCD_Authenticate(
+        MFRC522<span style=color:#ff79c6>::</span>PICC_CMD_MF_AUTH_KEY_A,
+        blockAddr,
+        <span style=color:#ff79c6>&amp;</span>(<span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>key),
+        <span style=color:#ff79c6>&amp;</span>(<span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>mfrc522.uid)
+    );
+
+    <span style=color:#ff79c6>if</span> (status <span style=color:#ff79c6>!=</span> MFRC522<span style=color:#ff79c6>::</span>STATUS_OK) {
+        Serial.print(F(<span style=color:#f1fa8c>&#34;PCD_Authenticate failed: &#34;</span>));
+        Serial.println(<span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>mfrc522.GetStatusCodeName(status));
+
+        <span style=color:#ff79c6>return</span> <span style=color:#8be9fd;font-style:italic>false</span>;
+    }
+
+    <span style=color:#ff79c6>return</span> <span style=color:#8be9fd;font-style:italic>true</span>;
+}
+
+<span style=color:#8be9fd>void</span> SmartCard<span style=color:#ff79c6>::</span>deauthenticate()
+{
+    MFRC522<span style=color:#ff79c6>::</span>StatusCode status;
+
+    status <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>mfrc522.PICC_HaltA();
+
+    <span style=color:#ff79c6>if</span> (status <span style=color:#ff79c6>!=</span> MFRC522<span style=color:#ff79c6>::</span>STATUS_OK) {
+        Serial.print(F(<span style=color:#f1fa8c>&#34;PICC_HaltA failed: &#34;</span>));
+        Serial.println(<span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>mfrc522.GetStatusCodeName(status));
+    }
+
+    <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>mfrc522.PCD_StopCrypto1();
+}
+</code></pre></div><p>Talvez o mais complicado seja o <code>readBlock()</code>, que realiza alguns procedimentos
+adicionais. Quando os dados são lidos do cartão, a biblioteca MFRC522 adiciona
+2 bytes de <a href=https://en.wikipedia.org/wiki/Cyclic_redundancy_check>CRC</a> no final do buffer de destino dos dados. Mas o método de
+leitura já valida esse CRC, então não é mais necessário mantê-lo no buffer.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#8be9fd>bool</span> SmartCard<span style=color:#ff79c6>::</span>readBlock(
+    <span style=color:#ff79c6>const</span> <span style=color:#8be9fd>uint8_t</span> blockAddr,
+    <span style=color:#8be9fd>uint8_t</span> <span style=color:#ff79c6>*</span>buffer,
+    <span style=color:#8be9fd>uint8_t</span> <span style=color:#ff79c6>*</span>bufferSize
+)
+{
+    MFRC522<span style=color:#ff79c6>::</span>StatusCode status;
+
+    status <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>mfrc522.MIFARE_Read(blockAddr, buffer, bufferSize);
+
+    <span style=color:#ff79c6>if</span> (status <span style=color:#ff79c6>!=</span> MFRC522<span style=color:#ff79c6>::</span>STATUS_OK) {
+        Serial.print(F(<span style=color:#f1fa8c>&#34;MIFARE_Read failed: &#34;</span>));
+        Serial.println(<span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>mfrc522.GetStatusCodeName(status));
+
+        <span style=color:#ff79c6>return</span> <span style=color:#8be9fd;font-style:italic>false</span>;
+    }
+
+    <span style=color:#6272a4>// Limpa CRC adicionado pela biblioteca no buffer, não é mais necessário
+</span><span style=color:#6272a4></span>    <span style=color:#6272a4>// (CRC já é validado dentro do MIFARE_Read, que retorna
+</span><span style=color:#6272a4></span>    <span style=color:#6272a4>// MFRC522::STATUS_CRC_WRONG em caso de erro)
+</span><span style=color:#6272a4></span>    buffer[<span style=color:#bd93f9>16</span>] <span style=color:#ff79c6>=</span> <span style=color:#f1fa8c>&#39;\0&#39;</span>;
+    buffer[<span style=color:#bd93f9>17</span>] <span style=color:#ff79c6>=</span> <span style=color:#f1fa8c>&#39;\0&#39;</span>;
+
+    <span style=color:#ff79c6>return</span> <span style=color:#8be9fd;font-style:italic>true</span>;
+}
+</code></pre></div><p>A classe também inclui um método <code>write()</code>, quando eu estava tentando integrar
+a configuração dos cartões dentro do Placarduino. Não vou explicar esse método
+aqui porque 1) não está mais sendo utilizado; e 2) é quase igual o <code>read()</code>.
+Ele continua no repositório, caso você queira consultá-lo ou utilizá-lo no seu
+projeto.</p>
+<p><em><a href=https://github.com/eduardoweiland/placarduino/commit/6ce647faa7de3954815deb50a8fa4df86c5fbb24>Link direto para o commit</a> que adicionou a biblioteca
+SmartCard (pode estar desatualizado).</em></p>
+<h3 id=a-classe-playercard>
+A classe PlayerCard
+<a class=heading-link href=#a-classe-playercard>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>A biblioteca SmartCard facilita o acesso aos dados de qualquer <em>smart card</em>
+RFID, mas ela é genérica. A classe PlayerCard entra no meio do caminho entre a
+aplicação e essa biblioteca, lendo os dados do cartão e validando os valores
+encontrados, para depois configurá-los no placar.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#8be9fd>bool</span> PlayerCard<span style=color:#ff79c6>::</span>readPlayerNameFromCard(PlayerControl <span style=color:#ff79c6>*</span>player)
+{
+    byte buffer[<span style=color:#bd93f9>18</span>];
+    byte length <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>sizeof</span>(buffer);
+
+    <span style=color:#ff79c6>if</span> (<span style=color:#ff79c6>!</span><span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>smartCard<span style=color:#ff79c6>-&gt;</span>read(<span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>blockNumber, buffer, <span style=color:#ff79c6>&amp;</span>length)) {
+        <span style=color:#ff79c6>return</span> <span style=color:#8be9fd;font-style:italic>false</span>;
+    }
+
+    Serial.print(F(<span style=color:#f1fa8c>&#34;Dados lidos do cartão: &#34;</span>));
+    Serial.println((<span style=color:#8be9fd>char</span><span style=color:#ff79c6>*</span>)buffer);
+
+    <span style=color:#ff79c6>if</span> (<span style=color:#ff79c6>!</span><span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>isValidPlayerName(buffer, strnlen((<span style=color:#ff79c6>const</span> <span style=color:#8be9fd>char</span><span style=color:#ff79c6>*</span>)buffer, length))) {
+        Serial.println(F(<span style=color:#f1fa8c>&#34;Nome contém caracteres inválidos, ignorando&#34;</span>));
+        <span style=color:#ff79c6>return</span> <span style=color:#8be9fd;font-style:italic>false</span>;
+    }
+
+    player<span style=color:#ff79c6>-&gt;</span>setName((<span style=color:#ff79c6>const</span> <span style=color:#8be9fd>char</span><span style=color:#ff79c6>*</span>)buffer);
+    <span style=color:#ff79c6>return</span> <span style=color:#8be9fd;font-style:italic>true</span>;
+}
+</code></pre></div><p>Esse método, sempre que for chamado, irá tentar ler um nome de um cartão e, se
+conseguir, irá colocar esse nome no PlayerControl recebido por parâmetro (é uma
+classe que <a href=/posts/2018/01/refatoracao-do-placarduino/>foi criada durante a refatoração</a>).</p>
+<p>A validação do nome lido (método <code>isValidPlayerName()</code>) é bem simples, aceitando
+apenas letras e números <code>/^[a-z0-9]*$/i</code>. Isso é feito apenas como um <em>sanity
+check</em>, para evitar que cartões com outros tipos de informações sejam utilizados
+no placar.</p>
+<h3 id=alterações-no-placarduinoino>
+Alterações no Placarduino.ino
+<a class=heading-link href=#altera%c3%a7%c3%b5es-no-placarduinoino>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>O arquito principal ainda precisa de algumas alterações para fazer a leitura dos
+cartões RFID. Inicialmente, os objetos para acessar o módulo RFID e ler os
+cartões devem ser declarados:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#ff79c6>#define PIN_RFID_SS      10
+</span><span style=color:#ff79c6>#define PIN_RFID_RESET    9
+</span><span style=color:#ff79c6></span>
+<span style=color:#6272a4>// Leitor RFID
+</span><span style=color:#6272a4></span>byte rfidKey[] <span style=color:#ff79c6>=</span> { <span style=color:#bd93f9>0xFF</span>, <span style=color:#bd93f9>0xFF</span>, <span style=color:#bd93f9>0xFF</span>, <span style=color:#bd93f9>0xFF</span>, <span style=color:#bd93f9>0xFF</span>, <span style=color:#bd93f9>0xFF</span> };
+SmartCard <span style=color:#50fa7b>smartCard</span>(rfidKey, PIN_RFID_SS, PIN_RFID_RESET);
+PlayerCard <span style=color:#50fa7b>playerCard</span>(<span style=color:#ff79c6>&amp;</span>smartCard, <span style=color:#bd93f9>1</span>);
+PlayerControl <span style=color:#ff79c6>*</span>playerToConfigure <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>&amp;</span>player1;
+</code></pre></div><p>Após isso, é necessário inicializar a biblioteca no <code>setup()</code>. A Serial também
+está sendo configurada porque é utilizada para mensagens de log:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>setup</span>()
+{
+    <span style=color:#6272a4>// ...
+</span><span style=color:#6272a4></span>    <span style=color:#6272a4>// no final do setup():
+</span><span style=color:#6272a4></span>
+    smartCard.begin();
+
+    Serial.begin(<span style=color:#bd93f9>9600</span>);
+}
+</code></pre></div><p>Para realizar a leitura dos cartões em qualquer momento do jogo, também é
+necessária uma pequena alteração no <code>loop()</code>, com a criação de uma nova função
+<code>readPlayerCard()</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>loop</span>()
+{
+    readPlayerCard();
+    checkButtons();
+}
+
+<span style=color:#6272a4>// ...
+</span><span style=color:#6272a4></span>
+<span style=color:#8be9fd>void</span> <span style=color:#50fa7b>readPlayerCard</span>()
+{
+    <span style=color:#ff79c6>if</span> (playerCard.readPlayerNameFromCard(playerToConfigure)) {
+        <span style=color:#ff79c6>if</span> (playerToConfigure <span style=color:#ff79c6>==</span> <span style=color:#ff79c6>&amp;</span>player1) {
+            playerToConfigure <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>&amp;</span>player2;
+        }
+        <span style=color:#ff79c6>else</span> {
+            playerToConfigure <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>&amp;</span>player1;
+        }
+
+        printScore();
+    }
+}
+</code></pre></div><p>Essa função chama um método da classe PlayerCard criada anteriormente para fazer
+a leitura do cartão. Mas, além disso, essa função também troca entre ler o nome
+do jogador 1 ou do jogador 2, alterando o objeto apontado pelo ponteiro
+<code>playerToConfigure</code>. Com isso, o primeiro cartão lido será o nome do jogador 1;
+o segundo cartão será o nome do jogador 2; ao ler o terceiro cartão, o nome lido
+será do jogador 1 novamente; e assim continua indefinidamente.</p>
+<p><em><a href=https://github.com/eduardoweiland/placarduino/commit/a3a134dbea6cd2b06375bd2a23715088431d1fbc>Link para o commit</a> que adicionou a classe PlayerCard e as
+alterações no Placarduino.ino (pode estar desatualizado).</em></p>
+<h2 id=finalizando>
+Finalizando
+<a class=heading-link href=#finalizando>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p>Com essa alteração, o Placarduino chega na versão 2.0!</p>
+<ul>
+<li>Versão deste post: <a href=https://github.com/eduardoweiland/placarduino/tree/v2.0>https://github.com/eduardoweiland/placarduino/tree/v2.0</a></li>
+<li>Versão mais recente: <a href=https://github.com/eduardoweiland/placarduino>https://github.com/eduardoweiland/placarduino</a></li>
+</ul>
+</div>
+<footer>
+<section class=see-also>
+<h3 id=see-also-in-placarduino>
+See also in placarduino
+<a class=heading-link href=#see-also-in-placarduino>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<nav>
+<ul>
+<li>
+<a href=/posts/2018/02/reset-automatico-do-placarduino-apos-o-fim-do-jogo/>Reset automático do Placarduino após o fim do jogo</a>
+</li>
+<li>
+<a href=/posts/2018/02/fim-de-jogo-para-o-placarduino/>Fim de jogo para o Placarduino</a>
+</li>
+<li>
+<a href=/posts/2018/01/refatoracao-do-placarduino/>Refatoração do Placarduino</a>
+</li>
+<li>
+<a href=/posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/>Atualização do Placarduino: redução de pontos</a>
+</li>
+<li>
+<a href=/posts/2017/11/display-maior-numeros-maiores/>Display maior, números maiores</a>
+</li>
+</ul>
+</nav>
+</section>
+</footer>
+</article>
+</section>
+</div>
+<footer class=footer>
+<section class=container>
+&copy;
+2011 -
+2021
+Eduardo Weiland
+&#183;
+<a rel="license noopener" href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>
+&#183;
+<a rel=noopener href=https://gitlab.com/eduardoweiland/homepage>Free Software</a>
+</section>
+</footer>
+</main>
+<script src=/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
+</body>
+</html>

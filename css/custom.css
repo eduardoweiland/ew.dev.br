@@ -1,0 +1,13 @@
+.video-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.video-wrapper video {
+    max-width: 90vw;
+    height: auto;
+}
+
+code:not([data-lang]) {
+    white-space: nowrap;
+}
