@@ -1,611 +1,406 @@
-<!doctype html><html lang=pt-br>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=content-language content="pt-br">
-<meta name=color-scheme content="light dark">
-<meta http-equiv=content-security-policy content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self'; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; prefetch-src 'self'; connect-src 'self';">
-<meta name=author content="Eduardo Weiland">
-<meta name=description content="No último post sobre o projeto do Placarduino, eu adicionei um display de 4 linhas e 20 colunas, mas não alterei o formato de exibição do placar. Eu reservei essa mudança para este post: exibir números maiores no placar.
+<!doctype html><html lang=pt-br><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=content-language content="pt-br"><meta name=color-scheme content="light dark"><meta http-equiv=content-security-policy content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self'; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; prefetch-src 'self'; connect-src 'self';"><meta name=author content="Eduardo Weiland"><meta name=description content="No último post sobre o projeto do Placarduino, eu adicionei um display de 4 linhas e 20 colunas, mas não alterei o formato de exibição do placar. Eu reservei essa mudança para este post: exibir números maiores no placar.
 Indo direto ao ponto, o resultado será como a imagem acima.
-A teoria    Os displays LCD utilizam uma matriz de pixels de 8 linhas e 5 colunas para cada caractere.">
-<meta name=keywords content="blog,home,portfolio,personal,developer,maker">
-<meta name=twitter:card content="summary">
-<meta name=twitter:title content="Display maior, números maiores">
-<meta name=twitter:description content="No último post sobre o projeto do Placarduino, eu adicionei um display de 4 linhas e 20 colunas, mas não alterei o formato de exibição do placar. Eu reservei essa mudança para este post: exibir números maiores no placar.
+A teoria Os displays LCD utilizam uma matriz de pixels de 8 linhas e 5 colunas para cada caractere. Os pixels que devem ser ligados são representados por um bit 1 e os pixels desligados por 0."><meta name=keywords content="blog,home,portfolio,personal,developer,maker"><meta name=twitter:card content="summary"><meta name=twitter:title content="Display maior, números maiores"><meta name=twitter:description content="No último post sobre o projeto do Placarduino, eu adicionei um display de 4 linhas e 20 colunas, mas não alterei o formato de exibição do placar. Eu reservei essa mudança para este post: exibir números maiores no placar.
 Indo direto ao ponto, o resultado será como a imagem acima.
-A teoria    Os displays LCD utilizam uma matriz de pixels de 8 linhas e 5 colunas para cada caractere.">
-<meta property="og:title" content="Display maior, números maiores">
-<meta property="og:description" content="No último post sobre o projeto do Placarduino, eu adicionei um display de 4 linhas e 20 colunas, mas não alterei o formato de exibição do placar. Eu reservei essa mudança para este post: exibir números maiores no placar.
+A teoria Os displays LCD utilizam uma matriz de pixels de 8 linhas e 5 colunas para cada caractere. Os pixels que devem ser ligados são representados por um bit 1 e os pixels desligados por 0."><meta property="og:title" content="Display maior, números maiores"><meta property="og:description" content="No último post sobre o projeto do Placarduino, eu adicionei um display de 4 linhas e 20 colunas, mas não alterei o formato de exibição do placar. Eu reservei essa mudança para este post: exibir números maiores no placar.
 Indo direto ao ponto, o resultado será como a imagem acima.
-A teoria    Os displays LCD utilizam uma matriz de pixels de 8 linhas e 5 colunas para cada caractere.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ew.dev.br/posts/2017/11/display-maior-numeros-maiores/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2017-11-05T18:18:55-02:00">
-<meta property="article:modified_time" content="2017-11-05T18:18:55-02:00">
-<meta property="og:see_also" content="https://ew.dev.br/posts/2018/02/reset-automatico-do-placarduino-apos-o-fim-do-jogo/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/02/fim-de-jogo-para-o-placarduino/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/01/cartoes-de-acesso-para-o-placarduino/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/01/refatoracao-do-placarduino/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/">
-<title>
-Display maior, números maiores · Eduardo Weiland
-</title>
-<link rel=canonical href=https://ew.dev.br/posts/2017/11/display-maior-numeros-maiores/>
-<link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.1.7" as=font type=font/woff2 crossorigin>
-<link rel=stylesheet href=/css/coder.min.cbf6f68b2a836dd1d34f005153262dd21d148461cf33684940f1bb4c048821b1.css integrity="sha256-y/b2iyqDbdHTTwBRUyYt0h0UhGHPM2hJQPG7TASIIbE=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=/css/coder-dark.min.dde8a61eb31a32353b4baf3d9113f03c4ea2a8ca9bb736f59ca2d2b2cb664f0b.css integrity="sha256-3eimHrMaMjU7S689kRPwPE6iqMqbtzb1nKLSsstmTws=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=/css/custom.css>
-<link rel=icon type=image/png href=/images/favicon32.png sizes=32x32>
-<link rel=icon type=image/png href=/images/favicon16.png sizes=16x16>
-<link rel=apple-touch-icon href=/images/apple-touch-icon.png>
-<link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png>
-<meta name=generator content="Hugo 0.88.1">
-</head>
-<body class="preload-transitions colorscheme-auto">
-<div class=float-container>
-<a id=dark-mode-toggle class=colorscheme-toggle>
-<i class="fa fa-adjust fa-fw" aria-hidden=true></i>
-</a>
-</div>
-<main class=wrapper>
-<nav class=navigation>
-<section class=container>
-<a class=navigation-title href=/>
-Eduardo Weiland
-</a>
+A teoria Os displays LCD utilizam uma matriz de pixels de 8 linhas e 5 colunas para cada caractere. Os pixels que devem ser ligados são representados por um bit 1 e os pixels desligados por 0."><meta property="og:type" content="article"><meta property="og:url" content="https://ew.dev.br/posts/2017/11/display-maior-numeros-maiores/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-11-05T18:18:55-02:00"><meta property="article:modified_time" content="2017-11-05T18:18:55-02:00"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/02/reset-automatico-do-placarduino-apos-o-fim-do-jogo/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/02/fim-de-jogo-para-o-placarduino/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/01/cartoes-de-acesso-para-o-placarduino/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/01/refatoracao-do-placarduino/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/"><title>Display maior, números maiores · Eduardo Weiland</title><link rel=canonical href=https://ew.dev.br/posts/2017/11/display-maior-numeros-maiores/><link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.1.7" as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.cbf6f68b2a836dd1d34f005153262dd21d148461cf33684940f1bb4c048821b1.css integrity="sha256-y/b2iyqDbdHTTwBRUyYt0h0UhGHPM2hJQPG7TASIIbE=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.dde8a61eb31a32353b4baf3d9113f03c4ea2a8ca9bb736f59ca2d2b2cb664f0b.css integrity="sha256-3eimHrMaMjU7S689kRPwPE6iqMqbtzb1nKLSsstmTws=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/custom.css><link rel=icon type=image/png href=/images/favicon32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><meta name=generator content="Hugo 0.119.0"></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=/>Eduardo Weiland</a>
 <input type=checkbox id=menu-toggle>
-<label class="menu-button float-right" for=menu-toggle>
-<i class="fa fa-bars fa-fw" aria-hidden=true></i>
-</label>
-<ul class=navigation-list>
-<li class=navigation-item>
-<a class=navigation-link href=/posts/>Blog</a>
-</li>
-</ul>
-</section>
-</nav>
-<div class=content>
-<section class="container post">
-<article>
-<header>
-<div class=post-title>
-<h1 class=title>
-<a class=title-link href=https://ew.dev.br/posts/2017/11/display-maior-numeros-maiores/>
-Display maior, números maiores
-</a>
-</h1>
-</div>
-<div class=post-meta>
-<div class=date>
-<span class=posted-on>
-<i class="fa fa-calendar" aria-hidden=true></i>
-<time datetime=2017-11-05T18:18:55-02:00>
-Nov 5, 2017
-</time>
-</span>
-<span class=reading-time>
-<i class="fa fa-clock-o" aria-hidden=true></i>
-10 minutos de leitura
-</span>
-</div>
-<div class=tags>
-<i class="fa fa-tag" aria-hidden=true></i>
+<label class="menu-button float-right" for=menu-toggle><i class="fa fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://ew.dev.br/posts/2017/11/display-maior-numeros-maiores/>Display maior, números maiores</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2017-11-05T18:18:55-02:00>Nov 5, 2017</time></span>
+<span class=reading-time><i class="fa fa-clock-o" aria-hidden=true></i>
+10 minutos de leitura</span></div><div class=tags><i class="fa fa-tag" aria-hidden=true></i>
 <a href=/tags/arduino/>arduino</a>
 <span class=separator>•</span>
 <a href=/tags/eletronica/>eletronica</a>
 <span class=separator>•</span>
-<a href=/tags/placarduino/>placarduino</a></div>
-</div>
-</header>
-<div>
-<img src=/images/placarduino-big-numbers-lcd.jpg alt="Featured image">
-<p>No <a href=/posts/2017/11/placarduino-adicionando-um-display-maior-para-exibir-mais-informacoes/>último post sobre o projeto do Placarduino</a>, eu adicionei um display de 4
+<a href=/tags/placarduino/>placarduino</a></div></div></header><div><img src=/images/placarduino-big-numbers-lcd.jpg alt="Featured image"><p>No <a href=/posts/2017/11/placarduino-adicionando-um-display-maior-para-exibir-mais-informacoes/>último post sobre o projeto do Placarduino</a>, eu adicionei um display de 4
 linhas e 20 colunas, mas não alterei o formato de exibição do placar. Eu reservei
-essa mudança para este post: exibir números maiores no placar.</p>
-<p>Indo direto ao ponto, o resultado será como a imagem acima.</p>
-<h2 id=a-teoria>
-A teoria
-<a class=heading-link href=#a-teoria>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>Os displays LCD utilizam uma matriz de pixels de 8 linhas e 5 colunas para cada
+essa mudança para este post: exibir números maiores no placar.</p><p>Indo direto ao ponto, o resultado será como a imagem acima.</p><h2 id=a-teoria>A teoria
+<a class=heading-link href=#a-teoria><i class="fa fa-link" aria-hidden=true></i></a></h2><p>Os displays LCD utilizam uma matriz de pixels de 8 linhas e 5 colunas para cada
 caractere. Os pixels que devem ser ligados são representados por um bit 1 e os
 pixels desligados por 0. Cada caractere é formado por um vetor de 8 bytes, onde
-apenas os 5 bits menos significativos de cada byte representam uma linha de pixels.</p>
-<p>Por exemplo, a letra &ldquo;E&rdquo; é exibida no display que eu tenho como:</p>
-<p><img src=/images/display-lcd-letra-E.png alt="Representação da letra E no display LCD"></p>
-<p>A representação em bits desse caractere é:</p>
-<p><img src=/images/display-lcd-letra-E-bits.png alt="Representação em bits da letra E no display LCD"></p>
-<p>O que equivale ao seguinte código no Arduino:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>byte letraE[<span style=color:#bd93f9>8</span>] <span style=color:#ff79c6>=</span> {
-    B11111,
-    B10000,
-    B10000,
-    B11110,
-    B10000,
-    B10000,
-    B11111,
-    B00000
-};
-</code></pre></div><p>Essas configurações de exibição são salvas na memória do controlador do LCD
+apenas os 5 bits menos significativos de cada byte representam uma linha de pixels.</p><p>Por exemplo, a letra &ldquo;E&rdquo; é exibida no display que eu tenho como:</p><p><img src=/images/display-lcd-letra-E.png alt="Representação da letra E no display LCD"></p><p>A representação em bits desse caractere é:</p><p><img src=/images/display-lcd-letra-E-bits.png alt="Representação em bits da letra E no display LCD"></p><p>O que equivale ao seguinte código no Arduino:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>byte letraE[<span style=color:#bd93f9>8</span>] <span style=color:#ff79c6>=</span> {
+</span></span><span style=display:flex><span>    B11111,
+</span></span><span style=display:flex><span>    B10000,
+</span></span><span style=display:flex><span>    B10000,
+</span></span><span style=display:flex><span>    B11110,
+</span></span><span style=display:flex><span>    B10000,
+</span></span><span style=display:flex><span>    B10000,
+</span></span><span style=display:flex><span>    B11111,
+</span></span><span style=display:flex><span>    B00000
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><p>Essas configurações de exibição são salvas na memória do controlador do LCD
 utilizando o código ASCII do caractere como endereço. Por exemplo, o código da
 letra E na tabela ASCII é 0x45, então esse é o endereço desse caractere na
-memória.</p>
-<p>Para exibir um caractere no display, o microcontrolador (nesse caso, o Atmega328
+memória.</p><p>Para exibir um caractere no display, o microcontrolador (nesse caso, o Atmega328
 do Arduino) envia para o controlador do LCD o código ASCII do caractere e o
 controlador busca na memória interna como ele deve ser exibido. Infelizmente
 essa memória do controlador é somente leitura. Felizmente o controlador possui
 uma outra área de memória que pode ser escrita - <em>pelo menos é o que eu encontrei
-<a href=https://www.engineersgarage.com/embedded/arduino/how-to-create-custom-characters-in-lcd-using-arduino>nesse post</a></em>.</p>
-<p>Essa área de memória secundária possui 64 bytes. Como cada caractere utiliza 8
+<a href=https://www.engineersgarage.com/embedded/arduino/how-to-create-custom-characters-in-lcd-using-arduino>nesse post</a></em>.</p><p>Essa área de memória secundária possui 64 bytes. Como cada caractere utiliza 8
 bytes, isso dá 64 / 8 = 8 caracteres. A faixa de endereços dos caracteres que
 podem ser configurados é de 0 a 7, que na tabela ASCII são caracteres de controle
-e não tem nenhuma exibição por padrão.</p>
-<p>Um detalhe importante a ser lembrado é que os caracteres que estão sendo exibidos
+e não tem nenhuma exibição por padrão.</p><p>Um detalhe importante a ser lembrado é que os caracteres que estão sendo exibidos
 no LCD estão ligados diretamente a essa memória. Então, se você reconfigurar um
 caractere, todos os caracteres com o mesmo código que já estão no LCD serão
-&ldquo;atualizados&rdquo; para a nova exibição (descobri isso na prática).</p>
-<h2 id=criando-os-caracteres-para-exibir-números-grandes>
-Criando os caracteres para exibir números grandes
-<a class=heading-link href=#criando-os-caracteres-para-exibir-n%c3%bameros-grandes>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>O display LCD exibe caracteres de apenas 8x5 pixels. Mas, com um pouco de
+&ldquo;atualizados&rdquo; para a nova exibição (descobri isso na prática).</p><h2 id=criando-os-caracteres-para-exibir-números-grandes>Criando os caracteres para exibir números grandes
+<a class=heading-link href=#criando-os-caracteres-para-exibir-n%c3%bameros-grandes><i class="fa fa-link" aria-hidden=true></i></a></h2><p>O display LCD exibe caracteres de apenas 8x5 pixels. Mas, com um pouco de
 criatividade, é possível combinar vários caracteres de 8x5 para formar letras,
 números ou até símbolos maiores. No caso do Placarduino, isso será utilizado
 apenas para exibir os números da pontuação em um tamanho maior, então só é
-preciso criar os números de 0 a 9.</p>
-<p>Eu defini que o tamanho de cada número seria 3x3 caracteres. Com isso, eu
+preciso criar os números de 0 a 9.</p><p>Eu defini que o tamanho de cada número seria 3x3 caracteres. Com isso, eu
 mantenho uma linha livre para exibir o nome do jogador sobre o placar e também
-posso exibir dois números lado a lado para pontuações de até 99.</p>
-<p>O processo que eu utilizei para criar os caracteres foi bem simples: comecei do
+posso exibir dois números lado a lado para pontuações de até 99.</p><p>O processo que eu utilizei para criar os caracteres foi bem simples: comecei do
 0 e fui criando cada número até chegar no 9. Criei os caracteres customizados
-conforme a necessidade, e no fim acabei utilizando exatamente os 8 disponíveis.</p>
-<p>Para criar cada parte do número, um site que pode ajudar é esse <a href=https://omerk.github.io/lcdchargen/>gerador de
+conforme a necessidade, e no fim acabei utilizando exatamente os 8 disponíveis.</p><p>Para criar cada parte do número, um site que pode ajudar é esse <a href=https://omerk.github.io/lcdchargen/>gerador de
 caracteres customizados</a>. Ele só edita um caractere por vez, então para
 visualizar o resultado eu criei um sketch separado no Arduino para juntar as
-partes e ver o número completo.</p>
-<p>O resultado disso foi a criação de uma biblioteca LcdBigNumbers dentro do projeto.
+partes e ver o número completo.</p><p>O resultado disso foi a criação de uma biblioteca LcdBigNumbers dentro do projeto.
 Usando a <a href=/posts/2017/10/substituindo-a-ide-do-arduino-pelo-platformio/>estrutura do PlatformIO</a>, a biblioteca ficou bem isolada do resto do
-código e bem simples de utilizar, apenas com um arquivo <code>.h</code> e um <code>.cpp</code>.</p>
-<h3 id=definição-da-classe>
-Definição da classe
-<a class=heading-link href=#defini%c3%a7%c3%a3o-da-classe>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>O arquivo de cabeçalho da biblioteca ficou localizado em <code>lib/LcdBigNumbers/LcdBigNumbers.h</code>.
+código e bem simples de utilizar, apenas com um arquivo <code>.h</code> e um <code>.cpp</code>.</p><h3 id=definição-da-classe>Definição da classe
+<a class=heading-link href=#defini%c3%a7%c3%a3o-da-classe><i class="fa fa-link" aria-hidden=true></i></a></h3><p>O arquivo de cabeçalho da biblioteca ficou localizado em <code>lib/LcdBigNumbers/LcdBigNumbers.h</code>.
 Esse arquivo é bem simples e contém a definição de uma classe com um construtor
-e três métodos públicos.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#6272a4>// lib/LcdBigNumbers/LcdBigNumbers.h
-</span><span style=color:#6272a4></span>
-<span style=color:#ff79c6>#ifndef PLACARDUINO_LCD_BIG_NUMBERS_H
-</span><span style=color:#ff79c6>#define PLACARDUINO_LCD_BIG_NUMBERS_H
-</span><span style=color:#ff79c6></span>
-<span style=color:#ff79c6>class</span> <span style=color:#50fa7b>LiquidCrystal_I2C</span>;
-
-<span style=color:#ff79c6>class</span> <span style=color:#50fa7b>LcdBigNumbers</span>
-{
-<span style=color:#ff79c6>public</span><span style=color:#ff79c6>:</span>
-    LcdBigNumbers(LiquidCrystal_I2C <span style=color:#ff79c6>*</span>lcd);
-
-    <span style=color:#8be9fd>void</span> <span style=color:#50fa7b>init</span>();
-    <span style=color:#8be9fd>void</span> <span style=color:#50fa7b>printNumber</span>(<span style=color:#ff79c6>const</span> <span style=color:#8be9fd>unsigned</span> <span style=color:#8be9fd>long</span> <span style=color:#8be9fd>int</span> number, <span style=color:#8be9fd>uint8_t</span> column, <span style=color:#8be9fd>uint8_t</span> row);
-    <span style=color:#8be9fd>void</span> <span style=color:#50fa7b>printDigit</span>(<span style=color:#ff79c6>const</span> <span style=color:#8be9fd>uint8_t</span> digit, <span style=color:#8be9fd>uint8_t</span> column, <span style=color:#8be9fd>uint8_t</span> row);
-
-<span style=color:#ff79c6>private</span><span style=color:#ff79c6>:</span>
-    LiquidCrystal_I2C <span style=color:#ff79c6>*</span>lcd;
-};
-
-<span style=color:#ff79c6>#endif </span><span style=color:#6272a4>// PLACARDUINO_LCD_BIG_NUMBERS_H
-</span></code></pre></div><p>Vendo o construtor, ele recebe um ponteiro para o objeto do LCD. <em><a href=https://en.wikipedia.org/wiki/Dependency_injection>Dependency
+e três métodos públicos.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#6272a4>// lib/LcdBigNumbers/LcdBigNumbers.h
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#ifndef PLACARDUINO_LCD_BIG_NUMBERS_H
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6>#define PLACARDUINO_LCD_BIG_NUMBERS_H
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6></span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>class</span> <span style=color:#50fa7b>LiquidCrystal_I2C</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>class</span> <span style=color:#50fa7b>LcdBigNumbers</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span><span style=color:#ff79c6>public</span><span style=color:#ff79c6>:</span>
+</span></span><span style=display:flex><span>    LcdBigNumbers(LiquidCrystal_I2C <span style=color:#ff79c6>*</span>lcd);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd>void</span> <span style=color:#50fa7b>init</span>();
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd>void</span> <span style=color:#50fa7b>printNumber</span>(<span style=color:#ff79c6>const</span> <span style=color:#8be9fd>unsigned</span> <span style=color:#8be9fd>long</span> <span style=color:#8be9fd>int</span> number, <span style=color:#8be9fd>uint8_t</span> column, <span style=color:#8be9fd>uint8_t</span> row);
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd>void</span> <span style=color:#50fa7b>printDigit</span>(<span style=color:#ff79c6>const</span> <span style=color:#8be9fd>uint8_t</span> digit, <span style=color:#8be9fd>uint8_t</span> column, <span style=color:#8be9fd>uint8_t</span> row);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>private</span><span style=color:#ff79c6>:</span>
+</span></span><span style=display:flex><span>    LiquidCrystal_I2C <span style=color:#ff79c6>*</span>lcd;
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#endif </span><span style=color:#6272a4>// PLACARDUINO_LCD_BIG_NUMBERS_H
+</span></span></span></code></pre></div><p>Vendo o construtor, ele recebe um ponteiro para o objeto do LCD. <em><a href=https://en.wikipedia.org/wiki/Dependency_injection>Dependency
 Injection</a></em> no Arduino 😄. Infelizmente, não existe uma interface padrão entre
 as bibliotecas do LiquidCrystal, então foi necessário utilizar a classe
-LiquidCrystal_I2C diretamente.</p>
-<p>Além do construtor, existem também um método <code>init()</code> que será utilizado para
+LiquidCrystal_I2C diretamente.</p><p>Além do construtor, existem também um método <code>init()</code> que será utilizado para
 criar os caracteres na memória do controlador do LCD, um método <code>printNumber()</code>
 para exibir um número em uma posição específica do display, e o método
-<code>printDigit()</code> que exibe um único dígito no LCD também em uma posição específica.</p>
-<h3 id=configuração-dos-caracteres>
-Configuração dos caracteres
-<a class=heading-link href=#configura%c3%a7%c3%a3o-dos-caracteres>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>O arquivo que possui toda a configuração dos caracteres customizados, bem como
+<code>printDigit()</code> que exibe um único dígito no LCD também em uma posição específica.</p><h3 id=configuração-dos-caracteres>Configuração dos caracteres
+<a class=heading-link href=#configura%c3%a7%c3%a3o-dos-caracteres><i class="fa fa-link" aria-hidden=true></i></a></h3><p>O arquivo que possui toda a configuração dos caracteres customizados, bem como
 a lógica para exibir os números maiores compostos de 9 caracteres (3x3) é
-<code>lib/LcdBigNumbers/LcdBigNumbers.cpp</code>.</p>
-<p>No começo do arquivo são incluídos os arquivos de cabeçalho necessários:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#ff79c6>#include</span> <span style=color:#ff79c6>&lt;inttypes.h&gt;</span><span style=color:#ff79c6>
-</span><span style=color:#ff79c6>#include</span> <span style=color:#ff79c6>&lt;binary.h&gt;</span><span style=color:#ff79c6>
-</span><span style=color:#ff79c6></span>
-<span style=color:#ff79c6>#include</span> <span style=color:#ff79c6>&lt;LiquidCrystal_I2C.h&gt;</span><span style=color:#ff79c6>
-</span><span style=color:#ff79c6></span>
-<span style=color:#ff79c6>#include</span> <span style=color:#ff79c6>&#34;LcdBigNumbers.h&#34;</span><span style=color:#ff79c6>
-</span></code></pre></div><p>Logo depois, eu criei algumas constantes para identificar os caracteres
+<code>lib/LcdBigNumbers/LcdBigNumbers.cpp</code>.</p><p>No começo do arquivo são incluídos os arquivos de cabeçalho necessários:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#ff79c6>#include</span> <span style=color:#ff79c6>&lt;inttypes.h&gt;</span><span style=color:#ff79c6>
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6>#include</span> <span style=color:#ff79c6>&lt;binary.h&gt;</span><span style=color:#ff79c6>
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6></span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#include</span> <span style=color:#ff79c6>&lt;LiquidCrystal_I2C.h&gt;</span><span style=color:#ff79c6>
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6></span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#include</span> <span style=color:#ff79c6>&#34;LcdBigNumbers.h&#34;</span><span style=color:#ff79c6>
+</span></span></span></code></pre></div><p>Logo depois, eu criei algumas constantes para identificar os caracteres
 customizados, além de outros caracteres do próprio controlador do LCD que foram
-utilizados:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#ff79c6>#define CHAR_TOP_LEFT       0
-</span><span style=color:#ff79c6>#define CHAR_TOP_RIGHT      1
-</span><span style=color:#ff79c6>#define CHAR_BOTTOM_LEFT    2
-</span><span style=color:#ff79c6>#define CHAR_BOTTOM_RIGHT   3
-</span><span style=color:#ff79c6>#define CHAR_HALF_TOP       4
-</span><span style=color:#ff79c6>#define CHAR_HALF_BOTTOM    5
-</span><span style=color:#ff79c6>#define CHAR_TOP_BOTTOM     6
-</span><span style=color:#ff79c6>#define CHAR_MIDDLE         7
-</span><span style=color:#ff79c6>#define CHAR_EMPTY        254
-</span><span style=color:#ff79c6>#define CHAR_FULL         255
-</span></code></pre></div><p>Esses são os endereços dos caracteres na memória do controlador LCD. Os últimos
+utilizados:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#ff79c6>#define CHAR_TOP_LEFT       0
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6>#define CHAR_TOP_RIGHT      1
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6>#define CHAR_BOTTOM_LEFT    2
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6>#define CHAR_BOTTOM_RIGHT   3
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6>#define CHAR_HALF_TOP       4
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6>#define CHAR_HALF_BOTTOM    5
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6>#define CHAR_TOP_BOTTOM     6
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6>#define CHAR_MIDDLE         7
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6>#define CHAR_EMPTY        254
+</span></span></span><span style=display:flex><span><span style=color:#ff79c6>#define CHAR_FULL         255
+</span></span></span></code></pre></div><p>Esses são os endereços dos caracteres na memória do controlador LCD. Os últimos
 dois, <code>CHAR_EMPTY</code> e <code>CHAR_FULL</code>, já existem por padrão na memória do LCD e não
 é necessário criá-los. A definição de cada pixel desses caracteres vem logo
 depois, em uma matriz de bytes no formato já mencionado, utilizando o endereço
-do caractere como índice do vetor:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#ff79c6>static</span> <span style=color:#8be9fd>uint8_t</span> customChars[<span style=color:#bd93f9>8</span>][<span style=color:#bd93f9>8</span>] <span style=color:#ff79c6>=</span>
-{
-    <span style=color:#6272a4>// CHAR_TOP_LEFT
-</span><span style=color:#6272a4></span>    {
-        B00001,
-        B00111,
-        B01111,
-        B01111,
-        B11111,
-        B11111,
-        B11111,
-        B11111
-    },
-
-    <span style=color:#6272a4>// CHAR_TOP_RIGHT
-</span><span style=color:#6272a4></span>    {
-        B10000,
-        B11100,
-        B11110,
-        B11110,
-        B11111,
-        B11111,
-        B11111,
-        B11111
-    },
-
-    <span style=color:#6272a4>// CHAR_BOTTOM_LEFT
-</span><span style=color:#6272a4></span>    {
-        B11111,
-        B11111,
-        B11111,
-        B11111,
-        B01111,
-        B01111,
-        B00111,
-        B00001
-    },
-
-    <span style=color:#6272a4>// CHAR_BOTTOM_RIGHT
-</span><span style=color:#6272a4></span>    {
-        B11111,
-        B11111,
-        B11111,
-        B11111,
-        B11110,
-        B11110,
-        B11100,
-        B10000
-    },
-
-    <span style=color:#6272a4>// CHAR_HALF_TOP
-</span><span style=color:#6272a4></span>    {
-        B11111,
-        B11111,
-        B11111,
-        B11111,
-        B00000,
-        B00000,
-        B00000,
-        B00000
-    },
-
-    <span style=color:#6272a4>// CHAR_HALF_BOTTOM
-</span><span style=color:#6272a4></span>    {
-        B00000,
-        B00000,
-        B00000,
-        B00000,
-        B11111,
-        B11111,
-        B11111,
-        B11111
-    },
-
-    <span style=color:#6272a4>// CHAR_TOP_BOTTOM
-</span><span style=color:#6272a4></span>    {
-        B11111,
-        B11111,
-        B11111,
-        B00000,
-        B00000,
-        B11111,
-        B11111,
-        B11111
-    },
-
-    <span style=color:#6272a4>// CHAR_MIDDLE
-</span><span style=color:#6272a4></span>    {
-        B00000,
-        B00000,
-        B00000,
-        B11111,
-        B11111,
-        B00000,
-        B00000,
-        B00000
-    }
-};
-</code></pre></div><p>Os caracteres que são criados com essas configurações são os seguintes:</p>
-<p><img src=/images/custom-chars-lcd-big-number.png alt="Todos os caracteres utilizados na biblioteca LcdBigNumbers"></p>
-<p>Depois de ter esses caracteres criados, cada número é configurado como uma matriz
+do caractere como índice do vetor:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#ff79c6>static</span> <span style=color:#8be9fd>uint8_t</span> customChars[<span style=color:#bd93f9>8</span>][<span style=color:#bd93f9>8</span>] <span style=color:#ff79c6>=</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// CHAR_TOP_LEFT
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        B00001,
+</span></span><span style=display:flex><span>        B00111,
+</span></span><span style=display:flex><span>        B01111,
+</span></span><span style=display:flex><span>        B01111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// CHAR_TOP_RIGHT
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        B10000,
+</span></span><span style=display:flex><span>        B11100,
+</span></span><span style=display:flex><span>        B11110,
+</span></span><span style=display:flex><span>        B11110,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// CHAR_BOTTOM_LEFT
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B01111,
+</span></span><span style=display:flex><span>        B01111,
+</span></span><span style=display:flex><span>        B00111,
+</span></span><span style=display:flex><span>        B00001
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// CHAR_BOTTOM_RIGHT
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11110,
+</span></span><span style=display:flex><span>        B11110,
+</span></span><span style=display:flex><span>        B11100,
+</span></span><span style=display:flex><span>        B10000
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// CHAR_HALF_TOP
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B00000
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// CHAR_HALF_BOTTOM
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// CHAR_TOP_BOTTOM
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// CHAR_MIDDLE
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B11111,
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B00000,
+</span></span><span style=display:flex><span>        B00000
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><p>Os caracteres que são criados com essas configurações são os seguintes:</p><p><img src=/images/custom-chars-lcd-big-number.png alt="Todos os caracteres utilizados na biblioteca LcdBigNumbers"></p><p>Depois de ter esses caracteres criados, cada número é configurado como uma matriz
 3x3 com os códigos desses caracteres. Como a matriz tem números de 0 a 9, o
-próprio número foi utilizado como índice:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#ff79c6>static</span> <span style=color:#8be9fd>uint8_t</span> numberChars[<span style=color:#bd93f9>10</span>][<span style=color:#bd93f9>3</span>][<span style=color:#bd93f9>3</span>] <span style=color:#ff79c6>=</span>
-{
-    <span style=color:#6272a4>// 0
-</span><span style=color:#6272a4></span>    {
-        { CHAR_TOP_LEFT, CHAR_HALF_TOP, CHAR_TOP_RIGHT },
-        { CHAR_FULL, CHAR_EMPTY, CHAR_FULL },
-        { CHAR_BOTTOM_LEFT, CHAR_HALF_BOTTOM, CHAR_BOTTOM_RIGHT }
-    },
-
-    <span style=color:#6272a4>// 1
-</span><span style=color:#6272a4></span>    {
-        { CHAR_HALF_BOTTOM, CHAR_FULL, CHAR_EMPTY },
-        { CHAR_EMPTY, CHAR_FULL, CHAR_EMPTY },
-        { CHAR_HALF_BOTTOM, CHAR_FULL, CHAR_HALF_BOTTOM }
-    },
-
-    <span style=color:#6272a4>// 2
-</span><span style=color:#6272a4></span>    {
-        { CHAR_HALF_TOP, CHAR_HALF_TOP, CHAR_HALF_BOTTOM },
-        { CHAR_HALF_BOTTOM, CHAR_MIDDLE, CHAR_HALF_TOP },
-        { CHAR_FULL, CHAR_HALF_BOTTOM, CHAR_HALF_BOTTOM }
-    },
-
-    <span style=color:#6272a4>// 3
-</span><span style=color:#6272a4></span>    {
-        { CHAR_HALF_TOP, CHAR_HALF_TOP, CHAR_HALF_BOTTOM },
-        { CHAR_EMPTY, CHAR_MIDDLE, CHAR_TOP_BOTTOM },
-        { CHAR_HALF_BOTTOM, CHAR_HALF_BOTTOM, CHAR_HALF_TOP }
-    },
-
-    <span style=color:#6272a4>// 4
-</span><span style=color:#6272a4></span>    {
-        { CHAR_FULL, CHAR_EMPTY, CHAR_HALF_BOTTOM },
-        { CHAR_FULL, CHAR_HALF_BOTTOM, CHAR_FULL },
-        { CHAR_EMPTY, CHAR_EMPTY, CHAR_FULL }
-    },
-
-    <span style=color:#6272a4>// 5
-</span><span style=color:#6272a4></span>    {
-        { CHAR_FULL, CHAR_HALF_TOP, CHAR_HALF_TOP },
-        { CHAR_HALF_TOP, CHAR_MIDDLE, CHAR_HALF_BOTTOM },
-        { CHAR_HALF_BOTTOM, CHAR_HALF_BOTTOM, CHAR_BOTTOM_RIGHT }
-    },
-
-    <span style=color:#6272a4>// 6
-</span><span style=color:#6272a4></span>    {
-        { CHAR_TOP_LEFT, CHAR_HALF_TOP, CHAR_HALF_TOP },
-        { CHAR_FULL, CHAR_HALF_TOP, CHAR_TOP_RIGHT },
-        { CHAR_BOTTOM_LEFT, CHAR_HALF_BOTTOM, CHAR_BOTTOM_RIGHT }
-    },
-
-    <span style=color:#6272a4>// 7
-</span><span style=color:#6272a4></span>    {
-        { CHAR_HALF_TOP, CHAR_HALF_TOP, CHAR_FULL },
-        { CHAR_EMPTY, CHAR_HALF_BOTTOM, CHAR_HALF_TOP },
-        { CHAR_EMPTY, CHAR_FULL, CHAR_EMPTY }
-    },
-
-    <span style=color:#6272a4>// 8
-</span><span style=color:#6272a4></span>    {
-        { CHAR_HALF_BOTTOM, CHAR_HALF_TOP, CHAR_HALF_BOTTOM },
-        { CHAR_TOP_BOTTOM, CHAR_MIDDLE, CHAR_TOP_BOTTOM },
-        { CHAR_HALF_TOP, CHAR_HALF_BOTTOM, CHAR_HALF_TOP }
-    },
-
-    <span style=color:#6272a4>// 9
-</span><span style=color:#6272a4></span>    {
-        { CHAR_TOP_LEFT, CHAR_HALF_TOP, CHAR_TOP_RIGHT },
-        { CHAR_BOTTOM_LEFT, CHAR_HALF_BOTTOM, CHAR_FULL },
-        { CHAR_HALF_BOTTOM, CHAR_HALF_BOTTOM, CHAR_BOTTOM_RIGHT }
-    }
-};
-</code></pre></div><p>Os números que serão criados com isso são:</p>
-<p><img src=/images/lcd-big-numbers-1-a-5.jpg alt="Números de 1 a 5 no display">
-<img src=/images/lcd-big-numbers-6-a-9.jpg alt="Números de 6 a 9 no display"></p>
-<p>Isso finaliza a parte trabalhosa. Agora resta apenas lógica.</p>
-<h2 id=a-lógica-de-exibição-dos-números>
-A lógica de exibição dos números
-<a class=heading-link href=#a-l%c3%b3gica-de-exibi%c3%a7%c3%a3o-dos-n%c3%bameros>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>A primeira parte da lógica começa com a criação dos caracteres:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>LcdBigNumbers<span style=color:#ff79c6>::</span>LcdBigNumbers(LiquidCrystal_I2C <span style=color:#ff79c6>*</span>lcd)
-{
-    <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>lcd <span style=color:#ff79c6>=</span> lcd;
-}
-
-<span style=color:#8be9fd>void</span> LcdBigNumbers<span style=color:#ff79c6>::</span>init()
-{
-    <span style=color:#ff79c6>for</span> (<span style=color:#8be9fd>uint8_t</span> i <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; i <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>8</span>; i<span style=color:#ff79c6>++</span>) {
-        <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>lcd<span style=color:#ff79c6>-&gt;</span>createChar(i, customChars[i]);
-    }
-}
-</code></pre></div><p>O método <code>init()</code> irá percorrer todo o vetor de caracteres customizados, criando
+próprio número foi utilizado como índice:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#ff79c6>static</span> <span style=color:#8be9fd>uint8_t</span> numberChars[<span style=color:#bd93f9>10</span>][<span style=color:#bd93f9>3</span>][<span style=color:#bd93f9>3</span>] <span style=color:#ff79c6>=</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// 0
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        { CHAR_TOP_LEFT, CHAR_HALF_TOP, CHAR_TOP_RIGHT },
+</span></span><span style=display:flex><span>        { CHAR_FULL, CHAR_EMPTY, CHAR_FULL },
+</span></span><span style=display:flex><span>        { CHAR_BOTTOM_LEFT, CHAR_HALF_BOTTOM, CHAR_BOTTOM_RIGHT }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// 1
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        { CHAR_HALF_BOTTOM, CHAR_FULL, CHAR_EMPTY },
+</span></span><span style=display:flex><span>        { CHAR_EMPTY, CHAR_FULL, CHAR_EMPTY },
+</span></span><span style=display:flex><span>        { CHAR_HALF_BOTTOM, CHAR_FULL, CHAR_HALF_BOTTOM }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// 2
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        { CHAR_HALF_TOP, CHAR_HALF_TOP, CHAR_HALF_BOTTOM },
+</span></span><span style=display:flex><span>        { CHAR_HALF_BOTTOM, CHAR_MIDDLE, CHAR_HALF_TOP },
+</span></span><span style=display:flex><span>        { CHAR_FULL, CHAR_HALF_BOTTOM, CHAR_HALF_BOTTOM }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// 3
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        { CHAR_HALF_TOP, CHAR_HALF_TOP, CHAR_HALF_BOTTOM },
+</span></span><span style=display:flex><span>        { CHAR_EMPTY, CHAR_MIDDLE, CHAR_TOP_BOTTOM },
+</span></span><span style=display:flex><span>        { CHAR_HALF_BOTTOM, CHAR_HALF_BOTTOM, CHAR_HALF_TOP }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// 4
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        { CHAR_FULL, CHAR_EMPTY, CHAR_HALF_BOTTOM },
+</span></span><span style=display:flex><span>        { CHAR_FULL, CHAR_HALF_BOTTOM, CHAR_FULL },
+</span></span><span style=display:flex><span>        { CHAR_EMPTY, CHAR_EMPTY, CHAR_FULL }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// 5
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        { CHAR_FULL, CHAR_HALF_TOP, CHAR_HALF_TOP },
+</span></span><span style=display:flex><span>        { CHAR_HALF_TOP, CHAR_MIDDLE, CHAR_HALF_BOTTOM },
+</span></span><span style=display:flex><span>        { CHAR_HALF_BOTTOM, CHAR_HALF_BOTTOM, CHAR_BOTTOM_RIGHT }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// 6
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        { CHAR_TOP_LEFT, CHAR_HALF_TOP, CHAR_HALF_TOP },
+</span></span><span style=display:flex><span>        { CHAR_FULL, CHAR_HALF_TOP, CHAR_TOP_RIGHT },
+</span></span><span style=display:flex><span>        { CHAR_BOTTOM_LEFT, CHAR_HALF_BOTTOM, CHAR_BOTTOM_RIGHT }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// 7
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        { CHAR_HALF_TOP, CHAR_HALF_TOP, CHAR_FULL },
+</span></span><span style=display:flex><span>        { CHAR_EMPTY, CHAR_HALF_BOTTOM, CHAR_HALF_TOP },
+</span></span><span style=display:flex><span>        { CHAR_EMPTY, CHAR_FULL, CHAR_EMPTY }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// 8
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        { CHAR_HALF_BOTTOM, CHAR_HALF_TOP, CHAR_HALF_BOTTOM },
+</span></span><span style=display:flex><span>        { CHAR_TOP_BOTTOM, CHAR_MIDDLE, CHAR_TOP_BOTTOM },
+</span></span><span style=display:flex><span>        { CHAR_HALF_TOP, CHAR_HALF_BOTTOM, CHAR_HALF_TOP }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// 9
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    {
+</span></span><span style=display:flex><span>        { CHAR_TOP_LEFT, CHAR_HALF_TOP, CHAR_TOP_RIGHT },
+</span></span><span style=display:flex><span>        { CHAR_BOTTOM_LEFT, CHAR_HALF_BOTTOM, CHAR_FULL },
+</span></span><span style=display:flex><span>        { CHAR_HALF_BOTTOM, CHAR_HALF_BOTTOM, CHAR_BOTTOM_RIGHT }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><p>Os números que serão criados com isso são:</p><p><img src=/images/lcd-big-numbers-1-a-5.jpg alt="Números de 1 a 5 no display">
+<img src=/images/lcd-big-numbers-6-a-9.jpg alt="Números de 6 a 9 no display"></p><p>Isso finaliza a parte trabalhosa. Agora resta apenas lógica.</p><h2 id=a-lógica-de-exibição-dos-números>A lógica de exibição dos números
+<a class=heading-link href=#a-l%c3%b3gica-de-exibi%c3%a7%c3%a3o-dos-n%c3%bameros><i class="fa fa-link" aria-hidden=true></i></a></h2><p>A primeira parte da lógica começa com a criação dos caracteres:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span>LcdBigNumbers<span style=color:#ff79c6>::</span>LcdBigNumbers(LiquidCrystal_I2C <span style=color:#ff79c6>*</span>lcd)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>lcd <span style=color:#ff79c6>=</span> lcd;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8be9fd>void</span> LcdBigNumbers<span style=color:#ff79c6>::</span>init()
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>for</span> (<span style=color:#8be9fd>uint8_t</span> i <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; i <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>8</span>; i<span style=color:#ff79c6>++</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>lcd<span style=color:#ff79c6>-&gt;</span>createChar(i, customChars[i]);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>O método <code>init()</code> irá percorrer todo o vetor de caracteres customizados, criando
 todos eles no controlador do LCD. O primeiro parâmetro do <code>createChar()</code> é o
 endereço que o o caractere deve ocupar na memória, e o segundo é um vetor com os
-bytes que foram o padrão de exibição.</p>
-<p>O método <code>printNumber()</code> é utilizado para decompor um número em vários dígitos e
+bytes que foram o padrão de exibição.</p><p>O método <code>printNumber()</code> é utilizado para decompor um número em vários dígitos e
 depois exibir cada dígito separadamente, com um pequeno espaço entre eles. O
 método recebe por parâmetro a coluna e a linha do primeiro &ldquo;pixel&rdquo; (topo esquerdo)
-onde será exibido o número.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#8be9fd>void</span> LcdBigNumbers<span style=color:#ff79c6>::</span>printNumber(
-    <span style=color:#ff79c6>const</span> <span style=color:#8be9fd>unsigned</span> <span style=color:#8be9fd>long</span> <span style=color:#8be9fd>int</span> number,
-    <span style=color:#8be9fd>uint8_t</span> column,
-    <span style=color:#8be9fd>uint8_t</span> row
-)
-{
-    <span style=color:#8be9fd>uint8_t</span> digits[<span style=color:#bd93f9>10</span>];  <span style=color:#6272a4>// Hard limit de 10 dígitos
-</span><span style=color:#6272a4></span>    <span style=color:#8be9fd>uint8_t</span> count <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>, i;
-    <span style=color:#8be9fd>unsigned</span> <span style=color:#8be9fd>long</span> <span style=color:#8be9fd>int</span> moreNumbers <span style=color:#ff79c6>=</span> number;
-
-    <span style=color:#ff79c6>do</span> {
-        digits[count<span style=color:#ff79c6>++</span>] <span style=color:#ff79c6>=</span> moreNumbers <span style=color:#ff79c6>%</span> <span style=color:#bd93f9>10</span>;
-        moreNumbers <span style=color:#ff79c6>/=</span> <span style=color:#bd93f9>10</span>;
-    } <span style=color:#ff79c6>while</span> (count <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>10</span> <span style=color:#ff79c6>&amp;&amp;</span> moreNumbers <span style=color:#ff79c6>&gt;</span> <span style=color:#bd93f9>0</span>);
-
-    <span style=color:#ff79c6>for</span> (i <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; i <span style=color:#ff79c6>&lt;</span> count; i<span style=color:#ff79c6>++</span>) {
-        <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>printDigit(digits[count <span style=color:#ff79c6>-</span> i <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>1</span>], column <span style=color:#ff79c6>+</span> <span style=color:#bd93f9>4</span> <span style=color:#ff79c6>*</span> i, row);
-    }
-}
-</code></pre></div><p><strong>Nota: revisando o código acima durante a atualização do blog para o Hugo,
+onde será exibido o número.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8be9fd>void</span> LcdBigNumbers<span style=color:#ff79c6>::</span>printNumber(
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>const</span> <span style=color:#8be9fd>unsigned</span> <span style=color:#8be9fd>long</span> <span style=color:#8be9fd>int</span> number,
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd>uint8_t</span> column,
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd>uint8_t</span> row
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd>uint8_t</span> digits[<span style=color:#bd93f9>10</span>];  <span style=color:#6272a4>// Hard limit de 10 dígitos
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    <span style=color:#8be9fd>uint8_t</span> count <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>, i;
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd>unsigned</span> <span style=color:#8be9fd>long</span> <span style=color:#8be9fd>int</span> moreNumbers <span style=color:#ff79c6>=</span> number;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>do</span> {
+</span></span><span style=display:flex><span>        digits[count<span style=color:#ff79c6>++</span>] <span style=color:#ff79c6>=</span> moreNumbers <span style=color:#ff79c6>%</span> <span style=color:#bd93f9>10</span>;
+</span></span><span style=display:flex><span>        moreNumbers <span style=color:#ff79c6>/=</span> <span style=color:#bd93f9>10</span>;
+</span></span><span style=display:flex><span>    } <span style=color:#ff79c6>while</span> (count <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>10</span> <span style=color:#ff79c6>&amp;&amp;</span> moreNumbers <span style=color:#ff79c6>&gt;</span> <span style=color:#bd93f9>0</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>for</span> (i <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; i <span style=color:#ff79c6>&lt;</span> count; i<span style=color:#ff79c6>++</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>printDigit(digits[count <span style=color:#ff79c6>-</span> i <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>1</span>], column <span style=color:#ff79c6>+</span> <span style=color:#bd93f9>4</span> <span style=color:#ff79c6>*</span> i, row);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><strong>Nota: revisando o código acima durante a atualização do blog para o Hugo,
 encontrei uma pequena grande falha de <em><a href=https://pt.wikipedia.org/wiki/Transbordamento_de_dados>buffer overflow</a></em> na condição do
-<code>while</code>: <code>count &lt;= 10</code> deveria ser <code>count &lt; 10</code>. O código acima já está corrigido.</strong></p>
-<p>Esse talvez seja o código mais complexo em todo o projeto até agora, mas até que
+<code>while</code>: <code>count &lt;= 10</code> deveria ser <code>count &lt; 10</code>. O código acima já está corrigido.</strong></p><p>Esse talvez seja o código mais complexo em todo o projeto até agora, mas até que
 é simples. O número recebido vai sendo dividido por 10 até chegar a zero, e o
 resto da divisão (que é o mesmo que o último dígito do número) é adicionado a
-uma lista. No fim, essa lista terá todos os dígitos do número em ordem inversa.</p>
-<p>Depois de decompor o número, a lista de dígitos é percorrida do final para o começo
+uma lista. No fim, essa lista terá todos os dígitos do número em ordem inversa.</p><p>Depois de decompor o número, a lista de dígitos é percorrida do final para o começo
 e, para cada dígito, é chamado o outro método da biblioteca, o <code>printDigit()</code>.
 Para cada dígito exibido, são avançadas 4 colunas para exibir o próximo. Como
 cada número sempre ocupa 3 colunas, isso deixa uma coluna de espaço entre os
 dígitos (<em>e isso também pode causar um pequeno bug, que não afeta o Placarduino,
 porque essa coluna de espaço entre os dígitos não é apagada, então se havia outra
-coisa escrita nesse espaço antes, irá continuar aparecendo entre os dígitos</em>).</p>
-<p>Por fim, a lógica para exibir um dígito no display LCD. Como a definição de quais
+coisa escrita nesse espaço antes, irá continuar aparecendo entre os dígitos</em>).</p><p>Por fim, a lógica para exibir um dígito no display LCD. Como a definição de quais
 caracteres formam o número já foi feita antes na matriz <code>numberChars</code>, o único
 trabalho desse método é percorrer essa matriz, posicionar o cursor e exibir o
-caractere:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#8be9fd>void</span> LcdBigNumbers<span style=color:#ff79c6>::</span>printDigit(<span style=color:#ff79c6>const</span> <span style=color:#8be9fd>uint8_t</span> digit, <span style=color:#8be9fd>uint8_t</span> column, <span style=color:#8be9fd>uint8_t</span> row)
-{
-    <span style=color:#ff79c6>if</span> (digit <span style=color:#ff79c6>&gt;</span> <span style=color:#bd93f9>9</span>) {
-        <span style=color:#ff79c6>return</span>;
-    }
-
-    <span style=color:#8be9fd>uint8_t</span> r, c;
-
-    <span style=color:#ff79c6>for</span> (r <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; r <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>3</span>; r<span style=color:#ff79c6>++</span>) {
-        <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>lcd<span style=color:#ff79c6>-&gt;</span>setCursor(column, row <span style=color:#ff79c6>+</span> r);
-
-        <span style=color:#ff79c6>for</span> (c <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; c <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>3</span>; c<span style=color:#ff79c6>++</span>) {
-            <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>lcd<span style=color:#ff79c6>-&gt;</span>write(numberChars[digit][r][c]);
-        }
-    }
-}
-</code></pre></div><h2 id=integrando-o-lcdbignumbers-com-o-placarduino>
-Integrando o LcdBigNumbers com o Placarduino
-<a class=heading-link href=#integrando-o-lcdbignumbers-com-o-placarduino>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>O uso da biblioteca para exibir os pontos dos jogadores no placar vai simplificar
+caractere:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8be9fd>void</span> LcdBigNumbers<span style=color:#ff79c6>::</span>printDigit(<span style=color:#ff79c6>const</span> <span style=color:#8be9fd>uint8_t</span> digit, <span style=color:#8be9fd>uint8_t</span> column, <span style=color:#8be9fd>uint8_t</span> row)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>if</span> (digit <span style=color:#ff79c6>&gt;</span> <span style=color:#bd93f9>9</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd>uint8_t</span> r, c;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>for</span> (r <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; r <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>3</span>; r<span style=color:#ff79c6>++</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>lcd<span style=color:#ff79c6>-&gt;</span>setCursor(column, row <span style=color:#ff79c6>+</span> r);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>for</span> (c <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; c <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>3</span>; c<span style=color:#ff79c6>++</span>) {
+</span></span><span style=display:flex><span>            <span style=color:#ff79c6>this</span><span style=color:#ff79c6>-&gt;</span>lcd<span style=color:#ff79c6>-&gt;</span>write(numberChars[digit][r][c]);
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=integrando-o-lcdbignumbers-com-o-placarduino>Integrando o LcdBigNumbers com o Placarduino
+<a class=heading-link href=#integrando-o-lcdbignumbers-com-o-placarduino><i class="fa fa-link" aria-hidden=true></i></a></h2><p>O uso da biblioteca para exibir os pontos dos jogadores no placar vai simplificar
 a função <code>printScore()</code> atual. Mas, primeiro, a biblioteca deve ser incluída e
-inicializada.</p>
-<p>No começo do arquivo, depois dos outros <code>#include</code>&rsquo;s:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#ff79c6>#include</span> <span style=color:#ff79c6>&#34;LcdBigNumbers.h&#34;</span><span style=color:#ff79c6>
-</span></code></pre></div><p>Um objeto LcdBigNumbers deve ser criado logo depois do LiquidCrystal_I2C, passando
-um ponteiro para a variável <code>lcd</code>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>LiquidCrystal_I2C lcd(LCD_I2C_ADDR, LCD_COLS, LCD_ROWS);
-LcdBigNumbers bigNumbers(&amp;lcd);
-</code></pre></div><p>O método <code>init()</code>, que irá criar todos os caracteres customizados, deve ser
-chamado logo após a inicialização do LCD:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>setupLCD</span>()
-{
-    lcd.init();
-    bigNumbers.init();
-
-    lcd.backlight();
-}
-</code></pre></div><p>Por fim, a função <code>printScore()</code> é alterada para exibir os nomes dos dois
+inicializada.</p><p>No começo do arquivo, depois dos outros <code>#include</code>&rsquo;s:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#ff79c6>#include</span> <span style=color:#ff79c6>&#34;LcdBigNumbers.h&#34;</span><span style=color:#ff79c6>
+</span></span></span></code></pre></div><p>Um objeto LcdBigNumbers deve ser criado logo depois do LiquidCrystal_I2C, passando
+um ponteiro para a variável <code>lcd</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>LiquidCrystal_I2C lcd(LCD_I2C_ADDR, LCD_COLS, LCD_ROWS);
+</span></span><span style=display:flex><span>LcdBigNumbers bigNumbers(&amp;lcd);
+</span></span></code></pre></div><p>O método <code>init()</code>, que irá criar todos os caracteres customizados, deve ser
+chamado logo após a inicialização do LCD:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>setupLCD</span>()
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    lcd.init();
+</span></span><span style=display:flex><span>    bigNumbers.init();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    lcd.backlight();
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Por fim, a função <code>printScore()</code> é alterada para exibir os nomes dos dois
 jogadores na primeira linha, um alinhado à esquerda e outro à direita. A
 exibição dos nomes ainda é feita utilizando <code>lcd.print()</code>, mas a exibição dos
 pontos agora é feita com <code>bigNumbers.printNumber()</code>, alinhando, como os nomes,
-à esquerda e à direita.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>printScore</span>()
-{
-    lcd.clear();
-
-    lcd.setCursor(<span style=color:#bd93f9>0</span>, <span style=color:#bd93f9>0</span>);
-    lcd.print(firstPlayerName);
-
-    <span style=color:#6272a4>// Alinha o nome do jogador à direita
-</span><span style=color:#6272a4></span>    lcd.setCursor(LCD_COLS <span style=color:#ff79c6>-</span> strlen(secondPlayerName), <span style=color:#bd93f9>0</span>);
-    lcd.print(secondPlayerName);
-
-    bigNumbers.printNumber(firstPlayerScore, <span style=color:#bd93f9>0</span>, <span style=color:#bd93f9>1</span>);
-
-    <span style=color:#6272a4>// Altera coluna inicial de acordo com valor da pontuação para
-</span><span style=color:#6272a4></span>    <span style=color:#6272a4>// manter alinhado à direita
-</span><span style=color:#6272a4></span>    <span style=color:#ff79c6>if</span> (secondPlayerScore <span style=color:#ff79c6>&gt;=</span> <span style=color:#bd93f9>10</span>) {
-        bigNumbers.printNumber(secondPlayerScore, LCD_COLS <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>7</span>, <span style=color:#bd93f9>1</span>);
-    }
-    <span style=color:#ff79c6>else</span> {
-        bigNumbers.printNumber(secondPlayerScore, LCD_COLS <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>3</span>, <span style=color:#bd93f9>1</span>);
-    }
-}
-</code></pre></div><h2 id=resultado>
-Resultado
-<a class=heading-link href=#resultado>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p><img src=/images/placarduino-big-numbers-lcd.jpg alt="Números grandes no Placarduino"></p>
-<p>Como sempre, o código está no GitHub:</p>
-<ul>
-<li>A versão desse post: <a href=https://github.com/eduardoweiland/placarduino/tree/v1.3>https://github.com/eduardoweiland/placarduino/tree/v1.3</a></li>
-<li>Versão mais atual: <a href=https://github.com/eduardoweiland/placarduino>https://github.com/eduardoweiland/placarduino</a></li>
-</ul>
-</div>
-<footer>
-<section class=see-also>
-<h3 id=see-also-in-placarduino>
-See also in placarduino
-<a class=heading-link href=#see-also-in-placarduino>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<nav>
-<ul>
-<li>
-<a href=/posts/2018/02/reset-automatico-do-placarduino-apos-o-fim-do-jogo/>Reset automático do Placarduino após o fim do jogo</a>
-</li>
-<li>
-<a href=/posts/2018/02/fim-de-jogo-para-o-placarduino/>Fim de jogo para o Placarduino</a>
-</li>
-<li>
-<a href=/posts/2018/01/cartoes-de-acesso-para-o-placarduino/>Cartões de acesso para o Placarduino</a>
-</li>
-<li>
-<a href=/posts/2018/01/refatoracao-do-placarduino/>Refatoração do Placarduino</a>
-</li>
-<li>
-<a href=/posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/>Atualização do Placarduino: redução de pontos</a>
-</li>
-</ul>
-</nav>
-</section>
-</footer>
-</article>
-</section>
-</div>
-<footer class=footer>
-<section class=container>
-&copy;
+à esquerda e à direita.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8be9fd>void</span> <span style=color:#50fa7b>printScore</span>()
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    lcd.clear();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    lcd.setCursor(<span style=color:#bd93f9>0</span>, <span style=color:#bd93f9>0</span>);
+</span></span><span style=display:flex><span>    lcd.print(firstPlayerName);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// Alinha o nome do jogador à direita
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    lcd.setCursor(LCD_COLS <span style=color:#ff79c6>-</span> strlen(secondPlayerName), <span style=color:#bd93f9>0</span>);
+</span></span><span style=display:flex><span>    lcd.print(secondPlayerName);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    bigNumbers.printNumber(firstPlayerScore, <span style=color:#bd93f9>0</span>, <span style=color:#bd93f9>1</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// Altera coluna inicial de acordo com valor da pontuação para
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    <span style=color:#6272a4>// manter alinhado à direita
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    <span style=color:#ff79c6>if</span> (secondPlayerScore <span style=color:#ff79c6>&gt;=</span> <span style=color:#bd93f9>10</span>) {
+</span></span><span style=display:flex><span>        bigNumbers.printNumber(secondPlayerScore, LCD_COLS <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>7</span>, <span style=color:#bd93f9>1</span>);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>else</span> {
+</span></span><span style=display:flex><span>        bigNumbers.printNumber(secondPlayerScore, LCD_COLS <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>3</span>, <span style=color:#bd93f9>1</span>);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=resultado>Resultado
+<a class=heading-link href=#resultado><i class="fa fa-link" aria-hidden=true></i></a></h2><p><img src=/images/placarduino-big-numbers-lcd.jpg alt="Números grandes no Placarduino"></p><p>Como sempre, o código está no GitHub:</p><ul><li>A versão desse post: <a href=https://github.com/eduardoweiland/placarduino/tree/v1.3>https://github.com/eduardoweiland/placarduino/tree/v1.3</a></li><li>Versão mais atual: <a href=https://github.com/eduardoweiland/placarduino>https://github.com/eduardoweiland/placarduino</a></li></ul></div><footer><section class=see-also><h3 id=see-also-in-placarduino>See also in placarduino
+<a class=heading-link href=#see-also-in-placarduino><i class="fa fa-link" aria-hidden=true></i></a></h3><nav><ul><li><a href=/posts/2018/02/reset-automatico-do-placarduino-apos-o-fim-do-jogo/>Reset automático do Placarduino após o fim do jogo</a></li><li><a href=/posts/2018/02/fim-de-jogo-para-o-placarduino/>Fim de jogo para o Placarduino</a></li><li><a href=/posts/2018/01/cartoes-de-acesso-para-o-placarduino/>Cartões de acesso para o Placarduino</a></li><li><a href=/posts/2018/01/refatoracao-do-placarduino/>Refatoração do Placarduino</a></li><li><a href=/posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/>Atualização do Placarduino: redução de pontos</a></li></ul></nav></section></footer></article></section></div><footer class=footer><section class=container>&copy;
 2011 -
-2021
+2023
 Eduardo Weiland
 &#183;
 <a rel="license noopener" href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>
 &#183;
-<a rel=noopener href=https://github.com/eduardoweiland/ew.dev.br>Free Software</a>
-</section>
-</footer>
-</main>
-<script src=/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
-</body>
-</html>
+<a rel=noopener href=https://github.com/eduardoweiland/ew.dev.br>Free Software</a></section></footer></main><script src=/js/coder.min.978ac2219b08e24e68c3f3eada8d99add50d9d997ce3861354b602cc94f75f30.js integrity="sha256-l4rCIZsI4k5ow/Pq2o2ZrdUNnZl844YTVLYCzJT3XzA="></script></body></html>

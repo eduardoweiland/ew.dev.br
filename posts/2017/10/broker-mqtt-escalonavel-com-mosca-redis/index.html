@@ -1,88 +1,12 @@
-<!doctype html><html lang=pt-br>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=content-language content="pt-br">
-<meta name=color-scheme content="light dark">
-<meta http-equiv=content-security-policy content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self'; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; prefetch-src 'self'; connect-src 'self';">
-<meta name=author content="Eduardo Weiland">
-<meta name=description content="Em uma postagem anterior, eu mostrei como configurar um broker MQTT no Kubernetes com o Mosquitto. Mas o suporte do Mosquitto para a criação de clusters usando bridges é muito limitado. Felizmente, existe uma solução muito mais simples, que utiliza o Redis para criar o cluster e o Mosca para suporte ao protocolo MQTT.
-Essa ideia surgiu quando eu encontrei um artigo no Medium descrevendo basicamente a mesma arquitetura que eu irei mostrar aqui.">
-<meta name=keywords content="blog,home,portfolio,personal,developer,maker">
-<meta name=twitter:card content="summary">
-<meta name=twitter:title content="Broker MQTT escalonável com Mosca + Redis">
-<meta name=twitter:description content="Em uma postagem anterior, eu mostrei como configurar um broker MQTT no Kubernetes com o Mosquitto. Mas o suporte do Mosquitto para a criação de clusters usando bridges é muito limitado. Felizmente, existe uma solução muito mais simples, que utiliza o Redis para criar o cluster e o Mosca para suporte ao protocolo MQTT.
-Essa ideia surgiu quando eu encontrei um artigo no Medium descrevendo basicamente a mesma arquitetura que eu irei mostrar aqui.">
-<meta property="og:title" content="Broker MQTT escalonável com Mosca + Redis">
-<meta property="og:description" content="Em uma postagem anterior, eu mostrei como configurar um broker MQTT no Kubernetes com o Mosquitto. Mas o suporte do Mosquitto para a criação de clusters usando bridges é muito limitado. Felizmente, existe uma solução muito mais simples, que utiliza o Redis para criar o cluster e o Mosca para suporte ao protocolo MQTT.
-Essa ideia surgiu quando eu encontrei um artigo no Medium descrevendo basicamente a mesma arquitetura que eu irei mostrar aqui.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ew.dev.br/posts/2017/10/broker-mqtt-escalonavel-com-mosca-redis/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2017-10-27T22:35:40-02:00">
-<meta property="article:modified_time" content="2017-10-27T22:35:40-02:00">
-<title>
-Broker MQTT escalonável com Mosca + Redis · Eduardo Weiland
-</title>
-<link rel=canonical href=https://ew.dev.br/posts/2017/10/broker-mqtt-escalonavel-com-mosca-redis/>
-<link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.1.7" as=font type=font/woff2 crossorigin>
-<link rel=stylesheet href=/css/coder.min.cbf6f68b2a836dd1d34f005153262dd21d148461cf33684940f1bb4c048821b1.css integrity="sha256-y/b2iyqDbdHTTwBRUyYt0h0UhGHPM2hJQPG7TASIIbE=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=/css/coder-dark.min.dde8a61eb31a32353b4baf3d9113f03c4ea2a8ca9bb736f59ca2d2b2cb664f0b.css integrity="sha256-3eimHrMaMjU7S689kRPwPE6iqMqbtzb1nKLSsstmTws=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=/css/custom.css>
-<link rel=icon type=image/png href=/images/favicon32.png sizes=32x32>
-<link rel=icon type=image/png href=/images/favicon16.png sizes=16x16>
-<link rel=apple-touch-icon href=/images/apple-touch-icon.png>
-<link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png>
-<meta name=generator content="Hugo 0.88.1">
-</head>
-<body class="preload-transitions colorscheme-auto">
-<div class=float-container>
-<a id=dark-mode-toggle class=colorscheme-toggle>
-<i class="fa fa-adjust fa-fw" aria-hidden=true></i>
-</a>
-</div>
-<main class=wrapper>
-<nav class=navigation>
-<section class=container>
-<a class=navigation-title href=/>
-Eduardo Weiland
-</a>
+<!doctype html><html lang=pt-br><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=content-language content="pt-br"><meta name=color-scheme content="light dark"><meta http-equiv=content-security-policy content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self'; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; prefetch-src 'self'; connect-src 'self';"><meta name=author content="Eduardo Weiland"><meta name=description content="Em uma postagem anterior, eu mostrei como configurar um broker MQTT no Kubernetes com o Mosquitto. Mas o suporte do Mosquitto para a criação de clusters usando bridges é muito limitado. Felizmente, existe uma solução muito mais simples, que utiliza o Redis para criar o cluster e o Mosca para suporte ao protocolo MQTT.
+Essa ideia surgiu quando eu encontrei um artigo no Medium descrevendo basicamente a mesma arquitetura que eu irei mostrar aqui."><meta name=keywords content="blog,home,portfolio,personal,developer,maker"><meta name=twitter:card content="summary"><meta name=twitter:title content="Broker MQTT escalonável com Mosca + Redis"><meta name=twitter:description content="Em uma postagem anterior, eu mostrei como configurar um broker MQTT no Kubernetes com o Mosquitto. Mas o suporte do Mosquitto para a criação de clusters usando bridges é muito limitado. Felizmente, existe uma solução muito mais simples, que utiliza o Redis para criar o cluster e o Mosca para suporte ao protocolo MQTT.
+Essa ideia surgiu quando eu encontrei um artigo no Medium descrevendo basicamente a mesma arquitetura que eu irei mostrar aqui."><meta property="og:title" content="Broker MQTT escalonável com Mosca + Redis"><meta property="og:description" content="Em uma postagem anterior, eu mostrei como configurar um broker MQTT no Kubernetes com o Mosquitto. Mas o suporte do Mosquitto para a criação de clusters usando bridges é muito limitado. Felizmente, existe uma solução muito mais simples, que utiliza o Redis para criar o cluster e o Mosca para suporte ao protocolo MQTT.
+Essa ideia surgiu quando eu encontrei um artigo no Medium descrevendo basicamente a mesma arquitetura que eu irei mostrar aqui."><meta property="og:type" content="article"><meta property="og:url" content="https://ew.dev.br/posts/2017/10/broker-mqtt-escalonavel-com-mosca-redis/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-10-27T22:35:40-02:00"><meta property="article:modified_time" content="2017-10-27T22:35:40-02:00"><title>Broker MQTT escalonável com Mosca + Redis · Eduardo Weiland</title><link rel=canonical href=https://ew.dev.br/posts/2017/10/broker-mqtt-escalonavel-com-mosca-redis/><link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.1.7" as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.cbf6f68b2a836dd1d34f005153262dd21d148461cf33684940f1bb4c048821b1.css integrity="sha256-y/b2iyqDbdHTTwBRUyYt0h0UhGHPM2hJQPG7TASIIbE=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.dde8a61eb31a32353b4baf3d9113f03c4ea2a8ca9bb736f59ca2d2b2cb664f0b.css integrity="sha256-3eimHrMaMjU7S689kRPwPE6iqMqbtzb1nKLSsstmTws=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/custom.css><link rel=icon type=image/png href=/images/favicon32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><meta name=generator content="Hugo 0.119.0"></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=/>Eduardo Weiland</a>
 <input type=checkbox id=menu-toggle>
-<label class="menu-button float-right" for=menu-toggle>
-<i class="fa fa-bars fa-fw" aria-hidden=true></i>
-</label>
-<ul class=navigation-list>
-<li class=navigation-item>
-<a class=navigation-link href=/posts/>Blog</a>
-</li>
-</ul>
-</section>
-</nav>
-<div class=content>
-<section class="container post">
-<article>
-<header>
-<div class=post-title>
-<h1 class=title>
-<a class=title-link href=https://ew.dev.br/posts/2017/10/broker-mqtt-escalonavel-com-mosca-redis/>
-Broker MQTT escalonável com Mosca + Redis
-</a>
-</h1>
-</div>
-<div class=post-meta>
-<div class=date>
-<span class=posted-on>
-<i class="fa fa-calendar" aria-hidden=true></i>
-<time datetime=2017-10-27T22:35:40-02:00>
-Oct 27, 2017
-</time>
-</span>
-<span class=reading-time>
-<i class="fa fa-clock-o" aria-hidden=true></i>
-3 minutos de leitura
-</span>
-</div>
-<div class=tags>
-<i class="fa fa-tag" aria-hidden=true></i>
+<label class="menu-button float-right" for=menu-toggle><i class="fa fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://ew.dev.br/posts/2017/10/broker-mqtt-escalonavel-com-mosca-redis/>Broker MQTT escalonável com Mosca + Redis</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2017-10-27T22:35:40-02:00>Oct 27, 2017</time></span>
+<span class=reading-time><i class="fa fa-clock-o" aria-hidden=true></i>
+3 minutos de leitura</span></div><div class=tags><i class="fa fa-tag" aria-hidden=true></i>
 <a href=/tags/docker/>docker</a>
 <span class=separator>•</span>
 <a href=/tags/kubernetes/>kubernetes</a>
@@ -91,182 +15,139 @@ Oct 27, 2017
 <span class=separator>•</span>
 <a href=/tags/mqtt/>mqtt</a>
 <span class=separator>•</span>
-<a href=/tags/nodejs/>nodejs</a></div>
-</div>
-</header>
-<div>
-<img src=/images/mosca.png alt="Featured image">
-<p>Em uma postagem anterior, eu mostrei como configurar um <a href=/posts/2017/09/deploy-do-mosquitto-com-autenticacao-no-kubernetes/>broker MQTT no Kubernetes
+<a href=/tags/nodejs/>nodejs</a></div></div></header><div><img src=/images/mosca.png alt="Featured image"><p>Em uma postagem anterior, eu mostrei como configurar um <a href=/posts/2017/09/deploy-do-mosquitto-com-autenticacao-no-kubernetes/>broker MQTT no Kubernetes
 com o Mosquitto</a>. Mas o suporte do Mosquitto para a <a href=https://stackoverflow.com/questions/36283197/mqtt-mosquitto-bridge-horizontal-scaling/36283565#36283565>criação
 de clusters usando bridges</a> é muito limitado. Felizmente, existe uma solução
 muito mais simples, que utiliza o Redis para criar o cluster e o <a href=http://www.mosca.io>Mosca</a> para
-suporte ao protocolo MQTT.</p>
-<p>Essa ideia surgiu quando eu encontrei um artigo no Medium descrevendo basicamente
+suporte ao protocolo MQTT.</p><p>Essa ideia surgiu quando eu encontrei um artigo no Medium descrevendo basicamente
 a mesma arquitetura que eu irei mostrar aqui. O artigo original (em inglês) pode
 ser acessado em <em><a href=https://medium.com/@lelylan/how-to-build-an-high-availability-mqtt-cluster-for-the-internet-of-things-8011a06bd000>How to Build an High Availability MQTT Cluster for the Internet
-of Things</a></em>.</p>
-<h2 id=criação-do-broker>
-Criação do Broker
-<a class=heading-link href=#cria%c3%a7%c3%a3o-do-broker>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>De forma resumida, pode-se dizer que o Mosca é um <em>framework</em> para criação de um
+of Things</a></em>.</p><h2 id=criação-do-broker>Criação do Broker
+<a class=heading-link href=#cria%c3%a7%c3%a3o-do-broker><i class="fa fa-link" aria-hidden=true></i></a></h2><p>De forma resumida, pode-se dizer que o Mosca é um <em>framework</em> para criação de um
 broker MQTT. O Mosca em si não implementa nenhum suporte a pub/sub (que é
 necessário para o funcionamento do MQTT), mas, em vez disso, permite utilizar
 outras implementações como backend (incluindo Mosquitto, Redis, MongoDB e outros).
-O Mosca se preocupa apenas com o protocolo MQTT.</p>
-<p>Bom, com o funcionamento do Mosca bem entendido, o próximo passo é criar o broker.
+O Mosca se preocupa apenas com o protocolo MQTT.</p><p>Bom, com o funcionamento do Mosca bem entendido, o próximo passo é criar o broker.
 No caso do Mosca, isso significa criar uma aplicação NodeJS e instalar as
 dependências pelo NPM. E as única dependências necessárias são o <code>mosca</code> e um
-backend, nesse caso o <code>redis</code>.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>$ npm i -s mosca redis
-</code></pre></div><p>Esse comando deve instalar as duas dependências e adicioná-las ao <code>package.json</code>.
+backend, nesse caso o <code>redis</code>.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ npm i -s mosca redis
+</span></span></code></pre></div><p>Esse comando deve instalar as duas dependências e adicioná-las ao <code>package.json</code>.
 Em seguida, é criado o arquivo principal do projeto, que vai iniciar o Mosca e
-configurar o backend utilizado. Eu chamei esse arquivo de <code>app.js</code>.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#ff79c6>const</span> url <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;url&#39;</span>);
-<span style=color:#ff79c6>const</span> mosca <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;mosca&#39;</span>);
-<span style=color:#ff79c6>const</span> authorizer <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;./authorizer&#39;</span>);
-
-<span style=color:#ff79c6>const</span> redis <span style=color:#ff79c6>=</span> url.parse(process.env.REDIS_URL);
-
-<span style=color:#ff79c6>const</span> settings <span style=color:#ff79c6>=</span> {
-  port<span style=color:#ff79c6>:</span> <span style=color:#8be9fd;font-style:italic>parseInt</span>(process.env.MQTT_PORT) <span style=color:#ff79c6>||</span> <span style=color:#bd93f9>1883</span>,
-  backend<span style=color:#ff79c6>:</span> {
-    type<span style=color:#ff79c6>:</span> <span style=color:#f1fa8c>&#39;redis&#39;</span>,
-    redis<span style=color:#ff79c6>:</span> require(<span style=color:#f1fa8c>&#39;redis&#39;</span>),
-    host<span style=color:#ff79c6>:</span> redis.hostname,
-    port<span style=color:#ff79c6>:</span> redis.port,
-    db<span style=color:#ff79c6>:</span> <span style=color:#8be9fd;font-style:italic>parseInt</span>(redis.path.slice(<span style=color:#bd93f9>1</span>)),
-    password<span style=color:#ff79c6>:</span> redis.password,
-  },
-};
-
-console.log(<span style=color:#f1fa8c>&#39;Broker MQTT iniciando...&#39;</span>);
-
-<span style=color:#ff79c6>const</span> server <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>new</span> mosca.Server(settings);
-
-server.on(<span style=color:#f1fa8c>&#39;ready&#39;</span>, () =&gt; {
-  <span style=color:#6272a4>// Configura callbacks de autenticação e autorização
-</span><span style=color:#6272a4></span>  server.authenticate       <span style=color:#ff79c6>=</span> authorizer.authenticate;
-  server.authorizePublish   <span style=color:#ff79c6>=</span> authorizer.authorizePublish;
-  server.authorizeSubscribe <span style=color:#ff79c6>=</span> authorizer.authorizeSubscribe;
-
-  console.log(<span style=color:#f1fa8c>&#39;Broker MQTT aguardando conexões na porta&#39;</span>, settings.port);
-});
-
-server.on(<span style=color:#f1fa8c>&#39;published&#39;</span>, (packet, client) =&gt; {
-  console.log(
-    <span style=color:#f1fa8c>&#39;Message published on topic&#39;</span>,
-    packet.topic,
-    <span style=color:#f1fa8c>&#39;:&#39;</span>,
-    packet.payload.toString(),
-  );
-});
-</code></pre></div><p>O módulo <code>authorizer</code> que foi incluído nesse arquivo possui a lógica de autenticação
+configurar o backend utilizado. Eu chamei esse arquivo de <code>app.js</code>.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#ff79c6>const</span> url <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;url&#39;</span>);
+</span></span><span style=display:flex><span><span style=color:#ff79c6>const</span> mosca <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;mosca&#39;</span>);
+</span></span><span style=display:flex><span><span style=color:#ff79c6>const</span> authorizer <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;./authorizer&#39;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>const</span> redis <span style=color:#ff79c6>=</span> url.parse(process.env.REDIS_URL);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>const</span> settings <span style=color:#ff79c6>=</span> {
+</span></span><span style=display:flex><span>  port<span style=color:#ff79c6>:</span> <span style=color:#8be9fd;font-style:italic>parseInt</span>(process.env.MQTT_PORT) <span style=color:#ff79c6>||</span> <span style=color:#bd93f9>1883</span>,
+</span></span><span style=display:flex><span>  backend<span style=color:#ff79c6>:</span> {
+</span></span><span style=display:flex><span>    type<span style=color:#ff79c6>:</span> <span style=color:#f1fa8c>&#39;redis&#39;</span>,
+</span></span><span style=display:flex><span>    redis<span style=color:#ff79c6>:</span> require(<span style=color:#f1fa8c>&#39;redis&#39;</span>),
+</span></span><span style=display:flex><span>    host<span style=color:#ff79c6>:</span> redis.hostname,
+</span></span><span style=display:flex><span>    port<span style=color:#ff79c6>:</span> redis.port,
+</span></span><span style=display:flex><span>    db<span style=color:#ff79c6>:</span> <span style=color:#8be9fd;font-style:italic>parseInt</span>(redis.path.slice(<span style=color:#bd93f9>1</span>)),
+</span></span><span style=display:flex><span>    password<span style=color:#ff79c6>:</span> redis.password,
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>console.log(<span style=color:#f1fa8c>&#39;Broker MQTT iniciando...&#39;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>const</span> server <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>new</span> mosca.Server(settings);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>server.on(<span style=color:#f1fa8c>&#39;ready&#39;</span>, () =&gt; {
+</span></span><span style=display:flex><span>  <span style=color:#6272a4>// Configura callbacks de autenticação e autorização
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>  server.authenticate       <span style=color:#ff79c6>=</span> authorizer.authenticate;
+</span></span><span style=display:flex><span>  server.authorizePublish   <span style=color:#ff79c6>=</span> authorizer.authorizePublish;
+</span></span><span style=display:flex><span>  server.authorizeSubscribe <span style=color:#ff79c6>=</span> authorizer.authorizeSubscribe;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  console.log(<span style=color:#f1fa8c>&#39;Broker MQTT aguardando conexões na porta&#39;</span>, settings.port);
+</span></span><span style=display:flex><span>});
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>server.on(<span style=color:#f1fa8c>&#39;published&#39;</span>, (packet, client) =&gt; {
+</span></span><span style=display:flex><span>  console.log(
+</span></span><span style=display:flex><span>    <span style=color:#f1fa8c>&#39;Message published on topic&#39;</span>,
+</span></span><span style=display:flex><span>    packet.topic,
+</span></span><span style=display:flex><span>    <span style=color:#f1fa8c>&#39;:&#39;</span>,
+</span></span><span style=display:flex><span>    packet.payload.toString(),
+</span></span><span style=display:flex><span>  );
+</span></span><span style=display:flex><span>});
+</span></span></code></pre></div><p>O módulo <code>authorizer</code> que foi incluído nesse arquivo possui a lógica de autenticação
 e autorização dos clientes. Como autenticação não é o foco desse post, irei deixar
-aqui apenas um template de como os métodos podem ser implementados:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>module.exports.authenticate <span style=color:#ff79c6>=</span> <span style=color:#8be9fd;font-style:italic>function</span> authenticate(
-  client,
-  username,
-  passwordBuffer,
-  callback,
-) {
-  <span style=color:#ff79c6>if</span> (usuarioESenhaEstaoCorretos) {
-    <span style=color:#6272a4>// Você pode adicionar informações (ex.: permissões)
-</span><span style=color:#6272a4></span>    <span style=color:#6272a4>// sobre o cliente no objeto client, se quiser:
-</span><span style=color:#6272a4></span>    client.superuser <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>true</span>;
-    callback(<span style=color:#ff79c6>null</span>, <span style=color:#ff79c6>true</span>);
-  }
-  <span style=color:#ff79c6>else</span> {
-    callback(<span style=color:#ff79c6>null</span>, <span style=color:#ff79c6>false</span>);
-  }
-};
-
-module.exports.authorizePublish <span style=color:#ff79c6>=</span> <span style=color:#8be9fd;font-style:italic>function</span> authorizePublish(
-  client,
-  topic,
-  payload,
-  callback,
-) {
-  <span style=color:#6272a4>// Você pode verificar dados adicionados
-</span><span style=color:#6272a4></span>  <span style=color:#6272a4>// no objeto cliente durante autenticação:
-</span><span style=color:#6272a4></span>  <span style=color:#ff79c6>if</span> (client.superuser) {
-    callback(<span style=color:#ff79c6>null</span>, <span style=color:#ff79c6>true</span>);
-  }
-  <span style=color:#ff79c6>else</span> {
-    callback(<span style=color:#ff79c6>null</span>, <span style=color:#ff79c6>false</span>);
-  }
-};
-
-module.exports.authorizeSubscribe <span style=color:#ff79c6>=</span> <span style=color:#8be9fd;font-style:italic>function</span> authorizeSubscribe(
-  client,
-  topic,
-  callback,
-) {
-  <span style=color:#6272a4>// Você pode verificar dados adicionados
-</span><span style=color:#6272a4></span>  <span style=color:#6272a4>// no objeto cliente durante autenticação:
-</span><span style=color:#6272a4></span>  <span style=color:#ff79c6>if</span> (client.superuser) {
-    callback(<span style=color:#ff79c6>null</span>, <span style=color:#ff79c6>true</span>);
-  }
-  <span style=color:#ff79c6>else</span> {
-    callback(<span style=color:#ff79c6>null</span>, <span style=color:#ff79c6>false</span>);
-  }
-};
-</code></pre></div><p>Agora, para executar o broker, basta rodá-lo como uma aplicação NodeJS comum (sem
-esquecer de passar a variável de ambiente com a URL do Redis):</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>$ REDIS_URL=redis://localhost:6379/0 node app.js
-</code></pre></div><h2 id=mosca-em-um-container>
-Mosca em um container
-<a class=heading-link href=#mosca-em-um-container>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>Um Dockerfile bem simples para adicionar essa aplicação do Mosca para um container
-Docker seria assim:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=color:#ff79c6>FROM</span><span style=color:#f1fa8c> node:6-alpine</span>
-
-<span style=color:#ff79c6>EXPOSE</span><span style=color:#f1fa8c> 1883</span>
-<span style=color:#ff79c6>WORKDIR</span><span style=color:#f1fa8c> /app</span>
-<span style=color:#ff79c6>ADD</span> package.json /app/package.json
-
-<span style=color:#ff79c6>RUN</span> apk add --update --no-cache --virtual .build-deps <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>        build-base zeromq-dev <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    npm install <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    apk del --purge .build-deps <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    rm -rf /var/cache/apk
-
-<span style=color:#ff79c6>ADD</span> . /app
-
-<span style=color:#ff79c6>CMD</span> node app.js
-</code></pre></div><h2 id=mosca-no-kubernetes>
-Mosca no Kubernetes
-<a class=heading-link href=#mosca-no-kubernetes>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>Tendo a aplicação com o Mosca rodando dentro de um container, para publicar em um
+aqui apenas um template de como os métodos podem ser implementados:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span>module.exports.authenticate <span style=color:#ff79c6>=</span> <span style=color:#8be9fd;font-style:italic>function</span> authenticate(
+</span></span><span style=display:flex><span>  client,
+</span></span><span style=display:flex><span>  username,
+</span></span><span style=display:flex><span>  passwordBuffer,
+</span></span><span style=display:flex><span>  callback,
+</span></span><span style=display:flex><span>) {
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>if</span> (usuarioESenhaEstaoCorretos) {
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>// Você pode adicionar informações (ex.: permissões)
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    <span style=color:#6272a4>// sobre o cliente no objeto client, se quiser:
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>    client.superuser <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>true</span>;
+</span></span><span style=display:flex><span>    callback(<span style=color:#ff79c6>null</span>, <span style=color:#ff79c6>true</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>else</span> {
+</span></span><span style=display:flex><span>    callback(<span style=color:#ff79c6>null</span>, <span style=color:#ff79c6>false</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>module.exports.authorizePublish <span style=color:#ff79c6>=</span> <span style=color:#8be9fd;font-style:italic>function</span> authorizePublish(
+</span></span><span style=display:flex><span>  client,
+</span></span><span style=display:flex><span>  topic,
+</span></span><span style=display:flex><span>  payload,
+</span></span><span style=display:flex><span>  callback,
+</span></span><span style=display:flex><span>) {
+</span></span><span style=display:flex><span>  <span style=color:#6272a4>// Você pode verificar dados adicionados
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>  <span style=color:#6272a4>// no objeto cliente durante autenticação:
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>  <span style=color:#ff79c6>if</span> (client.superuser) {
+</span></span><span style=display:flex><span>    callback(<span style=color:#ff79c6>null</span>, <span style=color:#ff79c6>true</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>else</span> {
+</span></span><span style=display:flex><span>    callback(<span style=color:#ff79c6>null</span>, <span style=color:#ff79c6>false</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>module.exports.authorizeSubscribe <span style=color:#ff79c6>=</span> <span style=color:#8be9fd;font-style:italic>function</span> authorizeSubscribe(
+</span></span><span style=display:flex><span>  client,
+</span></span><span style=display:flex><span>  topic,
+</span></span><span style=display:flex><span>  callback,
+</span></span><span style=display:flex><span>) {
+</span></span><span style=display:flex><span>  <span style=color:#6272a4>// Você pode verificar dados adicionados
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>  <span style=color:#6272a4>// no objeto cliente durante autenticação:
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>  <span style=color:#ff79c6>if</span> (client.superuser) {
+</span></span><span style=display:flex><span>    callback(<span style=color:#ff79c6>null</span>, <span style=color:#ff79c6>true</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>else</span> {
+</span></span><span style=display:flex><span>    callback(<span style=color:#ff79c6>null</span>, <span style=color:#ff79c6>false</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><p>Agora, para executar o broker, basta rodá-lo como uma aplicação NodeJS comum (sem
+esquecer de passar a variável de ambiente com a URL do Redis):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ REDIS_URL=redis://localhost:6379/0 node app.js
+</span></span></code></pre></div><h2 id=mosca-em-um-container>Mosca em um container
+<a class=heading-link href=#mosca-em-um-container><i class="fa fa-link" aria-hidden=true></i></a></h2><p>Um Dockerfile bem simples para adicionar essa aplicação do Mosca para um container
+Docker seria assim:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=display:flex><span><span style=color:#ff79c6>FROM</span><span style=color:#f1fa8c> node:6-alpine</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>EXPOSE</span><span style=color:#f1fa8c> 1883</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>WORKDIR</span><span style=color:#f1fa8c> /app</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>ADD</span> package.json /app/package.json
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>RUN</span> apk add --update --no-cache --virtual .build-deps <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>        build-base zeromq-dev <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    npm install <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    apk del --purge .build-deps <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    rm -rf /var/cache/apk
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>ADD</span> . /app
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>CMD</span> node app.js
+</span></span></code></pre></div><h2 id=mosca-no-kubernetes>Mosca no Kubernetes
+<a class=heading-link href=#mosca-no-kubernetes><i class="fa fa-link" aria-hidden=true></i></a></h2><p>Tendo a aplicação com o Mosca rodando dentro de um container, para publicar em um
 cluster do Kubernetes não é muito diferente do que <a href=/posts/2017/09/deploy-do-mosquitto-com-autenticacao-no-kubernetes/>publicar o Mosquitto</a>.
-E, para escalonar o cluster, um <em><a href=https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/>Horizontal Pod Autoscaler</a></em> deve resolver.</p>
-</div>
-<footer>
-</footer>
-</article>
-</section>
-</div>
-<footer class=footer>
-<section class=container>
-&copy;
+E, para escalonar o cluster, um <em><a href=https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/>Horizontal Pod Autoscaler</a></em> deve resolver.</p></div><footer></footer></article></section></div><footer class=footer><section class=container>&copy;
 2011 -
-2021
+2023
 Eduardo Weiland
 &#183;
 <a rel="license noopener" href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>
 &#183;
-<a rel=noopener href=https://github.com/eduardoweiland/ew.dev.br>Free Software</a>
-</section>
-</footer>
-</main>
-<script src=/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
-</body>
-</html>
+<a rel=noopener href=https://github.com/eduardoweiland/ew.dev.br>Free Software</a></section></footer></main><script src=/js/coder.min.978ac2219b08e24e68c3f3eada8d99add50d9d997ce3861354b602cc94f75f30.js integrity="sha256-l4rCIZsI4k5ow/Pq2o2ZrdUNnZl844YTVLYCzJT3XzA="></script></body></html>

@@ -1,223 +1,86 @@
-<!doctype html><html lang=pt-br>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=content-language content="pt-br">
-<meta name=color-scheme content="light dark">
-<meta http-equiv=content-security-policy content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self'; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; prefetch-src 'self'; connect-src 'self';">
-<meta name=author content="Eduardo Weiland">
-<meta name=description content="O Arduino é, basicamente, uma plataforma de aprendizado. A IDE oficial é bem simples e não oferece muitos recursos para usuários mais avançados. Para quem quer manter as dependências/bibliotecas organizadas, a IDE do Arduino não ajuda em nada. Felizmente existe o PlatformIO. E, nesse post, eu vou mostrar como eu atualizei o Placarduino para utilizar a estrutura de um projeto dessa plataforma.
- Com as ideias de melhorias para o Placarduino, em breve ele deve se transformar em um pequeno monstro 🙂.">
-<meta name=keywords content="blog,home,portfolio,personal,developer,maker">
-<meta name=twitter:card content="summary">
-<meta name=twitter:title content="Substituindo a IDE do Arduino pelo PlatformIO">
-<meta name=twitter:description content="O Arduino é, basicamente, uma plataforma de aprendizado. A IDE oficial é bem simples e não oferece muitos recursos para usuários mais avançados. Para quem quer manter as dependências/bibliotecas organizadas, a IDE do Arduino não ajuda em nada. Felizmente existe o PlatformIO. E, nesse post, eu vou mostrar como eu atualizei o Placarduino para utilizar a estrutura de um projeto dessa plataforma.
- Com as ideias de melhorias para o Placarduino, em breve ele deve se transformar em um pequeno monstro 🙂.">
-<meta property="og:title" content="Substituindo a IDE do Arduino pelo PlatformIO">
-<meta property="og:description" content="O Arduino é, basicamente, uma plataforma de aprendizado. A IDE oficial é bem simples e não oferece muitos recursos para usuários mais avançados. Para quem quer manter as dependências/bibliotecas organizadas, a IDE do Arduino não ajuda em nada. Felizmente existe o PlatformIO. E, nesse post, eu vou mostrar como eu atualizei o Placarduino para utilizar a estrutura de um projeto dessa plataforma.
- Com as ideias de melhorias para o Placarduino, em breve ele deve se transformar em um pequeno monstro 🙂.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ew.dev.br/posts/2017/10/substituindo-a-ide-do-arduino-pelo-platformio/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2017-10-31T23:35:33-02:00">
-<meta property="article:modified_time" content="2017-10-31T23:35:33-02:00">
-<meta property="og:see_also" content="https://ew.dev.br/posts/2018/02/reset-automatico-do-placarduino-apos-o-fim-do-jogo/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/02/fim-de-jogo-para-o-placarduino/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/01/cartoes-de-acesso-para-o-placarduino/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/01/refatoracao-do-placarduino/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/"><meta property="og:see_also" content="https://ew.dev.br/posts/2017/11/display-maior-numeros-maiores/">
-<title>
-Substituindo a IDE do Arduino pelo PlatformIO · Eduardo Weiland
-</title>
-<link rel=canonical href=https://ew.dev.br/posts/2017/10/substituindo-a-ide-do-arduino-pelo-platformio/>
-<link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.1.7" as=font type=font/woff2 crossorigin>
-<link rel=stylesheet href=/css/coder.min.cbf6f68b2a836dd1d34f005153262dd21d148461cf33684940f1bb4c048821b1.css integrity="sha256-y/b2iyqDbdHTTwBRUyYt0h0UhGHPM2hJQPG7TASIIbE=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=/css/coder-dark.min.dde8a61eb31a32353b4baf3d9113f03c4ea2a8ca9bb736f59ca2d2b2cb664f0b.css integrity="sha256-3eimHrMaMjU7S689kRPwPE6iqMqbtzb1nKLSsstmTws=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=/css/custom.css>
-<link rel=icon type=image/png href=/images/favicon32.png sizes=32x32>
-<link rel=icon type=image/png href=/images/favicon16.png sizes=16x16>
-<link rel=apple-touch-icon href=/images/apple-touch-icon.png>
-<link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png>
-<meta name=generator content="Hugo 0.88.1">
-</head>
-<body class="preload-transitions colorscheme-auto">
-<div class=float-container>
-<a id=dark-mode-toggle class=colorscheme-toggle>
-<i class="fa fa-adjust fa-fw" aria-hidden=true></i>
-</a>
-</div>
-<main class=wrapper>
-<nav class=navigation>
-<section class=container>
-<a class=navigation-title href=/>
-Eduardo Weiland
-</a>
+<!doctype html><html lang=pt-br><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=content-language content="pt-br"><meta name=color-scheme content="light dark"><meta http-equiv=content-security-policy content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self'; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; prefetch-src 'self'; connect-src 'self';"><meta name=author content="Eduardo Weiland"><meta name=description content="O Arduino é, basicamente, uma plataforma de aprendizado. A IDE oficial é bem simples e não oferece muitos recursos para usuários mais avançados. Para quem quer manter as dependências/bibliotecas organizadas, a IDE do Arduino não ajuda em nada. Felizmente existe o PlatformIO. E, nesse post, eu vou mostrar como eu atualizei o Placarduino para utilizar a estrutura de um projeto dessa plataforma.
+Com as ideias de melhorias para o Placarduino, em breve ele deve se transformar em um pequeno monstro 🙂."><meta name=keywords content="blog,home,portfolio,personal,developer,maker"><meta name=twitter:card content="summary"><meta name=twitter:title content="Substituindo a IDE do Arduino pelo PlatformIO"><meta name=twitter:description content="O Arduino é, basicamente, uma plataforma de aprendizado. A IDE oficial é bem simples e não oferece muitos recursos para usuários mais avançados. Para quem quer manter as dependências/bibliotecas organizadas, a IDE do Arduino não ajuda em nada. Felizmente existe o PlatformIO. E, nesse post, eu vou mostrar como eu atualizei o Placarduino para utilizar a estrutura de um projeto dessa plataforma.
+Com as ideias de melhorias para o Placarduino, em breve ele deve se transformar em um pequeno monstro 🙂."><meta property="og:title" content="Substituindo a IDE do Arduino pelo PlatformIO"><meta property="og:description" content="O Arduino é, basicamente, uma plataforma de aprendizado. A IDE oficial é bem simples e não oferece muitos recursos para usuários mais avançados. Para quem quer manter as dependências/bibliotecas organizadas, a IDE do Arduino não ajuda em nada. Felizmente existe o PlatformIO. E, nesse post, eu vou mostrar como eu atualizei o Placarduino para utilizar a estrutura de um projeto dessa plataforma.
+Com as ideias de melhorias para o Placarduino, em breve ele deve se transformar em um pequeno monstro 🙂."><meta property="og:type" content="article"><meta property="og:url" content="https://ew.dev.br/posts/2017/10/substituindo-a-ide-do-arduino-pelo-platformio/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-10-31T23:35:33-02:00"><meta property="article:modified_time" content="2017-10-31T23:35:33-02:00"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/02/reset-automatico-do-placarduino-apos-o-fim-do-jogo/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/02/fim-de-jogo-para-o-placarduino/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/01/cartoes-de-acesso-para-o-placarduino/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/01/refatoracao-do-placarduino/"><meta property="og:see_also" content="https://ew.dev.br/posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/"><meta property="og:see_also" content="https://ew.dev.br/posts/2017/11/display-maior-numeros-maiores/"><title>Substituindo a IDE do Arduino pelo PlatformIO · Eduardo Weiland</title><link rel=canonical href=https://ew.dev.br/posts/2017/10/substituindo-a-ide-do-arduino-pelo-platformio/><link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.1.7" as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.cbf6f68b2a836dd1d34f005153262dd21d148461cf33684940f1bb4c048821b1.css integrity="sha256-y/b2iyqDbdHTTwBRUyYt0h0UhGHPM2hJQPG7TASIIbE=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.dde8a61eb31a32353b4baf3d9113f03c4ea2a8ca9bb736f59ca2d2b2cb664f0b.css integrity="sha256-3eimHrMaMjU7S689kRPwPE6iqMqbtzb1nKLSsstmTws=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/custom.css><link rel=icon type=image/png href=/images/favicon32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><meta name=generator content="Hugo 0.119.0"></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=/>Eduardo Weiland</a>
 <input type=checkbox id=menu-toggle>
-<label class="menu-button float-right" for=menu-toggle>
-<i class="fa fa-bars fa-fw" aria-hidden=true></i>
-</label>
-<ul class=navigation-list>
-<li class=navigation-item>
-<a class=navigation-link href=/posts/>Blog</a>
-</li>
-</ul>
-</section>
-</nav>
-<div class=content>
-<section class="container post">
-<article>
-<header>
-<div class=post-title>
-<h1 class=title>
-<a class=title-link href=https://ew.dev.br/posts/2017/10/substituindo-a-ide-do-arduino-pelo-platformio/>
-Substituindo a IDE do Arduino pelo PlatformIO
-</a>
-</h1>
-</div>
-<div class=post-meta>
-<div class=date>
-<span class=posted-on>
-<i class="fa fa-calendar" aria-hidden=true></i>
-<time datetime=2017-10-31T23:35:33-02:00>
-Oct 31, 2017
-</time>
-</span>
-<span class=reading-time>
-<i class="fa fa-clock-o" aria-hidden=true></i>
-4 minutos de leitura
-</span>
-</div>
-<div class=tags>
-<i class="fa fa-tag" aria-hidden=true></i>
+<label class="menu-button float-right" for=menu-toggle><i class="fa fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://ew.dev.br/posts/2017/10/substituindo-a-ide-do-arduino-pelo-platformio/>Substituindo a IDE do Arduino pelo PlatformIO</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2017-10-31T23:35:33-02:00>Oct 31, 2017</time></span>
+<span class=reading-time><i class="fa fa-clock-o" aria-hidden=true></i>
+4 minutos de leitura</span></div><div class=tags><i class="fa fa-tag" aria-hidden=true></i>
 <a href=/tags/arduino/>arduino</a>
 <span class=separator>•</span>
 <a href=/tags/eletronica/>eletronica</a>
 <span class=separator>•</span>
-<a href=/tags/placarduino/>placarduino</a></div>
-</div>
-</header>
-<div>
-<img src=/images/platformio-logo.png alt="Featured image">
-<p>O Arduino é, basicamente, uma plataforma de aprendizado. A IDE oficial é bem
+<a href=/tags/placarduino/>placarduino</a></div></div></header><div><img src=/images/platformio-logo.png alt="Featured image"><p>O Arduino é, basicamente, uma plataforma de aprendizado. A IDE oficial é bem
 simples e não oferece muitos recursos para usuários mais avançados. Para quem
 quer manter as dependências/bibliotecas organizadas, a IDE do Arduino não ajuda
 em nada. Felizmente existe o <a href=http://platformio.org/>PlatformIO</a>. E, nesse post, eu vou mostrar como
 eu atualizei o <a href=/posts/2017/10/placarduino-placar-eletronico-com-arduino/>Placarduino</a> para utilizar a estrutura de um projeto dessa
-plataforma.</p>
-<hr>
-<p>Com as ideias de melhorias para o Placarduino, em breve ele deve se transformar
+plataforma.</p><hr><p>Com as ideias de melhorias para o Placarduino, em breve ele deve se transformar
 em um pequeno monstro 🙂. Várias bibliotecas externas utilizadas, em versões
 específicas, algumas que poderiam ser instaladas pelo gerenciador de bibliotecas
 do Arduino, outras que precisariam ser baixadas, descompactadas e copiadas para
 um diretório específico, além das bibliotecas internas para separar as funções
 do programa e vários arquivos no projeto principal. É, a organização do código
-será fundamental para continuar desenvolvendo esse projeto.</p>
-<p>O PlatformIO se descreve como um ecossistema de código-aberto para desenvolvimento
+será fundamental para continuar desenvolvendo esse projeto.</p><p>O PlatformIO se descreve como um ecossistema de código-aberto para desenvolvimento
 de Internet das Coisas. O <a href=http://docs.platformio.org/en/latest/core.html>core</a> dele consiste em uma arquitetura
 de compilação multiplataforma, um gerenciador de bibliotecas com gerenciamento
 de dependências dos projetos (similar ao NPM e ao Composer), um localizador de
 dependências utilizadas (que verifica os <code>#include</code>&rsquo;s para saber quais bibliotecas
-devem ser compiladas) e outras ferramentas.</p>
-<p>Além do core, o PlatformIO também pode ser <a href=http://docs.platformio.org/en/latest/ide.html>integrado a várias IDEs</a>.
+devem ser compiladas) e outras ferramentas.</p><p>Além do core, o PlatformIO também pode ser <a href=http://docs.platformio.org/en/latest/ide.html>integrado a várias IDEs</a>.
 As IDEs mais recomendadas são o Atom e o VSCode. É essa integração do PlatformIO
 com a IDE que eu vou utilizar e mostrar neste post. Para continuar, eu escolhi o
 VSCode como IDE por ser mais rápido e responsivo que o Atom (<em>pelo menos uma vez
-na vida a Microsoft fez um software decente&mldr;</em>).</p>
-<p>Abrindo a IDE com o plugin instalado, existe uma opção para importar um sketch
+na vida a Microsoft fez um software decente&mldr;</em>).</p><p>Abrindo a IDE com o plugin instalado, existe uma opção para importar um sketch
 existente do Arduino. Essa opção, basicamente, cria um novo projeto baseado no
 template padrão e copia todos os arquivos do sketch do Arduino para uma pasta
 <code>src</code> dentro do novo projeto. Mas não funcionou muito bem com o Placarduino.
 Como o sketch atual é um repositório Git, ao fazer essa importação, o repositório
 ficou dentro do src e não no projeto inteiro. Então eu decidi fazer a migração
-manualmente.</p>
-<p>Um projeto do PlatformIO é identificado por um arquivo <code>platformio.ini</code> na raiz
+manualmente.</p><p>Um projeto do PlatformIO é identificado por um arquivo <code>platformio.ini</code> na raiz
 do diretório. Nesse arquivo são configurados a placa e o framework utilizados (o
 PlatformIO suporta vários, mas eu só estou desenvolvendo o Placarduino com a
 placa Arduino UNO e o framework Arduino). Esse mesmo arquivo também é utilizado
 para listar as dependências de bibliotecas, que serão instaladas automaticamente.
 Eu me baseei no arquivo gerado para um novo projeto e na <a href=http://docs.platformio.org/en/latest/projectconf.html>documentação do formato
-desse arquivo</a>, e acabei com essa configuração:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ini data-lang=ini><span style=color:#6272a4>; PlatformIO Project Configuration File</span>
-<span style=color:#6272a4>;</span>
-<span style=color:#6272a4>;   Build options: build flags, source filter</span>
-<span style=color:#6272a4>;   Upload options: custom upload port, speed and extra flags</span>
-<span style=color:#6272a4>;   Library options: dependencies, extra library storages</span>
-<span style=color:#6272a4>;   Advanced options: extra scripting</span>
-<span style=color:#6272a4>;</span>
-<span style=color:#6272a4>; Please visit documentation for the other options and examples</span>
-<span style=color:#6272a4>; http://docs.platformio.org/page/projectconf.html</span>
-
-<span style=color:#ff79c6>[env:uno]</span>
-<span style=color:#50fa7b>platform</span> <span style=color:#ff79c6>=</span> <span style=color:#f1fa8c>atmelavr</span>
-<span style=color:#50fa7b>board</span> <span style=color:#ff79c6>=</span> <span style=color:#f1fa8c>uno</span>
-<span style=color:#50fa7b>framework</span> <span style=color:#ff79c6>=</span> <span style=color:#f1fa8c>arduino</span>
-
-<span style=color:#50fa7b>lib_deps</span> <span style=color:#ff79c6>=</span><span style=color:#f1fa8c>
-</span><span style=color:#f1fa8c>    Wire@1.0
-</span><span style=color:#f1fa8c>    LiquidCrystal@1.3.4
-</span><span style=color:#f1fa8c>    ToneLibrary@1.7.1</span>
-</code></pre></div><p>Nesse arquivo, as opções <code>platform</code>, <code>board</code> e <code>framework</code> em conjunto configuram
+desse arquivo</a>, e acabei com essa configuração:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ini data-lang=ini><span style=display:flex><span><span style=color:#6272a4>; PlatformIO Project Configuration File</span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>;</span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>;   Build options: build flags, source filter</span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>;   Upload options: custom upload port, speed and extra flags</span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>;   Library options: dependencies, extra library storages</span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>;   Advanced options: extra scripting</span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>;</span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>; Please visit documentation for the other options and examples</span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>; http://docs.platformio.org/page/projectconf.html</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>[env:uno]</span>
+</span></span><span style=display:flex><span><span style=color:#50fa7b>platform</span> <span style=color:#ff79c6>=</span> <span style=color:#f1fa8c>atmelavr</span>
+</span></span><span style=display:flex><span><span style=color:#50fa7b>board</span> <span style=color:#ff79c6>=</span> <span style=color:#f1fa8c>uno</span>
+</span></span><span style=display:flex><span><span style=color:#50fa7b>framework</span> <span style=color:#ff79c6>=</span> <span style=color:#f1fa8c>arduino</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#50fa7b>lib_deps</span> <span style=color:#ff79c6>=</span><span style=color:#f1fa8c>
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c>    Wire@1.0
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c>    LiquidCrystal@1.3.4
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c>    ToneLibrary@1.7.1</span>
+</span></span></code></pre></div><p>Nesse arquivo, as opções <code>platform</code>, <code>board</code> e <code>framework</code> em conjunto configuram
 a placa que está sendo utilizada e como deve ser feita a compilação e &ldquo;deploy&rdquo;
 para ela. Você pode ver <a href=http://platformio.org/boards>nessa página</a> todas as opções e
-combinações possíveis.</p>
-<p>A opção <code>lib_deps</code> é uma lista das dependências do projeto. Para pesquisar as
+combinações possíveis.</p><p>A opção <code>lib_deps</code> é uma lista das dependências do projeto. Para pesquisar as
 bibliotecas disponíveis, você pode utilizar o PIO Home (ícone de casa na barra
 interior do VSCode), pesquisar a biblioteca, copiar o nome e versão da aba
 &ldquo;Install&rdquo; e colocar nesse arquivo. Após salvar esse arquivo, o PlatformIO já
-vai baixar as dependências automaticamente e salvar na pasta <code>.piolibdeps</code>.</p>
-<p>Depois de criar o <code>platformio.ini</code>, eu movi alguns arquivos para melhorar a
-organização:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>$ mkdir docs src
-$ git mv Placarduino.fzz docs/
-$ git mv Placarduino.ino src/
-</code></pre></div><p>O resto dos arquivos necessários, o próprio PlatformIO gera automaticamente
-quando o projeto é aberto na IDE.</p>
-<p>Agora programar para Arduino já está mais parecido com programação de softwares
-no século 21 😉</p>
-</div>
-<footer>
-<section class=see-also>
-<h3 id=see-also-in-placarduino>
-See also in placarduino
-<a class=heading-link href=#see-also-in-placarduino>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<nav>
-<ul>
-<li>
-<a href=/posts/2018/02/reset-automatico-do-placarduino-apos-o-fim-do-jogo/>Reset automático do Placarduino após o fim do jogo</a>
-</li>
-<li>
-<a href=/posts/2018/02/fim-de-jogo-para-o-placarduino/>Fim de jogo para o Placarduino</a>
-</li>
-<li>
-<a href=/posts/2018/01/cartoes-de-acesso-para-o-placarduino/>Cartões de acesso para o Placarduino</a>
-</li>
-<li>
-<a href=/posts/2018/01/refatoracao-do-placarduino/>Refatoração do Placarduino</a>
-</li>
-<li>
-<a href=/posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/>Atualização do Placarduino: redução de pontos</a>
-</li>
-<li>
-<a href=/posts/2017/11/display-maior-numeros-maiores/>Display maior, números maiores</a>
-</li>
-</ul>
-</nav>
-</section>
-</footer>
-</article>
-</section>
-</div>
-<footer class=footer>
-<section class=container>
-&copy;
+vai baixar as dependências automaticamente e salvar na pasta <code>.piolibdeps</code>.</p><p>Depois de criar o <code>platformio.ini</code>, eu movi alguns arquivos para melhorar a
+organização:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ mkdir docs src
+</span></span><span style=display:flex><span>$ git mv Placarduino.fzz docs/
+</span></span><span style=display:flex><span>$ git mv Placarduino.ino src/
+</span></span></code></pre></div><p>O resto dos arquivos necessários, o próprio PlatformIO gera automaticamente
+quando o projeto é aberto na IDE.</p><p>Agora programar para Arduino já está mais parecido com programação de softwares
+no século 21 😉</p></div><footer><section class=see-also><h3 id=see-also-in-placarduino>See also in placarduino
+<a class=heading-link href=#see-also-in-placarduino><i class="fa fa-link" aria-hidden=true></i></a></h3><nav><ul><li><a href=/posts/2018/02/reset-automatico-do-placarduino-apos-o-fim-do-jogo/>Reset automático do Placarduino após o fim do jogo</a></li><li><a href=/posts/2018/02/fim-de-jogo-para-o-placarduino/>Fim de jogo para o Placarduino</a></li><li><a href=/posts/2018/01/cartoes-de-acesso-para-o-placarduino/>Cartões de acesso para o Placarduino</a></li><li><a href=/posts/2018/01/refatoracao-do-placarduino/>Refatoração do Placarduino</a></li><li><a href=/posts/2018/01/atualizacao-do-placarduino-reducao-de-pontos/>Atualização do Placarduino: redução de pontos</a></li><li><a href=/posts/2017/11/display-maior-numeros-maiores/>Display maior, números maiores</a></li></ul></nav></section></footer></article></section></div><footer class=footer><section class=container>&copy;
 2011 -
-2021
+2023
 Eduardo Weiland
 &#183;
 <a rel="license noopener" href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>
 &#183;
-<a rel=noopener href=https://github.com/eduardoweiland/ew.dev.br>Free Software</a>
-</section>
-</footer>
-</main>
-<script src=/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
-</body>
-</html>
+<a rel=noopener href=https://github.com/eduardoweiland/ew.dev.br>Free Software</a></section></footer></main><script src=/js/coder.min.978ac2219b08e24e68c3f3eada8d99add50d9d997ce3861354b602cc94f75f30.js integrity="sha256-l4rCIZsI4k5ow/Pq2o2ZrdUNnZl844YTVLYCzJT3XzA="></script></body></html>

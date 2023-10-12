@@ -1,88 +1,12 @@
-<!doctype html><html lang=pt-br>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=content-language content="pt-br">
-<meta name=color-scheme content="light dark">
-<meta http-equiv=content-security-policy content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self'; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; prefetch-src 'self'; connect-src 'self';">
-<meta name=author content="Eduardo Weiland">
-<meta name=description content="O Mosquitto é um broker MQTT de código aberto e desenvolvido com apoio da Eclipse Foundation. O MQTT é um protocolo de comunicação no estilo pub/sub, muito utilizado em aplicações de Internet das Coisas. Neste post, vou mostrar como configurar e publicar o Mosquitto com suporte a criptografia, autenticação e autorização em um cluster do Kubernetes.
-Esse artigo assume que você já tem alguma experiência com Docker e possui acesso a um cluster Kubernetes para fazer o deploy do Mosquitto.">
-<meta name=keywords content="blog,home,portfolio,personal,developer,maker">
-<meta name=twitter:card content="summary">
-<meta name=twitter:title content="Deploy do Mosquitto com autenticação no Kubernetes">
-<meta name=twitter:description content="O Mosquitto é um broker MQTT de código aberto e desenvolvido com apoio da Eclipse Foundation. O MQTT é um protocolo de comunicação no estilo pub/sub, muito utilizado em aplicações de Internet das Coisas. Neste post, vou mostrar como configurar e publicar o Mosquitto com suporte a criptografia, autenticação e autorização em um cluster do Kubernetes.
-Esse artigo assume que você já tem alguma experiência com Docker e possui acesso a um cluster Kubernetes para fazer o deploy do Mosquitto.">
-<meta property="og:title" content="Deploy do Mosquitto com autenticação no Kubernetes">
-<meta property="og:description" content="O Mosquitto é um broker MQTT de código aberto e desenvolvido com apoio da Eclipse Foundation. O MQTT é um protocolo de comunicação no estilo pub/sub, muito utilizado em aplicações de Internet das Coisas. Neste post, vou mostrar como configurar e publicar o Mosquitto com suporte a criptografia, autenticação e autorização em um cluster do Kubernetes.
-Esse artigo assume que você já tem alguma experiência com Docker e possui acesso a um cluster Kubernetes para fazer o deploy do Mosquitto.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ew.dev.br/posts/2017/09/deploy-do-mosquitto-com-autenticacao-no-kubernetes/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2017-09-22T11:10:45-03:00">
-<meta property="article:modified_time" content="2017-09-22T11:10:45-03:00">
-<title>
-Deploy do Mosquitto com autenticação no Kubernetes · Eduardo Weiland
-</title>
-<link rel=canonical href=https://ew.dev.br/posts/2017/09/deploy-do-mosquitto-com-autenticacao-no-kubernetes/>
-<link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.1.7" as=font type=font/woff2 crossorigin>
-<link rel=stylesheet href=/css/coder.min.cbf6f68b2a836dd1d34f005153262dd21d148461cf33684940f1bb4c048821b1.css integrity="sha256-y/b2iyqDbdHTTwBRUyYt0h0UhGHPM2hJQPG7TASIIbE=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=/css/coder-dark.min.dde8a61eb31a32353b4baf3d9113f03c4ea2a8ca9bb736f59ca2d2b2cb664f0b.css integrity="sha256-3eimHrMaMjU7S689kRPwPE6iqMqbtzb1nKLSsstmTws=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=/css/custom.css>
-<link rel=icon type=image/png href=/images/favicon32.png sizes=32x32>
-<link rel=icon type=image/png href=/images/favicon16.png sizes=16x16>
-<link rel=apple-touch-icon href=/images/apple-touch-icon.png>
-<link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png>
-<meta name=generator content="Hugo 0.88.1">
-</head>
-<body class="preload-transitions colorscheme-auto">
-<div class=float-container>
-<a id=dark-mode-toggle class=colorscheme-toggle>
-<i class="fa fa-adjust fa-fw" aria-hidden=true></i>
-</a>
-</div>
-<main class=wrapper>
-<nav class=navigation>
-<section class=container>
-<a class=navigation-title href=/>
-Eduardo Weiland
-</a>
+<!doctype html><html lang=pt-br><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=content-language content="pt-br"><meta name=color-scheme content="light dark"><meta http-equiv=content-security-policy content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self'; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; prefetch-src 'self'; connect-src 'self';"><meta name=author content="Eduardo Weiland"><meta name=description content="O Mosquitto é um broker MQTT de código aberto e desenvolvido com apoio da Eclipse Foundation. O MQTT é um protocolo de comunicação no estilo pub/sub, muito utilizado em aplicações de Internet das Coisas. Neste post, vou mostrar como configurar e publicar o Mosquitto com suporte a criptografia, autenticação e autorização em um cluster do Kubernetes.
+Esse artigo assume que você já tem alguma experiência com Docker e possui acesso a um cluster Kubernetes para fazer o deploy do Mosquitto."><meta name=keywords content="blog,home,portfolio,personal,developer,maker"><meta name=twitter:card content="summary"><meta name=twitter:title content="Deploy do Mosquitto com autenticação no Kubernetes"><meta name=twitter:description content="O Mosquitto é um broker MQTT de código aberto e desenvolvido com apoio da Eclipse Foundation. O MQTT é um protocolo de comunicação no estilo pub/sub, muito utilizado em aplicações de Internet das Coisas. Neste post, vou mostrar como configurar e publicar o Mosquitto com suporte a criptografia, autenticação e autorização em um cluster do Kubernetes.
+Esse artigo assume que você já tem alguma experiência com Docker e possui acesso a um cluster Kubernetes para fazer o deploy do Mosquitto."><meta property="og:title" content="Deploy do Mosquitto com autenticação no Kubernetes"><meta property="og:description" content="O Mosquitto é um broker MQTT de código aberto e desenvolvido com apoio da Eclipse Foundation. O MQTT é um protocolo de comunicação no estilo pub/sub, muito utilizado em aplicações de Internet das Coisas. Neste post, vou mostrar como configurar e publicar o Mosquitto com suporte a criptografia, autenticação e autorização em um cluster do Kubernetes.
+Esse artigo assume que você já tem alguma experiência com Docker e possui acesso a um cluster Kubernetes para fazer o deploy do Mosquitto."><meta property="og:type" content="article"><meta property="og:url" content="https://ew.dev.br/posts/2017/09/deploy-do-mosquitto-com-autenticacao-no-kubernetes/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-09-22T11:10:45-03:00"><meta property="article:modified_time" content="2017-09-22T11:10:45-03:00"><title>Deploy do Mosquitto com autenticação no Kubernetes · Eduardo Weiland</title><link rel=canonical href=https://ew.dev.br/posts/2017/09/deploy-do-mosquitto-com-autenticacao-no-kubernetes/><link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.1.7" as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.cbf6f68b2a836dd1d34f005153262dd21d148461cf33684940f1bb4c048821b1.css integrity="sha256-y/b2iyqDbdHTTwBRUyYt0h0UhGHPM2hJQPG7TASIIbE=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.dde8a61eb31a32353b4baf3d9113f03c4ea2a8ca9bb736f59ca2d2b2cb664f0b.css integrity="sha256-3eimHrMaMjU7S689kRPwPE6iqMqbtzb1nKLSsstmTws=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/custom.css><link rel=icon type=image/png href=/images/favicon32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><meta name=generator content="Hugo 0.119.0"></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=/>Eduardo Weiland</a>
 <input type=checkbox id=menu-toggle>
-<label class="menu-button float-right" for=menu-toggle>
-<i class="fa fa-bars fa-fw" aria-hidden=true></i>
-</label>
-<ul class=navigation-list>
-<li class=navigation-item>
-<a class=navigation-link href=/posts/>Blog</a>
-</li>
-</ul>
-</section>
-</nav>
-<div class=content>
-<section class="container post">
-<article>
-<header>
-<div class=post-title>
-<h1 class=title>
-<a class=title-link href=https://ew.dev.br/posts/2017/09/deploy-do-mosquitto-com-autenticacao-no-kubernetes/>
-Deploy do Mosquitto com autenticação no Kubernetes
-</a>
-</h1>
-</div>
-<div class=post-meta>
-<div class=date>
-<span class=posted-on>
-<i class="fa fa-calendar" aria-hidden=true></i>
-<time datetime=2017-09-22T11:10:45-03:00>
-Sep 22, 2017
-</time>
-</span>
-<span class=reading-time>
-<i class="fa fa-clock-o" aria-hidden=true></i>
-8 minutos de leitura
-</span>
-</div>
-<div class=tags>
-<i class="fa fa-tag" aria-hidden=true></i>
+<label class="menu-button float-right" for=menu-toggle><i class="fa fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://ew.dev.br/posts/2017/09/deploy-do-mosquitto-com-autenticacao-no-kubernetes/>Deploy do Mosquitto com autenticação no Kubernetes</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2017-09-22T11:10:45-03:00>Sep 22, 2017</time></span>
+<span class=reading-time><i class="fa fa-clock-o" aria-hidden=true></i>
+8 minutos de leitura</span></div><div class=tags><i class="fa fa-tag" aria-hidden=true></i>
 <a href=/tags/docker/>docker</a>
 <span class=separator>•</span>
 <a href=/tags/kubernetes/>kubernetes</a>
@@ -91,348 +15,306 @@ Sep 22, 2017
 <span class=separator>•</span>
 <a href=/tags/mqtt/>mqtt</a>
 <span class=separator>•</span>
-<a href=/tags/nodejs/>nodejs</a></div>
-</div>
-</header>
-<div>
-<img src=/images/mosquitto-kubernetes.png alt="Featured image">
-<p>O <a href=https://mosquitto.org/>Mosquitto</a> é um broker MQTT de código aberto e desenvolvido com apoio da
+<a href=/tags/nodejs/>nodejs</a></div></div></header><div><img src=/images/mosquitto-kubernetes.png alt="Featured image"><p>O <a href=https://mosquitto.org/>Mosquitto</a> é um broker MQTT de código aberto e desenvolvido com apoio da
 Eclipse Foundation. O MQTT é um protocolo de comunicação no estilo <a href=https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern>pub/sub</a>,
 muito utilizado em aplicações de Internet das Coisas. Neste post, vou mostrar
 como configurar e publicar o Mosquitto com suporte a criptografia, autenticação
-e autorização em um cluster do Kubernetes.</p>
-<p>Esse artigo assume que você já tem alguma experiência com Docker e possui
-acesso a um cluster Kubernetes para fazer o deploy do Mosquitto.</p>
-<hr>
-<p>Antes de mais nada, precisamos colocar o Mosquitto em um container. Já existem
+e autorização em um cluster do Kubernetes.</p><p>Esse artigo assume que você já tem alguma experiência com Docker e possui
+acesso a um cluster Kubernetes para fazer o deploy do Mosquitto.</p><hr><p>Antes de mais nada, precisamos colocar o Mosquitto em um container. Já existem
 algumas imagens prontas no Docker Hub, mas, além dele, também vamos precisar de
 um plugin para fornecer a autenticação. Vou utilizar o <a href=https://github.com/jpmens/mosquitto-auth-plug>mosquitto-auth-plug</a>,
 que é um dos plugins mais completos. Para isso, eu criei esse Dockerfile que
-instala o Mosquitto e também o plugin:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=color:#ff79c6>FROM</span><span style=color:#f1fa8c> alpine:3.6</span>
-
-<span style=color:#ff79c6>EXPOSE</span><span style=color:#f1fa8c> 1883</span>
-
-<span style=color:#ff79c6>RUN</span> apk add --update --no-cache mosquitto libcurl libssl1.0 <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    rm -rf /var/cache/apk
-
-<span style=color:#ff79c6>ADD</span> auth-plug-build-config.mk /
-
-<span style=color:#ff79c6>RUN</span> apk add --update --no-cache --virtual build-deps <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>        mosquitto-dev git build-base curl-dev openssl-dev <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    git clone git://github.com/jpmens/mosquitto-auth-plug.git <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>        /mosquitto-auth-plug <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    <span style=color:#8be9fd;font-style:italic>cd</span> /mosquitto-auth-plug <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    mv /auth-plug-build-config.mk config.mk <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    make <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    cp auth-plug.so /usr/local/lib/auth-plug.so <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    <span style=color:#8be9fd;font-style:italic>cd</span> / <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    rm -rf /mosquitto-auth-plug <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    apk del --purge build-deps <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
-</span><span style=color:#f1fa8c></span>    rm -rf /var/cache/apk
-
-<span style=color:#ff79c6>ADD</span> mosquitto.conf /etc/mosquitto/mosquitto.conf
-<span style=color:#ff79c6>ADD</span> auth-plug.conf /etc/mosquitto.d/auth-plug.conf
-
-<span style=color:#ff79c6>CMD</span> [<span style=color:#f1fa8c>&#34;mosquitto&#34;</span>, <span style=color:#f1fa8c>&#34;-c&#34;</span>, <span style=color:#f1fa8c>&#34;/etc/mosquitto/mosquitto.conf&#34;</span>]
-</code></pre></div><p>Esse Dockerfile começa com a imagem do Alpine 3.6. A porta 1883 é exposta, que
+instala o Mosquitto e também o plugin:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=display:flex><span><span style=color:#ff79c6>FROM</span><span style=color:#f1fa8c> alpine:3.6</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>EXPOSE</span><span style=color:#f1fa8c> 1883</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>RUN</span> apk add --update --no-cache mosquitto libcurl libssl1.0 <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    rm -rf /var/cache/apk
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>ADD</span> auth-plug-build-config.mk /
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>RUN</span> apk add --update --no-cache --virtual build-deps <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>        mosquitto-dev git build-base curl-dev openssl-dev <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    git clone git://github.com/jpmens/mosquitto-auth-plug.git <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>        /mosquitto-auth-plug <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    <span style=color:#8be9fd;font-style:italic>cd</span> /mosquitto-auth-plug <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    mv /auth-plug-build-config.mk config.mk <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    make <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    cp auth-plug.so /usr/local/lib/auth-plug.so <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    <span style=color:#8be9fd;font-style:italic>cd</span> / <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    rm -rf /mosquitto-auth-plug <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    apk del --purge build-deps <span style=color:#ff79c6>&amp;&amp;</span> <span style=color:#f1fa8c>\
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span>    rm -rf /var/cache/apk
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>ADD</span> mosquitto.conf /etc/mosquitto/mosquitto.conf
+</span></span><span style=display:flex><span><span style=color:#ff79c6>ADD</span> auth-plug.conf /etc/mosquitto.d/auth-plug.conf
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>CMD</span> [<span style=color:#f1fa8c>&#34;mosquitto&#34;</span>, <span style=color:#f1fa8c>&#34;-c&#34;</span>, <span style=color:#f1fa8c>&#34;/etc/mosquitto/mosquitto.conf&#34;</span>]
+</span></span></code></pre></div><p>Esse Dockerfile começa com a imagem do Alpine 3.6. A porta 1883 é exposta, que
 é a porta padrão do MQTT sem SSL. O MQTT com criptografia utiliza a porta 8883
 por padrão, mas vamos configurar o SSL mais adiante, então, por enquanto, vamos
-deixar assim.</p>
-<p>Depois disso, são instalados os pacotes do Mosquitto e outras dependências de
+deixar assim.</p><p>Depois disso, são instalados os pacotes do Mosquitto e outras dependências de
 runtime para o auth-plug. O plugin suporta vários backends de autenticação,
 mas iremos utilizar apenas o HTTP, então essas são as dependências necessárias.
-Se você quiser utilizar outros backends, as dependências podem ser diferentes.</p>
-<p>O comando seguinte adiciona para dentro do container o arquivo de configuração
+Se você quiser utilizar outros backends, as dependências podem ser diferentes.</p><p>O comando seguinte adiciona para dentro do container o arquivo de configuração
 da compilação do plugin. Esse é o arquivo que configura quais backends serão
 suportados. Um modelo desse arquivo é incluído no projeto (<a href=https://github.com/jpmens/mosquitto-auth-plug/blob/master/config.mk.in>config.mk.in</a>).
 As únicas alterações que eu fiz foi habilitar apenas o HTTP e configurar o
 caminho para as bibliotecas do Mosquitto em /usr. Resumindo, o arquivo ficou
-assim:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-makefile data-lang=makefile><span style=color:#6272a4># Select your backends from this list
-</span><span style=color:#6272a4></span><span style=color:#8be9fd;font-style:italic>BACKEND_CDB</span> <span style=color:#ff79c6>?=</span> no
-<span style=color:#8be9fd;font-style:italic>BACKEND_MYSQL</span> <span style=color:#ff79c6>?=</span> no
-<span style=color:#8be9fd;font-style:italic>BACKEND_SQLITE</span> <span style=color:#ff79c6>?=</span> no
-<span style=color:#8be9fd;font-style:italic>BACKEND_REDIS</span> <span style=color:#ff79c6>?=</span> no
-<span style=color:#8be9fd;font-style:italic>BACKEND_POSTGRES</span> <span style=color:#ff79c6>?=</span> no
-<span style=color:#8be9fd;font-style:italic>BACKEND_LDAP</span> <span style=color:#ff79c6>?=</span> no
-<span style=color:#8be9fd;font-style:italic>BACKEND_HTTP</span> <span style=color:#ff79c6>?=</span> yes
-<span style=color:#8be9fd;font-style:italic>BACKEND_JWT</span> <span style=color:#ff79c6>?=</span> no
-<span style=color:#8be9fd;font-style:italic>BACKEND_MONGO</span> <span style=color:#ff79c6>?=</span> no
-<span style=color:#8be9fd;font-style:italic>BACKEND_FILES</span> <span style=color:#ff79c6>?=</span> no
-
-<span style=color:#6272a4># Specify the path to the Mosquitto sources here
-</span><span style=color:#6272a4># MOSQUITTO_SRC = /usr/local/Cellar/mosquitto/1.4.12
-</span><span style=color:#6272a4></span><span style=color:#8be9fd;font-style:italic>MOSQUITTO_SRC</span> <span style=color:#ff79c6>=</span> /usr
-
-<span style=color:#6272a4># Specify the path the OpenSSL here
-</span><span style=color:#6272a4></span><span style=color:#8be9fd;font-style:italic>OPENSSLDIR</span> <span style=color:#ff79c6>=</span> /usr
-
-<span style=color:#6272a4># Specify optional/additional linker/compiler flags here
-</span><span style=color:#6272a4># On macOS, add
-</span><span style=color:#6272a4>#	CFG_LDFLAGS = -undefined dynamic_lookup
-</span><span style=color:#6272a4># as described in https://github.com/eclipse/mosquitto/issues/244
-</span><span style=color:#6272a4>#
-</span><span style=color:#6272a4># CFG_LDFLAGS = -undefined dynamic_lookup  -L/usr/local/Cellar/openssl/1.0.2l/lib
-</span><span style=color:#6272a4># CFG_CFLAGS = -I/usr/local/Cellar/openssl/1.0.2l/include -I/usr/local/Cellar/mosquitto/1.4.12/include
-</span><span style=color:#6272a4></span><span style=color:#8be9fd;font-style:italic>CFG_LDFLAGS</span> <span style=color:#ff79c6>=</span>
-<span style=color:#8be9fd;font-style:italic>CFG_CFLAGS</span> <span style=color:#ff79c6>=</span>
-</code></pre></div><p>Em seguida, aparece uma única instrução RUN com vários comandos. Isso é assim
+assim:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-makefile data-lang=makefile><span style=display:flex><span><span style=color:#6272a4># Select your backends from this list
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span><span style=color:#8be9fd;font-style:italic>BACKEND_CDB</span> <span style=color:#ff79c6>?=</span> no
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>BACKEND_MYSQL</span> <span style=color:#ff79c6>?=</span> no
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>BACKEND_SQLITE</span> <span style=color:#ff79c6>?=</span> no
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>BACKEND_REDIS</span> <span style=color:#ff79c6>?=</span> no
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>BACKEND_POSTGRES</span> <span style=color:#ff79c6>?=</span> no
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>BACKEND_LDAP</span> <span style=color:#ff79c6>?=</span> no
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>BACKEND_HTTP</span> <span style=color:#ff79c6>?=</span> yes
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>BACKEND_JWT</span> <span style=color:#ff79c6>?=</span> no
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>BACKEND_MONGO</span> <span style=color:#ff79c6>?=</span> no
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>BACKEND_FILES</span> <span style=color:#ff79c6>?=</span> no
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4># Specify the path to the Mosquitto sources here
+</span></span></span><span style=display:flex><span><span style=color:#6272a4># MOSQUITTO_SRC = /usr/local/Cellar/mosquitto/1.4.12
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span><span style=color:#8be9fd;font-style:italic>MOSQUITTO_SRC</span> <span style=color:#ff79c6>=</span> /usr
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4># Specify the path the OpenSSL here
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span><span style=color:#8be9fd;font-style:italic>OPENSSLDIR</span> <span style=color:#ff79c6>=</span> /usr
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4># Specify optional/additional linker/compiler flags here
+</span></span></span><span style=display:flex><span><span style=color:#6272a4># On macOS, add
+</span></span></span><span style=display:flex><span><span style=color:#6272a4>#	CFG_LDFLAGS = -undefined dynamic_lookup
+</span></span></span><span style=display:flex><span><span style=color:#6272a4># as described in https://github.com/eclipse/mosquitto/issues/244
+</span></span></span><span style=display:flex><span><span style=color:#6272a4>#
+</span></span></span><span style=display:flex><span><span style=color:#6272a4># CFG_LDFLAGS = -undefined dynamic_lookup  -L/usr/local/Cellar/openssl/1.0.2l/lib
+</span></span></span><span style=display:flex><span><span style=color:#6272a4># CFG_CFLAGS = -I/usr/local/Cellar/openssl/1.0.2l/include -I/usr/local/Cellar/mosquitto/1.4.12/include
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span><span style=color:#8be9fd;font-style:italic>CFG_LDFLAGS</span> <span style=color:#ff79c6>=</span>
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>CFG_CFLAGS</span> <span style=color:#ff79c6>=</span>
+</span></span></code></pre></div><p>Em seguida, aparece uma única instrução RUN com vários comandos. Isso é assim
 para deixar a imagem o menor possível, já que o Docker separa a imagem final em
 várias camadas, sendo que cada instrução do Dockerfile cria uma camada separada.
 Então, nessa única instrução RUN, são instalados os pacotes necessários para a
 compilação, o repositório é clonado, o projeto é compilado, a biblioteca
 <code>auth-plug.so</code> é copiada para o local adequado e, por fim, tudo o que é
 desnecessário é removido. O resultado é que essa camada contém um único arquivo,
-o <code>auto-plug.so</code>.</p>
-<p>No final do Dockerfile, são adicionados os arquivos de configuração do Mosquitto
+o <code>auto-plug.so</code>.</p><p>No final do Dockerfile, são adicionados os arquivos de configuração do Mosquitto
 e do auth-plug. O Mosquitto possui <a href=https://mosquitto.org/man/mosquitto-conf-5.html>diversas opções de configuração</a>,
 que não serão abordadas aqui. O principal a ser garantido é que a opção
 <code>include_dir</code> aponte para <code>/etc/mosquitto.d</code>, para onde é copiado o arquivo de
-configuração do auth-plug, que contém o seguinte:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>auth_plugin /usr/local/lib/auth-plug.so
-auth_opt_backends http
-
-auth_opt_http_hostname auth-server
-auth_opt_http_port 8000
-
-# POST /auth com username e password
-auth_opt_http_getuser_uri /auth
-
-# POST /superuser com username
-auth_opt_http_superuser_uri /superuser
-
-# POST /acl com username, clientid, topic e acc(1 = read, 2 = read-write)
-auth_opt_http_aclcheck_uri /acl
-</code></pre></div><p>Com o Mosquitto pronto, agora resta criar a API de autenticação. Para esse
+configuração do auth-plug, que contém o seguinte:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>auth_plugin /usr/local/lib/auth-plug.so
+</span></span><span style=display:flex><span>auth_opt_backends http
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>auth_opt_http_hostname auth-server
+</span></span><span style=display:flex><span>auth_opt_http_port 8000
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># POST /auth com username e password
+</span></span><span style=display:flex><span>auth_opt_http_getuser_uri /auth
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># POST /superuser com username
+</span></span><span style=display:flex><span>auth_opt_http_superuser_uri /superuser
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># POST /acl com username, clientid, topic e acc(1 = read, 2 = read-write)
+</span></span><span style=display:flex><span>auth_opt_http_aclcheck_uri /acl
+</span></span></code></pre></div><p>Com o Mosquitto pronto, agora resta criar a API de autenticação. Para esse
 exemplo, eu vou utilizar uma simples aplicação em NodeJS com Express. O código
 básico da aplicação é mostrado abaixo (os módulos auth e acl não são
-incluídos aqui porque a lógica deles depende de cada aplicação):</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#ff79c6>const</span> express <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;express&#39;</span>);
-<span style=color:#ff79c6>const</span> bodyParser <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;body-parser&#39;</span>);
-
-<span style=color:#ff79c6>const</span> { checkPassword } <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;./auth&#39;</span>);
-<span style=color:#ff79c6>const</span> { validateTopic } <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;./acl&#39;</span>);
-
-<span style=color:#ff79c6>const</span> app <span style=color:#ff79c6>=</span> express();
-
-app.use(bodyParser.urlencoded({ extended<span style=color:#ff79c6>:</span> <span style=color:#ff79c6>true</span> }));
-
-<span style=color:#8be9fd;font-style:italic>function</span> allow(res) {
-  res.sendStatus(<span style=color:#bd93f9>200</span>);
-}
-
-<span style=color:#8be9fd;font-style:italic>function</span> deny(res) {
-  res.sendStatus(<span style=color:#bd93f9>403</span>);
-}
-
-<span style=color:#8be9fd;font-style:italic>function</span> error(e, res) {
-  console.error(e);
-  res.sendStatus(<span style=color:#bd93f9>500</span>);
-}
-
-<span style=color:#6272a4>// POST /auth com username e password
-</span><span style=color:#6272a4></span>app.post(<span style=color:#f1fa8c>&#39;/auth&#39;</span>, <span style=color:#8be9fd;font-style:italic>function</span> (req, res) {
-  <span style=color:#ff79c6>try</span> {
-    <span style=color:#8be9fd;font-style:italic>let</span> { username, password } <span style=color:#ff79c6>=</span> req.body;
-
-    console.log(<span style=color:#f1fa8c>&#39;auth: &#39;</span>, { username, password });
-
-    <span style=color:#ff79c6>if</span> (checkPassword(username, password)) {
-      allow(res);
-    }
-    <span style=color:#ff79c6>else</span> {
-      deny(res);
-    }
-  }
-  <span style=color:#ff79c6>catch</span> (e) {
-    error(e, res);
-  }
-});
-
-<span style=color:#6272a4>// POST /superuser com username
-</span><span style=color:#6272a4></span>app.post(<span style=color:#f1fa8c>&#39;/superuser&#39;</span>, <span style=color:#8be9fd;font-style:italic>function</span> (req, res) {
-  <span style=color:#6272a4>// Nesse exemplo eu não usei superusuários, então sempre é negado
-</span><span style=color:#6272a4></span>  deny(res);
-});
-
-<span style=color:#6272a4>// POST /acl com username, clientid, topic e acc(1 = read, 2 = read-write)
-</span><span style=color:#6272a4></span>app.post(<span style=color:#f1fa8c>&#39;/acl&#39;</span>, <span style=color:#8be9fd;font-style:italic>function</span> (req, res) {
-  <span style=color:#ff79c6>try</span> {
-    <span style=color:#8be9fd;font-style:italic>let</span> { username, clientid, topic, acc } <span style=color:#ff79c6>=</span> req.body;
-
-    console.log(<span style=color:#f1fa8c>&#39;acl: &#39;</span>, { username, clientid, topic, acc });
-
-    <span style=color:#ff79c6>if</span> (validateTopic(username, topic, acc)) {
-      allow(res);
-    }
-    <span style=color:#ff79c6>else</span> {
-      deny(res);
-    }
-  }
-  <span style=color:#ff79c6>catch</span> (e) {
-    error(e, res);
-  }
-});
-
-app.listen(<span style=color:#bd93f9>8000</span>, () =&gt; {
-  console.log(<span style=color:#f1fa8c>&#39;mosquitto-auth listening on port 8000&#39;</span>);
-});
-</code></pre></div><p>E o Dockerfile para construir a imagem dessa API é bem simples:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=color:#ff79c6>FROM</span><span style=color:#f1fa8c> node:6-alpine</span>
-
-<span style=color:#ff79c6>EXPOSE</span><span style=color:#f1fa8c> 8000</span>
-<span style=color:#ff79c6>WORKDIR</span><span style=color:#f1fa8c> /app</span>
-<span style=color:#ff79c6>ADD</span> . /app
-
-<span style=color:#ff79c6>RUN</span> npm install
-
-<span style=color:#ff79c6>CMD</span> npm start
-</code></pre></div><p>Agora, antes de publicar tudo isso no Kubernetes, vamos rodar localmente para
+incluídos aqui porque a lógica deles depende de cada aplicação):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#ff79c6>const</span> express <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;express&#39;</span>);
+</span></span><span style=display:flex><span><span style=color:#ff79c6>const</span> bodyParser <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;body-parser&#39;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>const</span> { checkPassword } <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;./auth&#39;</span>);
+</span></span><span style=display:flex><span><span style=color:#ff79c6>const</span> { validateTopic } <span style=color:#ff79c6>=</span> require(<span style=color:#f1fa8c>&#39;./acl&#39;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>const</span> app <span style=color:#ff79c6>=</span> express();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>app.use(bodyParser.urlencoded({ extended<span style=color:#ff79c6>:</span> <span style=color:#ff79c6>true</span> }));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>function</span> allow(res) {
+</span></span><span style=display:flex><span>  res.sendStatus(<span style=color:#bd93f9>200</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>function</span> deny(res) {
+</span></span><span style=display:flex><span>  res.sendStatus(<span style=color:#bd93f9>403</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>function</span> error(e, res) {
+</span></span><span style=display:flex><span>  console.error(e);
+</span></span><span style=display:flex><span>  res.sendStatus(<span style=color:#bd93f9>500</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>// POST /auth com username e password
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>app.post(<span style=color:#f1fa8c>&#39;/auth&#39;</span>, <span style=color:#8be9fd;font-style:italic>function</span> (req, res) {
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>try</span> {
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd;font-style:italic>let</span> { username, password } <span style=color:#ff79c6>=</span> req.body;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    console.log(<span style=color:#f1fa8c>&#39;auth: &#39;</span>, { username, password });
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>if</span> (checkPassword(username, password)) {
+</span></span><span style=display:flex><span>      allow(res);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>else</span> {
+</span></span><span style=display:flex><span>      deny(res);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>catch</span> (e) {
+</span></span><span style=display:flex><span>    error(e, res);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>});
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>// POST /superuser com username
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>app.post(<span style=color:#f1fa8c>&#39;/superuser&#39;</span>, <span style=color:#8be9fd;font-style:italic>function</span> (req, res) {
+</span></span><span style=display:flex><span>  <span style=color:#6272a4>// Nesse exemplo eu não usei superusuários, então sempre é negado
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>  deny(res);
+</span></span><span style=display:flex><span>});
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>// POST /acl com username, clientid, topic e acc(1 = read, 2 = read-write)
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>app.post(<span style=color:#f1fa8c>&#39;/acl&#39;</span>, <span style=color:#8be9fd;font-style:italic>function</span> (req, res) {
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>try</span> {
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd;font-style:italic>let</span> { username, clientid, topic, acc } <span style=color:#ff79c6>=</span> req.body;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    console.log(<span style=color:#f1fa8c>&#39;acl: &#39;</span>, { username, clientid, topic, acc });
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>if</span> (validateTopic(username, topic, acc)) {
+</span></span><span style=display:flex><span>      allow(res);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>else</span> {
+</span></span><span style=display:flex><span>      deny(res);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>catch</span> (e) {
+</span></span><span style=display:flex><span>    error(e, res);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>});
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>app.listen(<span style=color:#bd93f9>8000</span>, () =&gt; {
+</span></span><span style=display:flex><span>  console.log(<span style=color:#f1fa8c>&#39;mosquitto-auth listening on port 8000&#39;</span>);
+</span></span><span style=display:flex><span>});
+</span></span></code></pre></div><p>E o Dockerfile para construir a imagem dessa API é bem simples:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=display:flex><span><span style=color:#ff79c6>FROM</span><span style=color:#f1fa8c> node:6-alpine</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>EXPOSE</span><span style=color:#f1fa8c> 8000</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>WORKDIR</span><span style=color:#f1fa8c> /app</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>ADD</span> . /app
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>RUN</span> npm install
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>CMD</span> npm start
+</span></span></code></pre></div><p>Agora, antes de publicar tudo isso no Kubernetes, vamos rodar localmente para
 garantir que tudo está funcionando. Usando um arquivo do docker-compose isso é
-uma tarefa bem simples:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#ff79c6>version</span>: <span style=color:#f1fa8c>&#34;3&#34;</span>
-<span style=color:#ff79c6>services</span>:
-  <span style=color:#ff79c6>auth</span>:
-    <span style=color:#ff79c6>build</span>:
-      <span style=color:#ff79c6>context</span>: ./auth
-
-  <span style=color:#ff79c6>broker</span>:
-    <span style=color:#ff79c6>build</span>:
-      <span style=color:#ff79c6>context</span>: ./broker
-    <span style=color:#ff79c6>links</span>:
-      - auth:auth-server
-    <span style=color:#ff79c6>ports</span>:
-      - <span style=color:#bd93f9>1883</span>:<span style=color:#bd93f9>1883</span>
-</code></pre></div><p>Agora, utilizando um cliente MQTT qualquer já é possível verificar se a
-autenticação está funcionando, conectando no broker em <code>localhost:1883</code>.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>$ mosquitto_pub -h localhost -p 1883 -t &#39;topico&#39; \
-  -m &#39;mensagem&#39; -u usuario -P senha_incorreta
-Connection Refused: not authorised.
-Error: The connection was refused.
-
-$ mosquitto_pub -h localhost -p 1883 -t &#39;topico&#39; \
-  -m &#39;mensagem&#39; -u usuario -P senha_correta
-</code></pre></div><p>Nenhum erro reportado com a senha correta = sucesso!</p>
-<hr>
-<p>Agora está quase tudo pronto para publicar no Kubernetes. Só é necessário
+uma tarefa bem simples:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#ff79c6>version</span>: <span style=color:#f1fa8c>&#34;3&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>auth</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>build</span>:
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>context</span>: ./auth
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>broker</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>build</span>:
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>context</span>: ./broker
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>links</span>:
+</span></span><span style=display:flex><span>      - auth:auth-server
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#bd93f9>1883</span>:<span style=color:#bd93f9>1883</span>
+</span></span></code></pre></div><p>Agora, utilizando um cliente MQTT qualquer já é possível verificar se a
+autenticação está funcionando, conectando no broker em <code>localhost:1883</code>.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ mosquitto_pub -h localhost -p 1883 -t &#39;topico&#39; \
+</span></span><span style=display:flex><span>  -m &#39;mensagem&#39; -u usuario -P senha_incorreta
+</span></span><span style=display:flex><span>Connection Refused: not authorised.
+</span></span><span style=display:flex><span>Error: The connection was refused.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ mosquitto_pub -h localhost -p 1883 -t &#39;topico&#39; \
+</span></span><span style=display:flex><span>  -m &#39;mensagem&#39; -u usuario -P senha_correta
+</span></span></code></pre></div><p>Nenhum erro reportado com a senha correta = sucesso!</p><hr><p>Agora está quase tudo pronto para publicar no Kubernetes. Só é necessário
 enviar as imagens para um Registry Docker que o cluster consiga acessar. Eu
 utilizei o Registry do GitLab.com e criei um <a href=https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod>ImagePullSecret</a> no Kubernetes
-para acessá-lo, mas você pode utilizar o que achar melhor.</p>
-<p>Os recursos necessários no Kubernetes para publicar o Mosquitto com autenticação
+para acessá-lo, mas você pode utilizar o que achar melhor.</p><p>Os recursos necessários no Kubernetes para publicar o Mosquitto com autenticação
 são, basicamente, dois: um Deployment e um Service. O Mosquitto que iremos
 publicar irá rodar apenas como um servidor, sem nenhum tipo de redundância.
 Teremos apenas um container rodando o Mosquitto e um container rodando a API.
 Para simplificar, vamos deixar tudo isso em um único Pod (não faça isso em
-produção).</p>
-<p>O Deployment ficou assim:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#ff79c6>apiVersion</span>: apps/v1beta1
-<span style=color:#ff79c6>kind</span>: Deployment
-<span style=color:#ff79c6>metadata</span>:
-  <span style=color:#ff79c6>name</span>: mqtt-broker
-
-<span style=color:#ff79c6>spec</span>:
-  <span style=color:#ff79c6>template</span>:
-    <span style=color:#ff79c6>metadata</span>:
-      <span style=color:#ff79c6>labels</span>:
-        <span style=color:#ff79c6>app</span>: mqtt
-    <span style=color:#ff79c6>spec</span>:
-      <span style=color:#ff79c6>hostAliases</span>:
-        <span style=color:#6272a4># O plugin de autenticação do Mosquitto conecta na</span>
-        <span style=color:#6272a4># API em `auth-server`. Como os containers estão no</span>
-        <span style=color:#6272a4># mesmo Pod, isso deve ser mapeado para localhost.</span>
-        - <span style=color:#ff79c6>ip</span>: <span style=color:#f1fa8c>&#34;127.0.0.1&#34;</span>
-          <span style=color:#ff79c6>hostnames</span>:
-            - <span style=color:#f1fa8c>&#34;auth-server&#34;</span>
-
-      <span style=color:#ff79c6>containers</span>:
-        - <span style=color:#ff79c6>name</span>: mosquitto-broker
-          <span style=color:#ff79c6>featuredImage</span>: registry.gitlab.com/namespace/mosquitto:latest
-          <span style=color:#ff79c6>resources</span>:
-            <span style=color:#ff79c6>requests</span>:
-              <span style=color:#ff79c6>cpu</span>: 100m
-              <span style=color:#ff79c6>memory</span>: 100Mi
-          <span style=color:#ff79c6>ports</span>:
-            - <span style=color:#ff79c6>containerPort</span>: <span style=color:#bd93f9>1883</span>
-
-        - <span style=color:#ff79c6>name</span>: mosquitto-auth
-          <span style=color:#ff79c6>featuredImage</span>: registry.gitlab.com/namespace/mosquitto-auth:latest
-          <span style=color:#ff79c6>resources</span>:
-            <span style=color:#ff79c6>requests</span>:
-              <span style=color:#ff79c6>cpu</span>: 100m
-              <span style=color:#ff79c6>memory</span>: 50Mi
-          <span style=color:#ff79c6>ports</span>:
-            - <span style=color:#ff79c6>containerPort</span>: <span style=color:#bd93f9>8000</span>
-
-      <span style=color:#ff79c6>imagePullSecrets</span>:
-        - <span style=color:#ff79c6>name</span>: gitlab-registry
-</code></pre></div><p>E agora, no Service, é onde iremos configurar o SSL. O cluster Kubernetes que eu
+produção).</p><p>O Deployment ficou assim:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#ff79c6>apiVersion</span>: apps/v1beta1
+</span></span><span style=display:flex><span><span style=color:#ff79c6>kind</span>: Deployment
+</span></span><span style=display:flex><span><span style=color:#ff79c6>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>name</span>: mqtt-broker
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>template</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>app</span>: mqtt
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>hostAliases</span>:
+</span></span><span style=display:flex><span>        <span style=color:#6272a4># O plugin de autenticação do Mosquitto conecta na</span>
+</span></span><span style=display:flex><span>        <span style=color:#6272a4># API em `auth-server`. Como os containers estão no</span>
+</span></span><span style=display:flex><span>        <span style=color:#6272a4># mesmo Pod, isso deve ser mapeado para localhost.</span>
+</span></span><span style=display:flex><span>        - <span style=color:#ff79c6>ip</span>: <span style=color:#f1fa8c>&#34;127.0.0.1&#34;</span>
+</span></span><span style=display:flex><span>          <span style=color:#ff79c6>hostnames</span>:
+</span></span><span style=display:flex><span>            - <span style=color:#f1fa8c>&#34;auth-server&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>containers</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#ff79c6>name</span>: mosquitto-broker
+</span></span><span style=display:flex><span>          <span style=color:#ff79c6>featuredImage</span>: registry.gitlab.com/namespace/mosquitto:latest
+</span></span><span style=display:flex><span>          <span style=color:#ff79c6>resources</span>:
+</span></span><span style=display:flex><span>            <span style=color:#ff79c6>requests</span>:
+</span></span><span style=display:flex><span>              <span style=color:#ff79c6>cpu</span>: 100m
+</span></span><span style=display:flex><span>              <span style=color:#ff79c6>memory</span>: 100Mi
+</span></span><span style=display:flex><span>          <span style=color:#ff79c6>ports</span>:
+</span></span><span style=display:flex><span>            - <span style=color:#ff79c6>containerPort</span>: <span style=color:#bd93f9>1883</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        - <span style=color:#ff79c6>name</span>: mosquitto-auth
+</span></span><span style=display:flex><span>          <span style=color:#ff79c6>featuredImage</span>: registry.gitlab.com/namespace/mosquitto-auth:latest
+</span></span><span style=display:flex><span>          <span style=color:#ff79c6>resources</span>:
+</span></span><span style=display:flex><span>            <span style=color:#ff79c6>requests</span>:
+</span></span><span style=display:flex><span>              <span style=color:#ff79c6>cpu</span>: 100m
+</span></span><span style=display:flex><span>              <span style=color:#ff79c6>memory</span>: 50Mi
+</span></span><span style=display:flex><span>          <span style=color:#ff79c6>ports</span>:
+</span></span><span style=display:flex><span>            - <span style=color:#ff79c6>containerPort</span>: <span style=color:#bd93f9>8000</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>imagePullSecrets</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#ff79c6>name</span>: gitlab-registry
+</span></span></code></pre></div><p>E agora, no Service, é onde iremos configurar o SSL. O cluster Kubernetes que eu
 estou utilizando está rodando na Amazon Web Services, e a AWS fornece um serviço
 de certificados com renovação automática e que pode ser vinculado a um LoadBalancer
-de forma bem simples.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#ff79c6>apiVersion</span>: v1
-<span style=color:#ff79c6>kind</span>: Service
-<span style=color:#ff79c6>metadata</span>:
-  <span style=color:#ff79c6>name</span>: mosquitto-broker
-  <span style=color:#ff79c6>annotations</span>:
-    <span style=color:#ff79c6>service.beta.kubernetes.io/aws-load-balancer-backend-protocol</span>: tcp
-    <span style=color:#ff79c6>service.beta.kubernetes.io/aws-load-balancer-ssl-cert</span>: <span style=color:#f1fa8c>&#34;arn do certificado na AWS&#34;</span>
-    <span style=color:#ff79c6>service.beta.kubernetes.io/aws-load-balancer-ssl-ports</span>: <span style=color:#f1fa8c>&#34;mqtts&#34;</span>
-
-<span style=color:#ff79c6>spec</span>:
-  <span style=color:#ff79c6>selector</span>:
-    <span style=color:#ff79c6>app</span>: mqtt
-
-  <span style=color:#ff79c6>type</span>: LoadBalancer
-
-  <span style=color:#ff79c6>ports</span>:
-    - <span style=color:#ff79c6>port</span>: <span style=color:#bd93f9>8883</span>
-      <span style=color:#ff79c6>name</span>: mqtts
-      <span style=color:#ff79c6>targetPort</span>: <span style=color:#bd93f9>1883</span>
-      <span style=color:#ff79c6>protocol</span>: TCP
-</code></pre></div><p>Com essa configuração de serviço, a terminação SSL é feita pelo LoadBalancer da
+de forma bem simples.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#ff79c6>apiVersion</span>: v1
+</span></span><span style=display:flex><span><span style=color:#ff79c6>kind</span>: Service
+</span></span><span style=display:flex><span><span style=color:#ff79c6>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>name</span>: mosquitto-broker
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>service.beta.kubernetes.io/aws-load-balancer-backend-protocol</span>: tcp
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>service.beta.kubernetes.io/aws-load-balancer-ssl-cert</span>: <span style=color:#f1fa8c>&#34;arn do certificado na AWS&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>service.beta.kubernetes.io/aws-load-balancer-ssl-ports</span>: <span style=color:#f1fa8c>&#34;mqtts&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>selector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>app</span>: mqtt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>type</span>: LoadBalancer
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>ports</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ff79c6>port</span>: <span style=color:#bd93f9>8883</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>name</span>: mqtts
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>targetPort</span>: <span style=color:#bd93f9>1883</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>protocol</span>: TCP
+</span></span></code></pre></div><p>Com essa configuração de serviço, a terminação SSL é feita pelo LoadBalancer da
 AWS e a conexão TCP sem criptografia é redirecionada para o Pod do Mosquitto no
 Kubernetes. Toda essa &ldquo;mágica&rdquo; é configurada pelas anotações adicionadas nos
-metadados do serviço.</p>
-<p>Agora esses arquivos podem ser aplicados com <code>kubectl apply -f</code> e em breve os
+metadados do serviço.</p><p>Agora esses arquivos podem ser aplicados com <code>kubectl apply -f</code> e em breve os
 containers estarão em execução com o LoadBalancer configurado. Para obter o
 endereço do LoadBalancer que deve ser utilizado para conectar no broker podemos
 utilizar o comando <code>kubectl describe service mosquitto-broker</code>. Na saída desse
 comando, uma linha identificada com LoadBalancer Ingress deve apresentar um
 endereço parecido com <code>xxxxxxxxxxxxxxxxxxxxx-xxxxxxxx.sa-east-1.elb.amazonaws.com</code>.
 Depois de configurar o DNS para direcionar o domínio configurado no certificado
-SSL para o LoadBalancer, podemos fazer novamente o teste com o mosquitto_pub:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>$ mosquitto_pub -h mqtt.dominio.com -p 8883 -t &#39;topico&#39; \
-  -m &#39;mensagem&#39; -u usuario -P senha_incorreta \
-  --cafile /etc/pki/tls/certs/ca-bundle.crt
-Connection Refused: not authorised.
-Error: The connection was refused.
-
-$ mosquitto_pub -h mqtt.dominio.com -p 8883 -t &#39;topico&#39; \
-  -m &#39;mensagem&#39; -u usuario -P senha_correta \
-  --cafile /etc/pki/tls/certs/ca-bundle.crt
-</code></pre></div><p>Nenhum erro reportado com a senha correta = sucesso!</p>
-<p>Agora você tem um broker Mosquitto rodando em um cluster Kubernetes com
-criptografia SSL, autenticação de usuários e autorização de acesso aos tópicos.</p>
-</div>
-<footer>
-</footer>
-</article>
-</section>
-</div>
-<footer class=footer>
-<section class=container>
-&copy;
+SSL para o LoadBalancer, podemos fazer novamente o teste com o mosquitto_pub:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ mosquitto_pub -h mqtt.dominio.com -p 8883 -t &#39;topico&#39; \
+</span></span><span style=display:flex><span>  -m &#39;mensagem&#39; -u usuario -P senha_incorreta \
+</span></span><span style=display:flex><span>  --cafile /etc/pki/tls/certs/ca-bundle.crt
+</span></span><span style=display:flex><span>Connection Refused: not authorised.
+</span></span><span style=display:flex><span>Error: The connection was refused.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ mosquitto_pub -h mqtt.dominio.com -p 8883 -t &#39;topico&#39; \
+</span></span><span style=display:flex><span>  -m &#39;mensagem&#39; -u usuario -P senha_correta \
+</span></span><span style=display:flex><span>  --cafile /etc/pki/tls/certs/ca-bundle.crt
+</span></span></code></pre></div><p>Nenhum erro reportado com a senha correta = sucesso!</p><p>Agora você tem um broker Mosquitto rodando em um cluster Kubernetes com
+criptografia SSL, autenticação de usuários e autorização de acesso aos tópicos.</p></div><footer></footer></article></section></div><footer class=footer><section class=container>&copy;
 2011 -
-2021
+2023
 Eduardo Weiland
 &#183;
 <a rel="license noopener" href=https://creativecommons.org/licenses/by-sa/4.0/>CC BY-SA 4.0</a>
 &#183;
-<a rel=noopener href=https://github.com/eduardoweiland/ew.dev.br>Free Software</a>
-</section>
-</footer>
-</main>
-<script src=/js/coder.min.235666b114443867d43eeb5799d51f6252965e5163f338285e113fa381d3d27e.js integrity="sha256-I1ZmsRREOGfUPutXmdUfYlKWXlFj8zgoXhE/o4HT0n4="></script>
-</body>
-</html>
+<a rel=noopener href=https://github.com/eduardoweiland/ew.dev.br>Free Software</a></section></footer></main><script src=/js/coder.min.978ac2219b08e24e68c3f3eada8d99add50d9d997ce3861354b602cc94f75f30.js integrity="sha256-l4rCIZsI4k5ow/Pq2o2ZrdUNnZl844YTVLYCzJT3XzA="></script></body></html>

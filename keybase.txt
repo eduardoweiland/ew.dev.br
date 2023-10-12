@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/eduardoweiland
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://ew.dev.br
+  * I am eduardoweiland (https://keybase.io/eduardoweiland) on keybase.
+  * I have a public key ASD_eLiT7_IiWBDOQknzw768rR8oChopatOeWAopewtuLgo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01014b3af086435ea2c84d636d6ace9710b9202bd715c5511171d8cd7f400c449c870a",
+      "host": "keybase.io",
+      "kid": "0120ff78b893eff2225810ce4249f3c3bebcad1f280a1a296ad39e580a297b0b6e2e0a",
+      "uid": "f638e1ae7b714e8990530ccbfea0d819",
+      "username": "eduardoweiland"
+    },
+    "merkle_root": {
+      "ctime": 1697070999,
+      "hash": "b580e02b044639328f8726effee2f1abeba2ddc652b7f81370e1adae172e1f78598e248e40fc82dfc270e4be3032667c3a08a08477559f1fdeeff4fe365cb8e9",
+      "hash_meta": "01835a5b2be612a46ac71e328cc98e345fba112a0f0e9b4464fc7bf9bb21b7a5",
+      "seqno": 25021948
+    },
+    "service": {
+      "entropy": "Giio0r3TGBpdHecRaAItDoE5",
+      "hostname": "ew.dev.br",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "6.2.2"
+  },
+  "ctime": 1697071019,
+  "expire_in": 504576000,
+  "prev": "931135cab5ef84dffe36b688016955a125ecbc3869e68d2c7597c159afe05f8d",
+  "seqno": 7,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg/3i4k+/yIlgQzkJJ88O+vK0fKAoaKWrTnlgKKXsLbi4Kp3BheWxvYWTESpcCB8QgkxE1yrXvhN/+NraIAWlVoSXsvDhp5o0sdZfBWa/gX43EIAnIFB+t08V9UByaeHeuXen+4fubS5upy2F1oodIo0peAgHCo3NpZ8RA7UfCb4l/9izuCGeuSELmRkhS9Vgh3RJa2bXz9Qe0Esq/kvjIebuGvT+eFfYzdawiIa8zyw88dt6g8andpmMxB6hzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIP9Ovv9ya1ailbp3X2ognj1S4at7vjyUwVmq9BpEScFgo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/eduardoweiland
+
+==================================================================
