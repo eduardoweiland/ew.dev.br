@@ -31,29 +31,40 @@ pygmentsCodeFencesGuessSyntax = true
     icon = "fa fa-github"
     weight = 1
     url = "https://github.com/eduardoweiland/"
+    rel = "me"
 
 [[params.social]]
     name = "GitLab"
     icon = "fa fa-gitlab"
     weight = 2
     url = "https://gitlab.com/eduardoweiland/"
+    rel = "me"
 
 [[params.social]]
     name = "LinkedIn"
     icon = "fa fa-linkedin"
     weight = 3
     url = "https://www.linkedin.com/in/eduardoweiland/"
+    rel = "me"
+
+[[params.social]]
+    name = "Mastodon"
+    icon = "fa fa-mastodon"
+    weight = 4
+    url = "https://bolha.us/@ew"
+    rel = "me"
 
 [[params.social]]
     name = "DEV Community"
     icon = "fa fa-dev-to"
-    weight = 4
+    weight = 5
     url = "https://dev.to/eduardoweiland"
+    rel = "me"
 
 [[params.social]]
     name = "RSS"
     icon = "fa fa-rss"
-    weight = 5
+    weight = 99
     url = "/index.xml"
     rel = "alternate"
     type = "application/rss+xml"
